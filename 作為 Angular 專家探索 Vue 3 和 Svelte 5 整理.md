@@ -57,6 +57,9 @@
 3. 比較「狀態宣告」、「模板讀值」、「更新畫面」三個動作。
 
 ```ts
+// 範例用途：示範「實作流程與程式碼例子」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 // Vue 3：ref 是響應式狀態
 const title = ref('Shopping List App')
 
@@ -125,12 +128,18 @@ title = signal('Shopping List App')
 4. 將共用 CSS 放進各框架慣用的全域入口。
 
 ```bash
+# 範例用途：示範「實作流程與程式碼例子」中可直接在終端機執行的 Shell 指令。
+# 參數說明：命令中的 URL、檔名、路徑、選項或環境名稱請替換成你的實際目標。
+# 回傳結果 / 副作用：通常會輸出結果、讀寫檔案、下載資料，或改變目前 shell / 系統狀態。
 npm create vue@latest fundamental-vue3
 npx sv create fundamental-svelte
 ng new fundamental-angular
 ```
 
 ```ts
+// 範例用途：示範「實作流程與程式碼例子」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 // Vue main.ts：入口匯入全域樣式
 import './assets/main.css'
 import { createApp } from 'vue'
@@ -194,6 +203,9 @@ createApp(App).mount('#app')
 4. 確認畫面顯示 Shopping Cart。
 
 ```vue
+<!-- 範例用途：示範「實作流程與程式碼例子」中的畫面模板、元件結構或樣式設定。 -->
+<!-- 參數說明：屬性、事件、class、props 或綁定值要依實際元件資料與狀態帶入。 -->
+<!-- 回傳結果 / 副作用：會影響畫面渲染、互動行為、樣式呈現或元件對外輸出的事件。 -->
 <!-- Vue：ShoppingCart.vue -->
 <script setup lang="ts"></script>
 
@@ -203,11 +215,17 @@ createApp(App).mount('#app')
 ```
 
 ```svelte
+<!-- 範例用途：示範「實作流程與程式碼例子」中的畫面模板、元件結構或樣式設定。 -->
+<!-- 參數說明：屬性、事件、class、props 或綁定值要依實際元件資料與狀態帶入。 -->
+<!-- 回傳結果 / 副作用：會影響畫面渲染、互動行為、樣式呈現或元件對外輸出的事件。 -->
 <!-- Svelte：shopping-cart.svelte -->
 <p>Shopping Cart</p>
 ```
 
 ```ts
+// 範例用途：示範「實作流程與程式碼例子」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 // Angular：shopping-cart.component.ts
 @Component({
   selector: 'app-shopping-cart',
@@ -270,6 +288,9 @@ export class ShoppingCartComponent {}
 3. 修改初始值，確認畫面跟著變。
 
 ```vue
+<!-- 範例用途：示範「實作流程與程式碼例子」中的畫面模板、元件結構或樣式設定。 -->
+<!-- 參數說明：屬性、事件、class、props 或綁定值要依實際元件資料與狀態帶入。 -->
+<!-- 回傳結果 / 副作用：會影響畫面渲染、互動行為、樣式呈現或元件對外輸出的事件。 -->
 <script setup lang="ts">
 import { ref } from 'vue'
 
@@ -282,11 +303,17 @@ const header = ref('Shopping List App - Vue 3')
 ```
 
 ```ts
+// 範例用途：示範「實作流程與程式碼例子」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 // Angular
 header = signal('Shopping List App - Angular')
 ```
 
 ```html
+<!-- 範例用途：示範「實作流程與程式碼例子」中的畫面模板、元件結構或樣式設定。 -->
+<!-- 參數說明：屬性、事件、class、props 或綁定值要依實際元件資料與狀態帶入。 -->
+<!-- 回傳結果 / 副作用：會影響畫面渲染、互動行為、樣式呈現或元件對外輸出的事件。 -->
 <h1>{{ header() }}</h1>
 ```
 
@@ -304,6 +331,9 @@ header = signal('Shopping List App - Angular')
 錯誤做法：
 
 ```html
+<!-- 範例用途：示範「負面例子 / 錯誤用法」中的畫面模板、元件結構或樣式設定。 -->
+<!-- 參數說明：屬性、事件、class、props 或綁定值要依實際元件資料與狀態帶入。 -->
+<!-- 回傳結果 / 副作用：會影響畫面渲染、互動行為、樣式呈現或元件對外輸出的事件。 -->
 <!-- 模板裡塞太多邏輯 -->
 <h1>{{ items.filter(x => !x.purchased).map(x => x.label).join(', ') }}</h1>
 ```
@@ -351,6 +381,9 @@ header = signal('Shopping List App - Angular')
 4. 每列使用穩定 ID 作為 key。
 
 ```ts
+// 範例用途：示範「實作流程與程式碼例子」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 type Item = {
   id: number
   label: string
@@ -360,18 +393,27 @@ type Item = {
 ```
 
 ```vue
+<!-- 範例用途：示範「實作流程與程式碼例子」中的畫面模板、元件結構或樣式設定。 -->
+<!-- 參數說明：屬性、事件、class、props 或綁定值要依實際元件資料與狀態帶入。 -->
+<!-- 回傳結果 / 副作用：會影響畫面渲染、互動行為、樣式呈現或元件對外輸出的事件。 -->
 <li v-for="item in items" :key="item.id">
   {{ item.id }} - {{ item.label }}
 </li>
 ```
 
 ```svelte
+<!-- 範例用途：示範「實作流程與程式碼例子」中的畫面模板、元件結構或樣式設定。 -->
+<!-- 參數說明：屬性、事件、class、props 或綁定值要依實際元件資料與狀態帶入。 -->
+<!-- 回傳結果 / 副作用：會影響畫面渲染、互動行為、樣式呈現或元件對外輸出的事件。 -->
 {#each items as item (item.id)}
   <li>{item.id} - {item.label}</li>
 {/each}
 ```
 
 ```html
+<!-- 範例用途：示範「實作流程與程式碼例子」中的畫面模板、元件結構或樣式設定。 -->
+<!-- 參數說明：屬性、事件、class、props 或綁定值要依實際元件資料與狀態帶入。 -->
+<!-- 回傳結果 / 副作用：會影響畫面渲染、互動行為、樣式呈現或元件對外輸出的事件。 -->
 @for (item of items(); track item.id) {
   <li>{{ item.id }} - {{ item.label }}</li>
 }
@@ -432,6 +474,9 @@ type Item = {
 4. 暫時把狀態印在畫面上驗證。
 
 ```vue
+<!-- 範例用途：示範「實作流程與程式碼例子」中的畫面模板、元件結構或樣式設定。 -->
+<!-- 參數說明：屬性、事件、class、props 或綁定值要依實際元件資料與狀態帶入。 -->
+<!-- 回傳結果 / 副作用：會影響畫面渲染、互動行為、樣式呈現或元件對外輸出的事件。 -->
 <script setup lang="ts">
 import { ref } from 'vue'
 
@@ -504,6 +549,9 @@ const newItemHighPriority = ref(false)
 5. 刪除時用 ID 過濾清單。
 
 ```ts
+// 範例用途：示範「實作流程與程式碼例子」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 const saveItem = () => {
   items.value.push({
     id: Date.now(),
@@ -521,6 +569,9 @@ const deleteItem = (id: number) => {
 ```
 
 ```vue
+<!-- 範例用途：示範「實作流程與程式碼例子」中的畫面模板、元件結構或樣式設定。 -->
+<!-- 參數說明：屬性、事件、class、props 或綁定值要依實際元件資料與狀態帶入。 -->
+<!-- 回傳結果 / 副作用：會影響畫面渲染、互動行為、樣式呈現或元件對外輸出的事件。 -->
 <form @submit.prevent="saveItem">
   <input v-model.trim="newItem" />
   <button type="submit">Save</button>
@@ -582,6 +633,9 @@ const deleteItem = (id: number) => {
 4. 用 `isEditing` 控制表單是否顯示。
 
 ```vue
+<!-- 範例用途：示範「實作流程與程式碼例子」中的畫面模板、元件結構或樣式設定。 -->
+<!-- 參數說明：屬性、事件、class、props 或綁定值要依實際元件資料與狀態帶入。 -->
+<!-- 回傳結果 / 副作用：會影響畫面渲染、互動行為、樣式呈現或元件對外輸出的事件。 -->
 <template v-if="items.length > 0">
   <ul>
     <li v-for="item in items" :key="item.id">{{ item.label }}</li>
@@ -645,6 +699,9 @@ UI 不只顯示文字，也要用視覺狀態提示使用者：已完成、錯�
 4. 用 CSS 控制實際樣式。
 
 ```vue
+<!-- 範例用途：示範「實作流程與程式碼例子」中的畫面模板、元件結構或樣式設定。 -->
+<!-- 參數說明：屬性、事件、class、props 或綁定值要依實際元件資料與狀態帶入。 -->
+<!-- 回傳結果 / 副作用：會影響畫面渲染、互動行為、樣式呈現或元件對外輸出的事件。 -->
 <li
   :class="[{ priority: item.highPriority }, { strikeout: item.purchased }]"
   @click="item.purchased = !item.purchased"
@@ -654,6 +711,11 @@ UI 不只顯示文字，也要用視覺狀態提示使用者：已完成、錯�
 ```
 
 ```css
+/*
+ * 範例用途：示範「實作流程與程式碼例子」中的畫面模板、元件結構或樣式設定。
+ * 參數說明：屬性、事件、class、props 或綁定值要依實際元件資料與狀態帶入。
+ * 回傳結果 / 副作用：會影響畫面渲染、互動行為、樣式呈現或元件對外輸出的事件。
+ */
 .priority { color: #b45309; }
 .strikeout { text-decoration: line-through; color: #6b7280; }
 ```
@@ -713,12 +775,18 @@ UI 不只顯示文字，也要用視覺狀態提示使用者：已完成、錯�
 4. submit 時仍重新檢查一次。
 
 ```vue
+<!-- 範例用途：示範「實作流程與程式碼例子」中的畫面模板、元件結構或樣式設定。 -->
+<!-- 參數說明：屬性、事件、class、props 或綁定值要依實際元件資料與狀態帶入。 -->
+<!-- 回傳結果 / 副作用：會影響畫面渲染、互動行為、樣式呈現或元件對外輸出的事件。 -->
 <button :disabled="newItem.length < 5" type="submit">
   Save Item
 </button>
 ```
 
 ```ts
+// 範例用途：示範「實作流程與程式碼例子」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 const canSave = computed(() => newItem.value.trim().length >= 5)
 ```
 
@@ -777,6 +845,9 @@ const canSave = computed(() => newItem.value.trim().length >= 5)
 4. 模板只讀衍生結果。
 
 ```ts
+// 範例用途：示範「實作流程與程式碼例子」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 const reversedItems = computed(() => [...items.value].reverse())
 
 const purchasedCount = computed(() =>
@@ -844,6 +915,9 @@ const purchasedLabel = computed(() =>
 5. 推送後檢查 Pages URL。
 
 ```ts
+// 範例用途：示範「實作流程與程式碼例子」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 // vite.config.ts
 export default defineConfig({
   base: '/fundamental-vue3/',
@@ -852,6 +926,9 @@ export default defineConfig({
 ```
 
 ```yaml
+# 範例用途：示範「實作流程與程式碼例子」中的 YAML 設定。
+# 參數說明：欄位值、分支名稱、指令與環境變數要依專案實際設定替換。
+# 回傳結果 / 副作用：被工具或 CI/CD 載入後，會影響建置、部署或執行流程。
 name: Deploy
 on:
   push:
@@ -921,6 +998,9 @@ jobs:
 4. 先確認空白頁面與樣式載入。
 
 ```ts
+// 範例用途：示範「實作流程與程式碼例子」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 // 建議建立共用型別資料夾，避免後續元件各自定義
 export type CoffeePlan = {
   id: number
@@ -984,6 +1064,9 @@ props 是父元件把資料交給子元件的主要方式。它讓同一個子�
 4. 父元件傳入不同方案名稱。
 
 ```vue
+<!-- 範例用途：示範「實作流程與程式碼例子」中的畫面模板、元件結構或樣式設定。 -->
+<!-- 參數說明：屬性、事件、class、props 或綁定值要依實際元件資料與狀態帶入。 -->
+<!-- 回傳結果 / 副作用：會影響畫面渲染、互動行為、樣式呈現或元件對外輸出的事件。 -->
 <script setup lang="ts">
 defineProps<{ name: string }>()
 </script>
@@ -996,6 +1079,9 @@ defineProps<{ name: string }>()
 ```
 
 ```vue
+<!-- 範例用途：示範「實作流程與程式碼例子」中的畫面模板、元件結構或樣式設定。 -->
+<!-- 參數說明：屬性、事件、class、props 或綁定值要依實際元件資料與狀態帶入。 -->
+<!-- 回傳結果 / 副作用：會影響畫面渲染、互動行為、樣式呈現或元件對外輸出的事件。 -->
 <CoffeePlan name="The Single" />
 <CoffeePlan name="The Curious" />
 ```
@@ -1055,6 +1141,9 @@ props 讓子元件從硬編內容變成可重用的資料顯示器。
 4. App 只保留 `<PlanPicker />`。
 
 ```vue
+<!-- 範例用途：示範「實作流程與程式碼例子」中的畫面模板、元件結構或樣式設定。 -->
+<!-- 參數說明：屬性、事件、class、props 或綁定值要依實際元件資料與狀態帶入。 -->
+<!-- 回傳結果 / 副作用：會影響畫面渲染、互動行為、樣式呈現或元件對外輸出的事件。 -->
 <script setup lang="ts">
 import { ref } from 'vue'
 import CoffeePlan from './CoffeePlan.vue'
@@ -1124,6 +1213,9 @@ const plans = ref(['The Single', 'The Curious', 'The Addict'])
 4. 父元件收到事件後更新 `plans`。
 
 ```vue
+<!-- 範例用途：示範「實作流程與程式碼例子」中的畫面模板、元件結構或樣式設定。 -->
+<!-- 參數說明：屬性、事件、class、props 或綁定值要依實際元件資料與狀態帶入。 -->
+<!-- 回傳結果 / 副作用：會影響畫面渲染、互動行為、樣式呈現或元件對外輸出的事件。 -->
 <script setup lang="ts">
 import { ref } from 'vue'
 
@@ -1200,6 +1292,9 @@ function addPlan() {
 4. 父元件把 `isSelected` 傳回子元件。
 
 ```vue
+<!-- 範例用途：示範「實作流程與程式碼例子」中的畫面模板、元件結構或樣式設定。 -->
+<!-- 參數說明：屬性、事件、class、props 或綁定值要依實際元件資料與狀態帶入。 -->
+<!-- 回傳結果 / 副作用：會影響畫面渲染、互動行為、樣式呈現或元件對外輸出的事件。 -->
 <!-- CoffeePlan.vue -->
 <script setup lang="ts">
 const props = defineProps<{ name: string; selected: boolean }>()
@@ -1268,6 +1363,9 @@ const emit = defineEmits<{ selectedPlan: [name: string] }>()
 4. 驗證預設內容與投影內容都能工作。
 
 ```vue
+<!-- 範例用途：示範「實作流程與程式碼例子」中的畫面模板、元件結構或樣式設定。 -->
+<!-- 參數說明：屬性、事件、class、props 或綁定值要依實際元件資料與狀態帶入。 -->
+<!-- 回傳結果 / 副作用：會影響畫面渲染、互動行為、樣式呈現或元件對外輸出的事件。 -->
 <!-- AddCoffeePlan.vue -->
 <button @mouseenter="hover = true" @mouseleave="hover = false">
   <slot name="btn" :hover="hover">Add</slot>
@@ -1275,6 +1373,9 @@ const emit = defineEmits<{ selectedPlan: [name: string] }>()
 ```
 
 ```vue
+<!-- 範例用途：示範「實作流程與程式碼例子」中的畫面模板、元件結構或樣式設定。 -->
+<!-- 參數說明：屬性、事件、class、props 或綁定值要依實際元件資料與狀態帶入。 -->
+<!-- 回傳結果 / 副作用：會影響畫面渲染、互動行為、樣式呈現或元件對外輸出的事件。 -->
 <!-- 使用端 -->
 <template #btn="{ hover }">
   {{ hover ? 'Add this plan' : 'Add' }}
@@ -1337,6 +1438,9 @@ const emit = defineEmits<{ selectedPlan: [name: string] }>()
 4. 元件只呼叫封裝，不直接散落 API 細節。
 
 ```ts
+// 範例用途：示範「實作流程與程式碼例子」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 export type GithubProfile = {
   login: string
   name: string
@@ -1408,6 +1512,9 @@ export async function fetchGithubProfile(username: string, token: string) {
 4. Card 內部呼叫 profile 擷取邏輯。
 
 ```vue
+<!-- 範例用途：示範「實作流程與程式碼例子」中的畫面模板、元件結構或樣式設定。 -->
+<!-- 參數說明：屬性、事件、class、props 或綁定值要依實際元件資料與狀態帶入。 -->
+<!-- 回傳結果 / 副作用：會影響畫面渲染、互動行為、樣式呈現或元件對外輸出的事件。 -->
 <script setup lang="ts">
 import GithubProfileCard from './GithubProfileCard.vue'
 
@@ -1477,6 +1584,9 @@ const usernames = ['yyx990803', 'angular', 'sveltejs']
 4. 再將假資料替換成 `profile` 欄位。
 
 ```html
+<!-- 範例用途：示範「實作流程與程式碼例子」中的畫面模板、元件結構或樣式設定。 -->
+<!-- 參數說明：屬性、事件、class、props 或綁定值要依實際元件資料與狀態帶入。 -->
+<!-- 回傳結果 / 副作用：會影響畫面渲染、互動行為、樣式呈現或元件對外輸出的事件。 -->
 <div class="card bg-base-100 shadow-sm">
   <figure>
     <img :src="profile.avatar_url" :alt="profile.login" />
@@ -1542,6 +1652,9 @@ const usernames = ['yyx990803', 'angular', 'sveltejs']
 4. 部署後測試 API 是否正常。
 
 ```yaml
+# 範例用途：示範「實作流程與程式碼例子」中的 YAML 設定。
+# 參數說明：欄位值、分支名稱、指令與環境變數要依專案實際設定替換。
+# 回傳結果 / 副作用：被工具或 CI/CD 載入後，會影響建置、部署或執行流程。
 env:
   VITE_GITHUB_TOKEN: ${{ secrets.GH_PROFILE_TOKEN }}
 
@@ -1608,6 +1721,9 @@ Alert 是常見 UI，但它包含資料清單、類型、關閉狀態、樣式�
 4. 關閉時回報父層更新狀態。
 
 ```ts
+// 範例用途：示範「實作流程與程式碼例子」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 type AlertType = 'info' | 'success' | 'warning' | 'error'
 
 type AlertMessage = {
@@ -1618,6 +1734,9 @@ type AlertMessage = {
 ```
 
 ```vue
+<!-- 範例用途：示範「實作流程與程式碼例子」中的畫面模板、元件結構或樣式設定。 -->
+<!-- 參數說明：屬性、事件、class、props 或綁定值要依實際元件資料與狀態帶入。 -->
+<!-- 回傳結果 / 副作用：會影響畫面渲染、互動行為、樣式呈現或元件對外輸出的事件。 -->
 <div class="alert" :class="`alert-${alert.type}`">
   <span>{{ alert.text }}</span>
   <button @click="close(alert.id)">Close</button>
@@ -1678,6 +1797,9 @@ Alert 元件雖小，但很適合練習清單、型別、樣式與父子同步�
 4. 渲染對應 component。
 
 ```ts
+// 範例用途：示範「實作流程與程式碼例子」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 const iconByType = {
   info: InfoIcon,
   success: SuccessIcon,
@@ -1687,6 +1809,9 @@ const iconByType = {
 ```
 
 ```vue
+<!-- 範例用途：示範「實作流程與程式碼例子」中的畫面模板、元件結構或樣式設定。 -->
+<!-- 參數說明：屬性、事件、class、props 或綁定值要依實際元件資料與狀態帶入。 -->
+<!-- 回傳結果 / 副作用：會影響畫面渲染、互動行為、樣式呈現或元件對外輸出的事件。 -->
 <component :is="iconByType[alert.type]" />
 <span>{{ alert.text }}</span>
 ```
@@ -1747,6 +1872,9 @@ const iconByType = {
 4. Alert Component 根據 settings 套 class 或顯示按鈕。
 
 ```ts
+// 範例用途：示範「實作流程與程式碼例子」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 type AlertSettings = {
   showCloseButton: boolean
   direction: 'vertical' | 'horizontal'
@@ -1755,6 +1883,9 @@ type AlertSettings = {
 ```
 
 ```vue
+<!-- 範例用途：示範「實作流程與程式碼例子」中的畫面模板、元件結構或樣式設定。 -->
+<!-- 參數說明：屬性、事件、class、props 或綁定值要依實際元件資料與狀態帶入。 -->
+<!-- 回傳結果 / 副作用：會影響畫面渲染、互動行為、樣式呈現或元件對外輸出的事件。 -->
 <button v-if="settings.showCloseButton" @click="close(alert.id)">
   Close
 </button>
@@ -1816,6 +1947,9 @@ type AlertSettings = {
 5. 點擊重開時從陣列移除。
 
 ```ts
+// 範例用途：示範「實作流程與程式碼例子」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 const closedNotifications = ref<string[]>([])
 
 function close(type: string) {
@@ -1883,6 +2017,9 @@ function reopen(type: string) {
 4. AlertBar 只負責組合 UI 與呼叫方法。
 
 ```ts
+// 範例用途：示範「實作流程與程式碼例子」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 export function useClosedNotifications() {
   const closed = ref<string[]>([])
   const close = (type: string) => {
@@ -1954,6 +2091,9 @@ export function useClosedNotifications() {
 4. 封裝 `fetchPosts` 與 `fetchPost`。
 
 ```ts
+// 範例用途：示範「實作流程與程式碼例子」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 export type Post = {
   userId: number
   id: number
@@ -2023,6 +2163,9 @@ export async function fetchPosts() {
 4. 將作者名稱顯示在詳情頁。
 
 ```ts
+// 範例用途：示範「實作流程與程式碼例子」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 export async function fetchUser(userId: number, signal?: AbortSignal) {
   const response = await fetch(
     `https://jsonplaceholder.typicode.com/users/${userId}`,
@@ -2089,6 +2232,9 @@ export async function fetchUser(userId: number, signal?: AbortSignal) {
 5. 不要讓三種狀態互相重疊。
 
 ```vue
+<!-- 範例用途：示範「實作流程與程式碼例子」中的畫面模板、元件結構或樣式設定。 -->
+<!-- 參數說明：屬性、事件、class、props 或綁定值要依實際元件資料與狀態帶入。 -->
+<!-- 回傳結果 / 副作用：會影響畫面渲染、互動行為、樣式呈現或元件對外輸出的事件。 -->
 <script setup lang="ts">
 import { useFetch } from '@vueuse/core'
 
@@ -2159,6 +2305,9 @@ const { data: posts, isFetching, error } =
 4. 針對不熟的部分做下一輪小練習。
 
 ```ts
+// 範例用途：示範「實作流程與程式碼例子」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 type FrameworkConceptMap = {
   state: ['Vue ref', 'Svelte $state', 'Angular signal']
   derivedState: ['Vue computed', 'Svelte $derived', 'Angular computed']

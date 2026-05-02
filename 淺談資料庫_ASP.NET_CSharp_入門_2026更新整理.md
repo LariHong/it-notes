@@ -141,6 +141,9 @@ Microsoft 文件指出，ASP.NET Web Forms 只在 .NET Framework 中可用，ASP
 簡化範例：
 
 ```csharp
+// 範例用途：示範「`System.Data.SqlClient` 與 `Microsoft.Data.SqlClient`」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 using Microsoft.Data.SqlClient;
 
 var connectionString = builder.Configuration.GetConnectionString("Default");
@@ -168,12 +171,18 @@ while (await reader.ReadAsync())
 不建議：
 
 ```csharp
+// 範例用途：示範「SQL Injection 與參數化查詢」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 var sql = $"SELECT * FROM Users WHERE Name = '{name}'";
 ```
 
 建議：
 
 ```csharp
+// 範例用途：示範「SQL Injection 與參數化查詢」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 await using var command = new SqlCommand(
     "SELECT * FROM Users WHERE Name = @name",
     connection);
@@ -186,6 +195,9 @@ command.Parameters.Add("@name", System.Data.SqlDbType.NVarChar, 100).Value = nam
 Day 34、35 使用 `ROW_NUMBER()` 與 CTE 做分頁，這仍是有效技術。不過現代 SQL Server 也常用：
 
 ```sql
+-- 範例用途：示範「分頁：`ROW_NUMBER()`、`OFFSET FETCH`、Keyset」中的資料庫查詢或資料異動。
+-- 參數說明：@ 開頭參數、WHERE 條件、表名與欄位名要依實際資料表與查詢需求調整。
+-- 回傳結果 / 副作用：SELECT 會回傳結果集；INSERT / UPDATE / DELETE 會改變資料內容。
 SELECT Id, Title, CreatedAt
 FROM Posts
 ORDER BY CreatedAt DESC, Id DESC
@@ -195,6 +207,9 @@ OFFSET @skip ROWS FETCH NEXT @take ROWS ONLY;
 大量資料或無限捲動更建議 Keyset pagination：
 
 ```sql
+-- 範例用途：示範「分頁：`ROW_NUMBER()`、`OFFSET FETCH`、Keyset」中的資料庫查詢或資料異動。
+-- 參數說明：@ 開頭參數、WHERE 條件、表名與欄位名要依實際資料表與查詢需求調整。
+-- 回傳結果 / 副作用：SELECT 會回傳結果集；INSERT / UPDATE / DELETE 會改變資料內容。
 SELECT TOP (@take) Id, Title, CreatedAt
 FROM Posts
 WHERE CreatedAt < @lastCreatedAt
@@ -211,6 +226,9 @@ Day 36 想找出「最新日期的所有資料」。原文使用 `CONVERT` 把�
 若要找最大時間戳的所有資料：
 
 ```sql
+-- 範例用途：示範「最新日期資料查詢」中的資料庫查詢或資料異動。
+-- 參數說明：@ 開頭參數、WHERE 條件、表名與欄位名要依實際資料表與查詢需求調整。
+-- 回傳結果 / 副作用：SELECT 會回傳結果集；INSERT / UPDATE / DELETE 會改變資料內容。
 SELECT *
 FROM Orders
 WHERE CreatedAt = (SELECT MAX(CreatedAt) FROM Orders);
@@ -219,6 +237,9 @@ WHERE CreatedAt = (SELECT MAX(CreatedAt) FROM Orders);
 若要找最新一天的所有資料：
 
 ```sql
+-- 範例用途：示範「最新日期資料查詢」中的資料庫查詢或資料異動。
+-- 參數說明：@ 開頭參數、WHERE 條件、表名與欄位名要依實際資料表與查詢需求調整。
+-- 回傳結果 / 副作用：SELECT 會回傳結果集；INSERT / UPDATE / DELETE 會改變資料內容。
 DECLARE @latestDate date = (
     SELECT MAX(CAST(CreatedAt AS date))
     FROM Orders
@@ -256,6 +277,9 @@ WHERE CreatedAt >= @latestDate
 #### 完整實作流程、Coding 例子與注意事項
 
 ```csharp
+// 範例用途：示範「完整實作流程、Coding 例子與注意事項」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddRazorPages();
@@ -287,6 +311,9 @@ app.Run();
 #### 完整實作流程、Coding 例子與注意事項
 
 ```csharp
+// 範例用途：示範「完整實作流程、Coding 例子與注意事項」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 public sealed class Customer
 {
     public int Id { get; set; }
@@ -323,6 +350,9 @@ public sealed class Order
 練習建議：
 
 ```sql
+-- 範例用途：示範「Day 3：SQL 語法介紹」中的資料庫查詢或資料異動。
+-- 參數說明：@ 開頭參數、WHERE 條件、表名與欄位名要依實際資料表與查詢需求調整。
+-- 回傳結果 / 副作用：SELECT 會回傳結果集；INSERT / UPDATE / DELETE 會改變資料內容。
 BEGIN TRANSACTION;
 
 UPDATE Products
@@ -336,6 +366,9 @@ ROLLBACK;
 #### 完整實作流程、Coding 例子與注意事項
 
 ```csharp
+// 範例用途：示範「完整實作流程、Coding 例子與注意事項」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 public static class CustomerSql
 {
     public const string SelectByCountry = """
@@ -367,6 +400,9 @@ public static class CustomerSql
 #### 完整實作流程、Coding 例子與注意事項
 
 ```csharp
+// 範例用途：示範「完整實作流程、Coding 例子與注意事項」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 using Microsoft.Data.SqlClient;
 
 var connectionString = builder.Configuration.GetConnectionString("Default");
@@ -396,6 +432,9 @@ Console.WriteLine($"Connected to {connection.Database}");
 練習建議：
 
 ```sql
+-- 範例用途：示範「Day 5：主索引鍵與外部索引鍵」中的資料庫查詢或資料異動。
+-- 參數說明：@ 開頭參數、WHERE 條件、表名與欄位名要依實際資料表與查詢需求調整。
+-- 回傳結果 / 副作用：SELECT 會回傳結果集；INSERT / UPDATE / DELETE 會改變資料內容。
 CREATE TABLE Customers (
     Id int IDENTITY PRIMARY KEY,
     Name nvarchar(100) NOT NULL
@@ -413,6 +452,9 @@ CREATE TABLE Orders (
 #### 完整實作流程、Coding 例子與注意事項
 
 ```csharp
+// 範例用途：示範「完整實作流程、Coding 例子與注意事項」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 protected override void OnModelCreating(ModelBuilder modelBuilder)
 {
     modelBuilder.Entity<Customer>()
@@ -447,6 +489,9 @@ protected override void OnModelCreating(ModelBuilder modelBuilder)
 #### 完整實作流程、Coding 例子與注意事項
 
 ```csharp
+// 範例用途：示範「完整實作流程、Coding 例子與注意事項」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 public sealed class Product
 {
     public int Id { get; set; }
@@ -480,6 +525,9 @@ public sealed class Product
 #### 完整實作流程、Coding 例子與注意事項
 
 ```csharp
+// 範例用途：示範「完整實作流程、Coding 例子與注意事項」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 public sealed class AppDbContext(DbContextOptions<AppDbContext> options)
     : DbContext(options)
 {
@@ -489,6 +537,9 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options)
 ```
 
 ```powershell
+# 範例用途：示範「完整實作流程、Coding 例子與注意事項」中可直接在終端機執行的 PowerShell 指令。
+# 參數說明：命令中的 URL、檔名、路徑、選項或環境名稱請替換成你的實際目標。
+# 回傳結果 / 副作用：通常會輸出結果、讀寫檔案、下載資料，或改變目前 shell / 系統狀態。
 dotnet ef migrations add InitialCreate
 dotnet ef database update
 ```
@@ -513,6 +564,9 @@ dotnet ef database update
 練習建議：
 
 ```sql
+-- 範例用途：示範「Day 8：SQL Server 基本操作：手動存入資料」中的資料庫查詢或資料異動。
+-- 參數說明：@ 開頭參數、WHERE 條件、表名與欄位名要依實際資料表與查詢需求調整。
+-- 回傳結果 / 副作用：SELECT 會回傳結果集；INSERT / UPDATE / DELETE 會改變資料內容。
 INSERT INTO Customers (Name)
 VALUES (N'Apple'), (N'Asus'), (N'Sony');
 
@@ -523,6 +577,9 @@ VALUES (N'Keyboard', 1200), (N'Mouse', 600);
 #### 完整實作流程、Coding 例子與注意事項
 
 ```csharp
+// 範例用途：示範「完整實作流程、Coding 例子與注意事項」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 db.Customers.AddRange(
     new Customer { Name = "Apple", Email = "apple@example.com" },
     new Customer { Name = "Asus", Email = "asus@example.com" }
@@ -552,6 +609,9 @@ await db.SaveChangesAsync();
 #### 完整實作流程、Coding 例子與注意事項
 
 ```csharp
+// 範例用途：示範「完整實作流程、Coding 例子與注意事項」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 var connectionString =
     builder.Configuration.GetConnectionString("Default")
     ?? throw new InvalidOperationException("Missing connection string.");
@@ -578,6 +638,9 @@ var connectionString =
 #### 完整實作流程、Coding 例子與注意事項
 
 ```csharp
+// 範例用途：示範「完整實作流程、Coding 例子與注意事項」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 await using var command = new SqlCommand("""
     SELECT Id, Name, Country
     FROM Customers
@@ -608,6 +671,9 @@ command.Parameters.Add("@country", SqlDbType.NVarChar, 50).Value = "Taiwan";
 #### 完整實作流程、Coding 例子與注意事項
 
 ```csharp
+// 範例用途：示範「完整實作流程、Coding 例子與注意事項」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 public sealed record ImportCustomerRow(string Name, string Email);
 
 static bool IsValid(ImportCustomerRow row)
@@ -637,6 +703,8 @@ static bool IsValid(ImportCustomerRow row)
 
 練習建議：
 
+這個 JSON 範例說明：示範「Day 12：ASP.NET 與資料庫的聯繫」中的程式流程或 API 使用方式。 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
+
 ```json
 {
   "ConnectionStrings": {
@@ -648,6 +716,9 @@ static bool IsValid(ImportCustomerRow row)
 #### 完整實作流程、Coding 例子與注意事項
 
 ```csharp
+// 範例用途：示範「完整實作流程、Coding 例子與注意事項」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseSqlServer(
@@ -676,6 +747,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 #### 完整實作流程、Coding 例子與注意事項
 
 ```csharp
+// 範例用途：示範「完整實作流程、Coding 例子與注意事項」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 var customers = new List<CustomerDto>();
 
 await using var command = new SqlCommand(CustomerSql.SelectByCountry, connection);
@@ -713,6 +787,9 @@ while (await reader.ReadAsync())
 #### 完整實作流程、Coding 例子與注意事項
 
 ```csharp
+// 範例用途：示範「完整實作流程、Coding 例子與注意事項」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 public sealed record CustomerDto(int Id, string Name, string? Email);
 
 public async Task<IReadOnlyList<CustomerDto>> GetCustomersAsync()
@@ -746,6 +823,9 @@ public async Task<IReadOnlyList<CustomerDto>> GetCustomersAsync()
 練習建議：
 
 ```sql
+-- 範例用途：示範「Day 15：SQL 語法：撈取資料 SELECT」中的資料庫查詢或資料異動。
+-- 參數說明：@ 開頭參數、WHERE 條件、表名與欄位名要依實際資料表與查詢需求調整。
+-- 回傳結果 / 副作用：SELECT 會回傳結果集；INSERT / UPDATE / DELETE 會改變資料內容。
 SELECT Id, Name, Country
 FROM Customers
 WHERE Country = N'Taiwan'
@@ -755,6 +835,9 @@ ORDER BY Name;
 #### 完整實作流程、Coding 例子與注意事項
 
 ```csharp
+// 範例用途：示範「完整實作流程、Coding 例子與注意事項」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 app.MapGet("/customers", async (AppDbContext db, string? country) =>
 {
     var query = db.Customers.AsQueryable();
@@ -788,6 +871,9 @@ app.MapGet("/customers", async (AppDbContext db, string? country) =>
 練習建議：
 
 ```sql
+-- 範例用途：示範「Day 16：表與表之間的關係 JOIN」中的資料庫查詢或資料異動。
+-- 參數說明：@ 開頭參數、WHERE 條件、表名與欄位名要依實際資料表與查詢需求調整。
+-- 回傳結果 / 副作用：SELECT 會回傳結果集；INSERT / UPDATE / DELETE 會改變資料內容。
 SELECT o.Id, c.Name, o.CreatedAt
 FROM Orders AS o
 INNER JOIN Customers AS c ON c.Id = o.CustomerId;
@@ -796,6 +882,9 @@ INNER JOIN Customers AS c ON c.Id = o.CustomerId;
 #### 完整實作流程、Coding 例子與注意事項
 
 ```csharp
+// 範例用途：示範「完整實作流程、Coding 例子與注意事項」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 var orders = await db.Orders
     .Include(order => order.Customer)
     .OrderByDescending(order => order.CreatedAt)
@@ -829,6 +918,9 @@ var orders = await db.Orders
 #### 完整實作流程、Coding 例子與注意事項
 
 ```csharp
+// 範例用途：示範「完整實作流程、Coding 例子與注意事項」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 var studentNames = db.Students.Select(student => student.Name);
 var teacherNames = db.Teachers.Select(teacher => teacher.Name);
 
@@ -857,6 +949,9 @@ var allNames = await studentNames
 練習建議：
 
 ```sql
+-- 範例用途：示範「Day 18：排序 ORDER BY」中的資料庫查詢或資料異動。
+-- 參數說明：@ 開頭參數、WHERE 條件、表名與欄位名要依實際資料表與查詢需求調整。
+-- 回傳結果 / 副作用：SELECT 會回傳結果集；INSERT / UPDATE / DELETE 會改變資料內容。
 SELECT Id, Title, CreatedAt
 FROM Posts
 ORDER BY CreatedAt DESC, Id DESC;
@@ -865,6 +960,9 @@ ORDER BY CreatedAt DESC, Id DESC;
 #### 完整實作流程、Coding 例子與注意事項
 
 ```csharp
+// 範例用途：示範「完整實作流程、Coding 例子與注意事項」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 var query = db.Products.AsQueryable();
 
 query = sortBy switch
@@ -894,6 +992,9 @@ query = sortBy switch
 練習建議：
 
 ```sql
+-- 範例用途：示範「Day 19：聚合函數 COUNT、AVG、MAX、MIN、SUM」中的資料庫查詢或資料異動。
+-- 參數說明：@ 開頭參數、WHERE 條件、表名與欄位名要依實際資料表與查詢需求調整。
+-- 回傳結果 / 副作用：SELECT 會回傳結果集；INSERT / UPDATE / DELETE 會改變資料內容。
 SELECT
     COUNT(*) AS TotalRows,
     COUNT(Phone) AS RowsWithPhone,
@@ -904,6 +1005,9 @@ FROM Customers;
 #### 完整實作流程、Coding 例子與注意事項
 
 ```csharp
+// 範例用途：示範「完整實作流程、Coding 例子與注意事項」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 var summary = await db.Products
     .GroupBy(product => 1)
     .Select(group => new
@@ -936,6 +1040,9 @@ var summary = await db.Products
 練習建議：
 
 ```sql
+-- 範例用途：示範「Day 20：GROUP BY 資料分組」中的資料庫查詢或資料異動。
+-- 參數說明：@ 開頭參數、WHERE 條件、表名與欄位名要依實際資料表與查詢需求調整。
+-- 回傳結果 / 副作用：SELECT 會回傳結果集；INSERT / UPDATE / DELETE 會改變資料內容。
 SELECT CustomerId, COUNT(*) AS OrderCount
 FROM Orders
 GROUP BY CustomerId
@@ -945,6 +1052,9 @@ HAVING COUNT(*) >= 3;
 #### 完整實作流程、Coding 例子與注意事項
 
 ```csharp
+// 範例用途：示範「完整實作流程、Coding 例子與注意事項」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 var orderCounts = await db.Orders
     .GroupBy(order => order.CustomerId)
     .Select(group => new
@@ -975,6 +1085,9 @@ var orderCounts = await db.Orders
 練習建議：
 
 ```sql
+-- 範例用途：示範「Day 21：IN 與 NOT IN」中的資料庫查詢或資料異動。
+-- 參數說明：@ 開頭參數、WHERE 條件、表名與欄位名要依實際資料表與查詢需求調整。
+-- 回傳結果 / 副作用：SELECT 會回傳結果集；INSERT / UPDATE / DELETE 會改變資料內容。
 SELECT c.Id, c.Name
 FROM Customers AS c
 WHERE NOT EXISTS (
@@ -987,6 +1100,9 @@ WHERE NOT EXISTS (
 #### 完整實作流程、Coding 例子與注意事項
 
 ```csharp
+// 範例用途：示範「完整實作流程、Coding 例子與注意事項」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 var countries = new[] { "Taiwan", "Japan", "USA" };
 
 var customers = await db.Customers
@@ -1015,6 +1131,9 @@ var customers = await db.Customers
 #### 完整實作流程、Coding 例子與注意事項
 
 ```csharp
+// 範例用途：示範「完整實作流程、Coding 例子與注意事項」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 var customersWithOrders = await db.Customers
     .Where(customer => db.Orders.Any(order => order.CustomerId == customer.Id))
     .ToListAsync();
@@ -1039,6 +1158,9 @@ var customersWithOrders = await db.Customers
 練習建議：
 
 ```sql
+-- 範例用途：示範「Day 23：INSERT 新增資料的方法」中的資料庫查詢或資料異動。
+-- 參數說明：@ 開頭參數、WHERE 條件、表名與欄位名要依實際資料表與查詢需求調整。
+-- 回傳結果 / 副作用：SELECT 會回傳結果集；INSERT / UPDATE / DELETE 會改變資料內容。
 INSERT INTO Customers (Name, Country)
 OUTPUT INSERTED.Id
 VALUES (N'New Customer', N'Taiwan');
@@ -1047,6 +1169,9 @@ VALUES (N'New Customer', N'Taiwan');
 #### 完整實作流程、Coding 例子與注意事項
 
 ```csharp
+// 範例用途：示範「完整實作流程、Coding 例子與注意事項」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 var customer = new Customer
 {
     Name = request.Name,
@@ -1079,6 +1204,9 @@ return Results.Created($"/customers/{customer.Id}", customer);
 練習建議：
 
 ```sql
+-- 範例用途：示範「Day 24：UPDATE 修改資料的方法」中的資料庫查詢或資料異動。
+-- 參數說明：@ 開頭參數、WHERE 條件、表名與欄位名要依實際資料表與查詢需求調整。
+-- 回傳結果 / 副作用：SELECT 會回傳結果集；INSERT / UPDATE / DELETE 會改變資料內容。
 SELECT *
 FROM Products
 WHERE Id = 10;
@@ -1091,6 +1219,9 @@ WHERE Id = 10;
 #### 完整實作流程、Coding 例子與注意事項
 
 ```csharp
+// 範例用途：示範「完整實作流程、Coding 例子與注意事項」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 var product = await db.Products.FindAsync(id);
 if (product is null)
 {
@@ -1123,6 +1254,9 @@ return Results.NoContent();
 練習建議：
 
 ```sql
+-- 範例用途：示範「Day 25：DELETE 刪除的使用方法」中的資料庫查詢或資料異動。
+-- 參數說明：@ 開頭參數、WHERE 條件、表名與欄位名要依實際資料表與查詢需求調整。
+-- 回傳結果 / 副作用：SELECT 會回傳結果集；INSERT / UPDATE / DELETE 會改變資料內容。
 UPDATE Messages
 SET DeletedAt = SYSUTCDATETIME()
 WHERE Id = @id;
@@ -1131,6 +1265,9 @@ WHERE Id = @id;
 #### 完整實作流程、Coding 例子與注意事項
 
 ```csharp
+// 範例用途：示範「完整實作流程、Coding 例子與注意事項」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 var message = await db.Messages.FindAsync(id);
 if (message is null)
 {
@@ -1164,6 +1301,9 @@ return Results.NoContent();
 #### 完整實作流程、Coding 例子與注意事項
 
 ```csharp
+// 範例用途：示範「完整實作流程、Coding 例子與注意事項」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 public static decimal CalculateTotal(decimal unitPrice, int quantity, decimal discount)
 {
     var subtotal = unitPrice * quantity;
@@ -1192,6 +1332,9 @@ public static decimal CalculateTotal(decimal unitPrice, int quantity, decimal di
 #### 完整實作流程、Coding 例子與注意事項
 
 ```csharp
+// 範例用途：示範「完整實作流程、Coding 例子與注意事項」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 app.MapPost("/imports/customers", async (
     IFormFile file,
     AppDbContext db) =>
@@ -1232,6 +1375,9 @@ app.MapPost("/imports/customers", async (
 #### 完整實作流程、Coding 例子與注意事項
 
 ```csharp
+// 範例用途：示範「完整實作流程、Coding 例子與注意事項」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 app.MapPost("/messages", async (
     CreateMessageRequest request,
     AppDbContext db) =>
@@ -1277,6 +1423,9 @@ app.MapPost("/messages", async (
 #### 完整實作流程、Coding 例子與注意事項
 
 ```cshtml
+<!-- 範例用途：示範「完整實作流程、Coding 例子與注意事項」中的畫面模板、元件結構或樣式設定。 -->
+<!-- 參數說明：屬性、事件、class、props 或綁定值要依實際元件資料與狀態帶入。 -->
+<!-- 回傳結果 / 副作用：會影響畫面渲染、互動行為、樣式呈現或元件對外輸出的事件。 -->
 @foreach (var message in Model.Messages)
 {
     <article>
@@ -1315,6 +1464,9 @@ User 1 -> many Reply
 #### 完整實作流程、Coding 例子與注意事項
 
 ```csharp
+// 範例用途：示範「完整實作流程、Coding 例子與注意事項」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 var messageExists = await db.Messages.AnyAsync(message => message.Id == request.MessageId);
 if (!messageExists)
 {
@@ -1353,6 +1505,9 @@ await db.SaveChangesAsync();
 #### 完整實作流程、Coding 例子與注意事項
 
 ```csharp
+// 範例用途：示範「完整實作流程、Coding 例子與注意事項」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 app.MapDelete("/messages/{id:int}", async (
     int id,
     ClaimsPrincipal user,
@@ -1398,6 +1553,9 @@ app.MapDelete("/messages/{id:int}", async (
 #### 完整實作流程、Coding 例子與注意事項
 
 ```csharp
+// 範例用途：示範「完整實作流程、Coding 例子與注意事項」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 builder.Services
     .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
@@ -1431,6 +1589,9 @@ builder.Services
 #### 完整實作流程、Coding 例子與注意事項
 
 ```csharp
+// 範例用途：示範「完整實作流程、Coding 例子與注意事項」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 var sql = """
 WITH RankedOrders AS (
     SELECT *,
@@ -1470,6 +1631,9 @@ var latestOrders = await db.LatestOrderDtos
 練習建議：
 
 ```sql
+-- 範例用途：示範「Day 34：ROW_NUMBER()」中的資料庫查詢或資料異動。
+-- 參數說明：@ 開頭參數、WHERE 條件、表名與欄位名要依實際資料表與查詢需求調整。
+-- 回傳結果 / 副作用：SELECT 會回傳結果集；INSERT / UPDATE / DELETE 會改變資料內容。
 SELECT *
 FROM (
     SELECT
@@ -1486,6 +1650,9 @@ WHERE x.RowNo = 1;
 #### 完整實作流程、Coding 例子與注意事項
 
 ```csharp
+// 範例用途：示範「完整實作流程、Coding 例子與注意事項」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 var latestOrders = await db.Orders
     .GroupBy(order => order.CustomerId)
     .Select(group => group
@@ -1513,6 +1680,8 @@ var latestOrders = await db.Orders
 
 練習建議：重新設計成 API 回應：
 
+這個 JSON 範例說明：示範「Day 35：ASP.NET 使用者控制項：分頁的用法」中的程式流程或 API 使用方式。 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
+
 ```json
 {
   "items": [],
@@ -1525,6 +1694,9 @@ var latestOrders = await db.Orders
 #### 完整實作流程、Coding 例子與注意事項
 
 ```csharp
+// 範例用途：示範「完整實作流程、Coding 例子與注意事項」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 app.MapGet("/messages", async (
     int page,
     int pageSize,
@@ -1564,6 +1736,9 @@ app.MapGet("/messages", async (
 練習建議：
 
 ```sql
+-- 範例用途：示範「Day 36：SQL Server 找出最新日期的所有資料」中的資料庫查詢或資料異動。
+-- 參數說明：@ 開頭參數、WHERE 條件、表名與欄位名要依實際資料表與查詢需求調整。
+-- 回傳結果 / 副作用：SELECT 會回傳結果集；INSERT / UPDATE / DELETE 會改變資料內容。
 DECLARE @latestDate date = (
     SELECT MAX(CAST(CreatedAt AS date))
     FROM Orders
@@ -1580,6 +1755,9 @@ WHERE CreatedAt >= @latestDate
 #### 完整實作流程、Coding 例子與注意事項
 
 ```csharp
+// 範例用途：示範「完整實作流程、Coding 例子與注意事項」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 var latestDate = await db.Orders
     .MaxAsync(order => order.CreatedAt.Date);
 

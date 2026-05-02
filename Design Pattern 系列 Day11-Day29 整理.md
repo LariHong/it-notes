@@ -68,6 +68,9 @@
 ### C# 程式碼例子
 
 ```csharp
+// 範例用途：示範「C# 程式碼例子」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 public interface IMeal // Product（抽象產品）：原文 CookMeal
 {
     void Cook();
@@ -150,6 +153,9 @@ new MealOrderService(new SteakFactory()).Order();
 ### C# 程式碼例子
 
 ```csharp
+// 範例用途：示範「C# 程式碼例子」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 public interface IButton { string Render(); } // Product：按鈕
 public interface IDialog { string Open(); } // Product：對話框
 
@@ -227,6 +233,9 @@ Builder Pattern 把複雜物件的建立步驟拆開，讓 client 不需要知�
 ### C# 程式碼例子
 
 ```csharp
+// 範例用途：示範「C# 程式碼例子」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 public sealed record OrderReport(string Title, DateOnly From, DateOnly To, bool IncludeDetails);
 
 public sealed class OrderReportBuilder // Builder：逐步組裝報表需求
@@ -307,6 +316,9 @@ Prototype Pattern 透過複製既有物件來建立新物件。原文重點包�
 ### C# 程式碼例子
 
 ```csharp
+// 範例用途：示範「C# 程式碼例子」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 public sealed record ExportColumn(string Name);
 
 public sealed class ExportTemplate // Prototype：可被複製的匯出範本
@@ -377,6 +389,9 @@ Adapter Pattern 把不相容的介面轉成 client 期待的介面。原文用�
 ### C# 程式碼例子
 
 ```csharp
+// 範例用途：示範「C# 程式碼例子」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 public interface IPaymentGateway // Target：系統內期待的付款介面
 {
     Task PayAsync(decimal amount);
@@ -451,6 +466,9 @@ Bridge Pattern 把抽象與實作拆開，讓兩邊可以獨立變化。原文�
 ### C# 程式碼例子
 
 ```csharp
+// 範例用途：示範「C# 程式碼例子」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 public interface IMessageSender // Implementor：發送管道
 {
     Task SendAsync(string text);
@@ -525,6 +543,9 @@ Composite Pattern 讓單一物件與物件集合使用相同介面。原文用�
 ### C# 程式碼例子
 
 ```csharp
+// 範例用途：示範「C# 程式碼例子」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 public interface IMenuNode // Component：選單節點
 {
     void Render(int depth = 0);
@@ -597,6 +618,9 @@ Decorator Pattern 在不修改原物件的情況下，動態替物件增加行�
 ### C# 程式碼例子
 
 ```csharp
+// 範例用途：示範「C# 程式碼例子」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 public interface IOrderRepository // Component：訂單查詢
 {
     Task<string> FindAsync(int id);
@@ -665,6 +689,9 @@ Facade Pattern 對外提供簡化介面，隱藏子系統複雜流程。原文�
 ### C# 程式碼例子
 
 ```csharp
+// 範例用途：示範「C# 程式碼例子」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 public sealed class InventoryService { public void Reserve(int orderId) => Console.WriteLine("reserve"); }
 public sealed class PaymentService { public void Charge(int orderId) => Console.WriteLine("charge"); }
 public sealed class MailService { public void SendReceipt(int orderId) => Console.WriteLine("mail"); }
@@ -732,6 +759,9 @@ Flyweight Pattern 透過共享可重複使用的物件，降低大量物件造�
 ### C# 程式碼例子
 
 ```csharp
+// 範例用途：示範「C# 程式碼例子」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 public sealed class ProductIcon // ConcreteFlyweight：共享圖示樣式
 {
     public ProductIcon(string name, string color)
@@ -809,6 +839,9 @@ Proxy Pattern 讓代理物件控制對真實物件的存取。原文重點是 cl
 ### C# 程式碼例子
 
 ```csharp
+// 範例用途：示範「C# 程式碼例子」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 public interface IReportExporter // Subject
 {
     Task ExportAsync(string userRole);
@@ -881,6 +914,9 @@ Chain of Responsibility 把請求沿著一串 handler 傳遞，直到某個 hand
 ### C# 程式碼例子
 
 ```csharp
+// 範例用途：示範「C# 程式碼例子」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 public sealed record ExpenseRequest(decimal Amount);
 
 public abstract class Approver // Handler：審核者
@@ -960,6 +996,9 @@ Command Pattern 把「請求」封裝成物件，讓發出命令的人與真正�
 ### C# 程式碼例子
 
 ```csharp
+// 範例用途：示範「C# 程式碼例子」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 public interface ICommand // Command
 {
     Task ExecuteAsync();
@@ -1035,6 +1074,9 @@ Client 不應該知道集合是陣列、樹、鏈結串列還是資料庫游標�
 ### C# 程式碼例子
 
 ```csharp
+// 範例用途：示範「C# 程式碼例子」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 public sealed class RecentOrderCollection // Aggregate：訂單集合
 {
     private readonly List<string> _orders = ["A001", "A002", "A003"];
@@ -1100,6 +1142,9 @@ Mediator Pattern 用一個中介者處理多個物件之間的互動。原文用
 ### C# 程式碼例子
 
 ```csharp
+// 範例用途：示範「C# 程式碼例子」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 public interface ITeamMediator // Mediator：團隊訊息中介
 {
     void Register(string name, ITeam team);
@@ -1169,6 +1214,9 @@ State Pattern 讓物件在不同狀態下有不同表現，並把狀態相關行
 ### C# 程式碼例子
 
 ```csharp
+// 範例用途：示範「C# 程式碼例子」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 public interface IOrderState // State：訂單狀態
 {
     void Pay(OrderContext order);
@@ -1247,6 +1295,9 @@ Memento Pattern 保存物件某一刻的狀態，之後可以恢復。原文重�
 ### C# 程式碼例子
 
 ```csharp
+// 範例用途：示範「C# 程式碼例子」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 public sealed record EditorMemento(string Content); // Memento：保存狀態
 
 public sealed class TextEditor // Originator：文字編輯器
@@ -1317,6 +1368,9 @@ Observer Pattern 描述一對多依賴：Subject 狀態改變時，通知所有 
 ### C# 程式碼例子
 
 ```csharp
+// 範例用途：示範「C# 程式碼例子」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 public sealed record OrderPaid(int OrderId);
 
 public interface IOrderPaidObserver // Observer：訂單付款觀察者
@@ -1388,6 +1442,9 @@ Strategy Pattern 定義一系列可替換演算法，讓使用端在不改流程
 ### C# 程式碼例子
 
 ```csharp
+// 範例用途：示範「C# 程式碼例子」中的程式流程或 API 使用方式。
+// 參數說明：方法參數、DTO、URL、header、設定值或輸入資料要依實際使用情境帶入。
+// 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 public interface IDiscountStrategy // Strategy：折扣策略
 {
     decimal Calculate(decimal amount);

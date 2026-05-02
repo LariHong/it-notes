@@ -34,6 +34,9 @@ GUI 工具像是一台完整機器，按鈕都幫你排好了；命令列工具�
 例如：
 
 ```bash
+# 範例用途：示範「先建立直覺：命令列像樂高」中可直接在終端機執行的 Shell 指令。
+# 參數說明：命令中的 URL、檔名、路徑、選項或環境名稱請替換成你的實際目標。
+# 回傳結果 / 副作用：通常會輸出結果、讀寫檔案、下載資料，或改變目前 shell / 系統狀態。
 curl -s "https://api.example.com/data.json" \
   | jq '.items[] | select(.score > 80) | {name, score}' \
   | tee result.json
@@ -58,6 +61,9 @@ curl -s "https://api.example.com/data.json" \
 ### 實作練習
 
 ```bash
+# 範例用途：示範「實作練習」中可直接在終端機執行的 Shell 指令。
+# 參數說明：命令中的 URL、檔名、路徑、選項或環境名稱請替換成你的實際目標。
+# 回傳結果 / 副作用：通常會輸出結果、讀寫檔案、下載資料，或改變目前 shell / 系統狀態。
 pwd
 cd /tmp
 mkdir cli-demo
@@ -94,6 +100,9 @@ sixel 是一種讓終端機顯示點陣圖片的技術。傳統終端機主要�
 ### 實作練習
 
 ```bash
+# 範例用途：示範「實作練習」中可直接在終端機執行的 Shell 指令。
+# 參數說明：命令中的 URL、檔名、路徑、選項或環境名稱請替換成你的實際目標。
+# 回傳結果 / 副作用：通常會輸出結果、讀寫檔案、下載資料，或改變目前 shell / 系統狀態。
 # 需要安裝 ImageMagick 與支援 sixel 的終端機
 magick input.png -resize 80x sixel:-
 
@@ -126,6 +135,9 @@ lsix *.png
 ### 實作練習
 
 ```bash
+# 範例用途：示範「實作練習」中可直接在終端機執行的 Shell 指令。
+# 參數說明：命令中的 URL、檔名、路徑、選項或環境名稱請替換成你的實際目標。
+# 回傳結果 / 副作用：通常會輸出結果、讀寫檔案、下載資料，或改變目前 shell / 系統狀態。
 head data.csv
 tail data.csv
 cut -d, -f1 data.csv | sort | uniq -c | sort -nr
@@ -161,6 +173,9 @@ job control 是在同一個 shell 裡管理前景、背景與暫停中的工作�
 ### 實作練習
 
 ```bash
+# 範例用途：示範「實作練習」中可直接在終端機執行的 Shell 指令。
+# 參數說明：命令中的 URL、檔名、路徑、選項或環境名稱請替換成你的實際目標。
+# 回傳結果 / 副作用：通常會輸出結果、讀寫檔案、下載資料，或改變目前 shell / 系統狀態。
 sleep 100 &
 jobs
 fg %1
@@ -195,6 +210,9 @@ process 是正在執行的程式實例。`w`、`who`、`uptime`、`top`、`htop`
 ### 實作練習
 
 ```bash
+# 範例用途：示範「實作練習」中可直接在終端機執行的 Shell 指令。
+# 參數說明：命令中的 URL、檔名、路徑、選項或環境名稱請替換成你的實際目標。
+# 回傳結果 / 副作用：通常會輸出結果、讀寫檔案、下載資料，或改變目前 shell / 系統狀態。
 uptime
 who
 ps aux | head
@@ -230,6 +248,9 @@ kill -KILL <pid>
 ### 實作練習
 
 ```bash
+# 範例用途：示範「實作練習」中可直接在終端機執行的 Shell 指令。
+# 參數說明：命令中的 URL、檔名、路徑、選項或環境名稱請替換成你的實際目標。
+# 回傳結果 / 副作用：通常會輸出結果、讀寫檔案、下載資料，或改變目前 shell / 系統狀態。
 df -h
 du -sh .
 free -h
@@ -265,6 +286,9 @@ tracepath example.com
 ### 實作練習
 
 ```bash
+# 範例用途：示範「實作練習」中可直接在終端機執行的 Shell 指令。
+# 參數說明：命令中的 URL、檔名、路徑、選項或環境名稱請替換成你的實際目標。
+# 回傳結果 / 副作用：通常會輸出結果、讀寫檔案、下載資料，或改變目前 shell / 系統狀態。
 tmux new -s work
 # tmux 中按 Ctrl+b 再按 % 分割窗格
 # Ctrl+b 再按 d detach
@@ -303,6 +327,9 @@ Python 不只可以寫 `.py` 檔，也可以是終端機裡的互動工具。文
 ### 實作練習
 
 ```bash
+# 範例用途：示範「實作練習」中可直接在終端機執行的 Shell 指令。
+# 參數說明：命令中的 URL、檔名、路徑、選項或環境名稱請替換成你的實際目標。
+# 回傳結果 / 副作用：通常會輸出結果、讀寫檔案、下載資料，或改變目前 shell / 系統狀態。
 python
 python - <<'PY'
 from pathlib import Path
@@ -339,6 +366,9 @@ shell 和 Python 不是互斥。shell 適合串工具，Python 適合處理複�
 ### 實作練習
 
 ```bash
+# 範例用途：示範「實作練習」中可直接在終端機執行的 Shell 指令。
+# 參數說明：命令中的 URL、檔名、路徑、選項或環境名稱請替換成你的實際目標。
+# 回傳結果 / 副作用：通常會輸出結果、讀寫檔案、下載資料，或改變目前 shell / 系統狀態。
 cat data.json | jq .
 cat data.json | jq '.records | keys'
 cat data.json | jq '.items[] | {name, value}'
@@ -371,6 +401,9 @@ visidata 是終端機中的資料檢視與處理工具，可處理 CSV、Parquet
 ### 實作練習
 
 ```bash
+# 範例用途：示範「實作練習」中可直接在終端機執行的 Shell 指令。
+# 參數說明：命令中的 URL、檔名、路徑、選項或環境名稱請替換成你的實際目標。
+# 回傳結果 / 副作用：通常會輸出結果、讀寫檔案、下載資料，或改變目前 shell / 系統狀態。
 vd data.csv
 vd data.parquet
 vd https://en.wikipedia.org/wiki/List_of_countries_by_population_(United_Nations)
@@ -402,6 +435,9 @@ vd https://en.wikipedia.org/wiki/List_of_countries_by_population_(United_Nations
 ### 實作練習
 
 ```bash
+# 範例用途：示範「實作練習」中可直接在終端機執行的 Shell 指令。
+# 參數說明：命令中的 URL、檔名、路徑、選項或環境名稱請替換成你的實際目標。
+# 回傳結果 / 副作用：通常會輸出結果、讀寫檔案、下載資料，或改變目前 shell / 系統狀態。
 curl -L -o file.zip "https://example.com/file.zip"
 wget -O file.zip "https://example.com/file.zip"
 rsync -av source/ user@host:/data/source/
@@ -435,6 +471,9 @@ rclone copy remote:dataset ./dataset
 ### 實作練習
 
 ```bash
+# 範例用途：示範「實作練習」中可直接在終端機執行的 Shell 指令。
+# 參數說明：命令中的 URL、檔名、路徑、選項或環境名稱請替換成你的實際目標。
+# 回傳結果 / 副作用：通常會輸出結果、讀寫檔案、下載資料，或改變目前 shell / 系統狀態。
 lynx https://example.com
 w3m https://example.com
 curl -L https://example.com | sed -n '1,40p'
@@ -466,6 +505,9 @@ Windows Terminal 對 sixel 的支援代表 Windows 命令列體驗越來越接�
 ### 實作練習
 
 ```powershell
+# 範例用途：示範「實作練習」中可直接在終端機執行的 PowerShell 指令。
+# 參數說明：命令中的 URL、檔名、路徑、選項或環境名稱請替換成你的實際目標。
+# 回傳結果 / 副作用：通常會輸出結果、讀寫檔案、下載資料，或改變目前 shell / 系統狀態。
 wsl --install
 wsl
 sudo apt update
@@ -498,6 +540,9 @@ Docker 讓你用 container 包住執行環境。初學者至少要懂 image、co
 ### 實作練習
 
 ```bash
+# 範例用途：示範「實作練習」中可直接在終端機執行的 Shell 指令。
+# 參數說明：命令中的 URL、檔名、路徑、選項或環境名稱請替換成你的實際目標。
+# 回傳結果 / 副作用：通常會輸出結果、讀寫檔案、下載資料，或改變目前 shell / 系統狀態。
 docker pull nginx
 docker run --name web -p 8080:80 -d nginx
 docker ps
@@ -532,6 +577,9 @@ SSH 不只登入遠端主機，也能做 port forwarding、proxy、跳板機與�
 ### 實作練習
 
 ```bash
+# 範例用途：示範「實作練習」中可直接在終端機執行的 Shell 指令。
+# 參數說明：命令中的 URL、檔名、路徑、選項或環境名稱請替換成你的實際目標。
+# 回傳結果 / 副作用：通常會輸出結果、讀寫檔案、下載資料，或改變目前 shell / 系統狀態。
 ssh user@server
 ssh -L 8080:localhost:80 user@server
 ssh -N -D 1080 user@server
@@ -564,6 +612,9 @@ SSH 是安全通道，但安全性仍取決於 key 管理、使用者權限、�
 ### 實作練習
 
 ```bash
+# 範例用途：示範「實作練習」中可直接在終端機執行的 Shell 指令。
+# 參數說明：命令中的 URL、檔名、路徑、選項或環境名稱請替換成你的實際目標。
+# 回傳結果 / 副作用：通常會輸出結果、讀寫檔案、下載資料，或改變目前 shell / 系統狀態。
 ffmpeg -i input.mp4 -vf "scale=1280:-1" output.mp4
 ffmpeg -i input.mp4 -r 1 frames/frame_%03d.png
 magick input.png -resize 512x512 output.png
@@ -596,6 +647,9 @@ magick *.png output.pdf
 ### 實作練習
 
 ```bash
+# 範例用途：示範「實作練習」中可直接在終端機執行的 Shell 指令。
+# 參數說明：命令中的 URL、檔名、路徑、選項或環境名稱請替換成你的實際目標。
+# 回傳結果 / 副作用：通常會輸出結果、讀寫檔案、下載資料，或改變目前 shell / 系統狀態。
 python -m http.server 8000
 python -m json.tool data.json
 python -m venv .venv
@@ -630,6 +684,9 @@ Python 不是只有寫程式檔。標準庫本身就藏了很多可直接用的 
 ### 實作練習
 
 ```bash
+# 範例用途：示範「實作練習」中可直接在終端機執行的 Shell 指令。
+# 參數說明：命令中的 URL、檔名、路徑、選項或環境名稱請替換成你的實際目標。
+# 回傳結果 / 副作用：通常會輸出結果、讀寫檔案、下載資料，或改變目前 shell / 系統狀態。
 yt-dlp --get-title "https://www.youtube.com/watch?v=VIDEO_ID"
 yt-dlp -f bestaudio "https://www.youtube.com/watch?v=VIDEO_ID"
 mpv "https://www.youtube.com/watch?v=VIDEO_ID"
@@ -661,6 +718,9 @@ mpv "https://www.youtube.com/watch?v=VIDEO_ID"
 ### 實作練習
 
 ```bash
+# 範例用途：示範「實作練習」中可直接在終端機執行的 Shell 指令。
+# 參數說明：命令中的 URL、檔名、路徑、選項或環境名稱請替換成你的實際目標。
+# 回傳結果 / 副作用：通常會輸出結果、讀寫檔案、下載資料，或改變目前 shell / 系統狀態。
 bat README.md
 fd "test"
 rg "TODO"
@@ -693,6 +753,9 @@ Nushell 把資料視為結構化表格，而不是單純文字。這讓 pipeline
 ### 實作練習
 
 ```nu
+# 範例用途：示範「實作練習」中可直接在終端機執行的 Nushell 指令。
+# 參數說明：命令中的 URL、檔名、路徑、選項或環境名稱請替換成你的實際目標。
+# 回傳結果 / 副作用：通常會輸出結果、讀寫檔案、下載資料，或改變目前 shell / 系統狀態。
 ls | where size > 10mb
 open data.csv | where score > 80 | sort-by score
 sys | get host
@@ -723,6 +786,9 @@ Nushell 不是 Bash 的語法糖，而是不同資料模型的 shell。
 ### 實作練習
 
 ```bash
+# 範例用途：示範「實作練習」中可直接在終端機執行的 Shell 指令。
+# 參數說明：命令中的 URL、檔名、路徑、選項或環境名稱請替換成你的實際目標。
+# 回傳結果 / 副作用：通常會輸出結果、讀寫檔案、下載資料，或改變目前 shell / 系統狀態。
 zoxide add ~/projects/myapp
 z myapp
 yazi
@@ -755,6 +821,9 @@ mc
 ### 實作練習
 
 ```bash
+# 範例用途：示範「實作練習」中可直接在終端機執行的 Shell 指令。
+# 參數說明：命令中的 URL、檔名、路徑、選項或環境名稱請替換成你的實際目標。
+# 回傳結果 / 副作用：通常會輸出結果、讀寫檔案、下載資料，或改變目前 shell / 系統狀態。
 curl -s "https://opendata.cwa.gov.tw/api/v1/rest/datastore/F-C0032-001?Authorization=$CWA_TOKEN" \
   | jq '.records.location[] | {name: .locationName, weather: .weatherElement[0].time[0].parameter.parameterName}'
 
@@ -786,6 +855,9 @@ xonsh 是把 Python 語法與 shell 指令結合的 shell。它適合喜歡 Pyth
 ### 實作練習
 
 ```xsh
+# 範例用途：示範「實作練習」中可直接在終端機執行的 Xonsh 指令。
+# 參數說明：命令中的 URL、檔名、路徑、選項或環境名稱請替換成你的實際目標。
+# 回傳結果 / 副作用：通常會輸出結果、讀寫檔案、下載資料，或改變目前 shell / 系統狀態。
 $PATH
 files = $(ls)
 len(files)
@@ -818,6 +890,9 @@ Elvish 是現代 shell，重視結構化資料、語法一致性與互動體驗�
 ### 實作練習
 
 ```elvish
+# 範例用途：示範「實作練習」中可直接在終端機執行的 Elvish 指令。
+# 參數說明：命令中的 URL、檔名、路徑、選項或環境名稱請替換成你的實際目標。
+# 回傳結果 / 副作用：通常會輸出結果、讀寫檔案、下載資料，或改變目前 shell / 系統狀態。
 + 1 2
 put [a b c]
 var name = "cli"
@@ -849,6 +924,9 @@ Shell 的設計可以很多樣。Bash 是主流，不代表它是唯一合理的
 ### 實作練習
 
 ```elvish
+# 範例用途：示範「實作練習」中可直接在終端機執行的 Elvish 指令。
+# 參數說明：命令中的 URL、檔名、路徑、選項或環境名稱請替換成你的實際目標。
+# 回傳結果 / 副作用：通常會輸出結果、讀寫檔案、下載資料，或改變目前 shell / 系統狀態。
 fn greet [name]{
   echo "hello "$name
 }
@@ -882,6 +960,9 @@ Bash history 可以重複、搜尋、取上一個指令參數、預覽與編輯�
 ### 實作練習
 
 ```bash
+# 範例用途：示範「實作練習」中可直接在終端機執行的 Shell 指令。
+# 參數說明：命令中的 URL、檔名、路徑、選項或環境名稱請替換成你的實際目標。
+# 回傳結果 / 副作用：通常會輸出結果、讀寫檔案、下載資料，或改變目前 shell / 系統狀態。
 echo first second third
 echo !$
 echo !^
@@ -916,6 +997,9 @@ DuckDB 和 ClickHouse local 都能在本機命令列用 SQL 處理資料檔，�
 ### 實作練習
 
 ```bash
+# 範例用途：示範「實作練習」中可直接在終端機執行的 Shell 指令。
+# 參數說明：命令中的 URL、檔名、路徑、選項或環境名稱請替換成你的實際目標。
+# 回傳結果 / 副作用：通常會輸出結果、讀寫檔案、下載資料，或改變目前 shell / 系統狀態。
 duckdb -c "SELECT count(*) FROM 'data.parquet';"
 duckdb -c "SELECT status, count(*) FROM 'data.parquet' GROUP BY status;"
 
@@ -947,6 +1031,9 @@ SQL 不只存在資料庫伺服器裡。現在很多工具都能讓你直接對�
 ### 實作練習
 
 ```bash
+# 範例用途：示範「實作練習」中可直接在終端機執行的 Shell 指令。
+# 參數說明：命令中的 URL、檔名、路徑、選項或環境名稱請替換成你的實際目標。
+# 回傳結果 / 副作用：通常會輸出結果、讀寫檔案、下載資料，或改變目前 shell / 系統狀態。
 # Bandit 類型練習的核心是 SSH 登入與讀檔
 ssh bandit0@bandit.labs.overthewire.org -p 2220
 ls
@@ -979,6 +1066,9 @@ x-cmd 是命令列增強工具，整合文件管理、系統監控、AI、環境
 ### 實作練習
 
 ```bash
+# 範例用途：示範「實作練習」中可直接在終端機執行的 Shell 指令。
+# 參數說明：命令中的 URL、檔名、路徑、選項或環境名稱請替換成你的實際目標。
+# 回傳結果 / 副作用：通常會輸出結果、讀寫檔案、下載資料，或改變目前 shell / 系統狀態。
 # 安裝前請先閱讀官方文件與安裝 script
 # 不要直接執行陌生網站提供的 curl | sh
 curl -fsSL https://example.com/install.sh -o install.sh
@@ -1011,6 +1101,9 @@ bash install.sh
 ### 實作練習
 
 ```bash
+# 範例用途：示範「實作練習」中可直接在終端機執行的 Shell 指令。
+# 參數說明：命令中的 URL、檔名、路徑、選項或環境名稱請替換成你的實際目標。
+# 回傳結果 / 副作用：通常會輸出結果、讀寫檔案、下載資料，或改變目前 shell / 系統狀態。
 cat > slides.md <<'EOF'
 # CLI Demo
 
@@ -1050,6 +1143,9 @@ Terminal Text Effects 原本處理中文時會遇到寬度、殘影、線條或�
 ### 實作練習
 
 ```bash
+# 範例用途：示範「實作練習」中可直接在終端機執行的 Shell 指令。
+# 參數說明：命令中的 URL、檔名、路徑、選項或環境名稱請替換成你的實際目標。
+# 回傳結果 / 副作用：通常會輸出結果、讀寫檔案、下載資料，或改變目前 shell / 系統狀態。
 python -m venv .venv
 source .venv/bin/activate
 pip install terminaltexteffects
