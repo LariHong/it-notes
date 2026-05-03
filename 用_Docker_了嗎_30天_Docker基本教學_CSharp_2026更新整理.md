@@ -1400,6 +1400,105 @@ Docker 會替同一個 network 裡的 container 提供 DNS。Compose 會自動�
 
 container 溝通要靠名稱，不要靠容易變動的 IP。
 
+## C# API 容器化主線補強：Day 18-30 怎麼從 Image 走到 Compose
+
+Day 18-30 不能只分別學 image、tag、Dockerfile、volume。對 C# 開發者來說，真正有用的主線是：把 ASP.NET Core API 建成 image，透過 Compose 串資料庫，用 network 讓服務互通，用 volume 保存資料，最後用 multi-stage Dockerfile 讓 image 可部署。
+
+| 階段 | 對應 Day | 產出物 | 驗證方式 |
+| --- | --- | --- | --- |
+| Image 概念 | Day 18-19 | `notes-api:dev` | `docker images` |
+| 快取與 Dockerfile | Day 20、24-28 | multi-stage `Dockerfile`、`.dockerignore` | 第二次 build 變快、image 不含原始碼垃圾 |
+| Registry | Day 22-23 | `ghcr.io/<user>/notes-api:<tag>` | image 名稱可追蹤版本 |
+| Network / DNS | Day 14-17 | Compose service name `db` | API 用 `Host=db` 連資料庫 |
+| Volume | Day 29-30 | `postgres-data` volume | 重建 container 後資料仍在 |
+
+專案檔案地圖：
+
+```text
+NotesApi/
+  Program.cs
+  NotesApi.csproj
+  Dockerfile
+  .dockerignore
+  compose.yaml
+```
+
+`Program.cs` 保留健康檢查，再加一個可驗證資料庫連線設定的 endpoint：
+
+```csharp
+var builder = WebApplication.CreateBuilder(args);
+var connectionString = builder.Configuration.GetConnectionString("Default");
+var app = builder.Build();
+
+app.MapGet("/health", () => Results.Ok(new { Status = "OK" }));
+
+app.MapGet("/config-check", () => Results.Ok(new
+{
+    HasConnectionString = !string.IsNullOrWhiteSpace(connectionString)
+}));
+
+app.Run();
+```
+
+`.dockerignore`：
+
+```text
+bin/
+obj/
+.git/
+.vs/
+*.user
+README.md
+```
+
+`compose.yaml`：
+
+```yaml
+services:
+  api:
+    build: .
+    image: notes-api:dev
+    ports:
+      - "8080:8080"
+    environment:
+      ASPNETCORE_URLS: http://+:8080
+      ConnectionStrings__Default: Host=db;Port=5432;Database=notes;Username=notes;Password=notes_password
+    depends_on:
+      - db
+
+  db:
+    image: postgres:18
+    environment:
+      POSTGRES_DB: notes
+      POSTGRES_USER: notes
+      POSTGRES_PASSWORD: notes_password
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+volumes:
+  postgres-data:
+```
+
+端到端操作：
+
+```bash
+docker compose up --build
+curl http://localhost:8080/health
+curl http://localhost:8080/config-check
+docker compose ps
+docker volume ls
+docker compose down
+docker compose up -d
+```
+
+新手要觀察的不是「指令有沒有跑完」而已，而是每一步建立了什麼：
+
+1. `docker compose up --build` 會 build API image，建立 API container、DB container、network、volume。
+2. API 連資料庫時使用 `Host=db`，因為 `db` 是 Compose service name。
+3. `postgres-data` volume 保存資料，不會因為 `docker compose down` 就消失。
+4. Dockerfile 與 `.dockerignore` 決定 image 裡有什麼，也決定 build cache 好不好用。
+5. 如果要推送 registry，先確認 tag 能看出版本，例如 `notes-api:2026.05.03`，不要只用 `latest`。
+
 ## Day 18：什麼是 Docker Image？
 
 ### 核心概念

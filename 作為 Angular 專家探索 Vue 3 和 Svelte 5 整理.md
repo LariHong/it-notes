@@ -245,6 +245,29 @@ createApp(App).mount('#app')
 
 ---
 
+## Shopping Cart 主線補強：Day 2-11 怎麼從元件長成可部署功能
+
+Day 2-11 不應只看成「建立元件、模板、事件、部署」幾個分散練習。它們其實可以串成一個小型購物車：Day 2 建立元件邊界，Day 3 顯示狀態，Day 4 顯示清單，Day 5-6 處理輸入與事件，Day 7-10 加入條件、樣式與衍生狀態，Day 11 把結果部署出去。
+
+| Day | 功能演進 | 對應檔案 |
+| --- | --- | --- |
+| Day 2 | 建立 `ShoppingCart` 子元件 | `ShoppingCart.vue` / `ShoppingCart.svelte` / `shopping-cart.component.ts` |
+| Day 3-4 | 顯示標題、商品清單與數量 | 父元件狀態、子元件模板 |
+| Day 5-6 | 使用者按 `+`、`-` 修改數量 | event / callback / output |
+| Day 7-8 | 空購物車提示、按鈕狀態與樣式 | conditional rendering、class binding |
+| Day 9-10 | 屬性綁定與總金額 | props / derived state |
+| Day 11 | 建置與部署 | Vite / Angular build、GitHub Actions |
+
+最小端到端流程：
+
+1. 父元件保存 `items`。
+2. 子元件只負責顯示購物車與發出事件。
+3. 使用者點擊按鈕後，事件回到父元件更新狀態。
+4. `total` 由狀態衍生，不手動另外保存。
+5. 部署前用瀏覽器測試「新增數量、清空狀態、重新整理」。
+
+這條主線可以當 Day 2-11 的共同檢查點：如果某一天的範例看起來只是一段語法，就回頭問它在這條購物車流程中負責哪一步。
+
 ## Day 2：建立 ShoppingCart 元件
 
 ### 這篇文章主要在講什麼
@@ -1767,6 +1790,35 @@ export type CoffeePlan = {
 
 ---
 
+## Coffee Plan 主線補強：Day 13-17 怎麼做成父子元件流程
+
+Coffee Plan 階段的重點不是單純學 `props`，而是把「父元件管理資料、子元件顯示資料、表單子元件送出事件、父元件更新清單」串起來。這條流程會反覆出現在 Vue、Svelte、Angular，也會延伸到後面的 Alert 專案。
+
+| 角色 | Vue / Svelte / Angular 對應 | 責任 |
+| --- | --- | --- |
+| `PlanPicker` | 父元件 / container component | 保存方案清單與目前選取方案 |
+| `CoffeePlan` | 子元件 | 顯示單一方案，點擊時通知父元件 |
+| `AddCoffeePlan` | 表單子元件 | 收集新方案名稱並送出事件 |
+| `plans` | `ref` / `$state` / `signal` | 方案清單狀態 |
+| `selectedPlan` | 狀態或 model | 目前選取方案 |
+
+端到端流程：
+
+1. `PlanPicker` 建立 `plans`，例如 `["The Single", "The Curious"]`。
+2. `PlanPicker` 用清單渲染產生多個 `CoffeePlan`。
+3. `CoffeePlan` 透過 prop / input 顯示方案名稱。
+4. 使用者點擊 `CoffeePlan`，子元件用 emit / callback / output 通知父元件。
+5. `PlanPicker` 更新 `selectedPlan`，畫面套上 active 樣式。
+6. 使用者在 `AddCoffeePlan` 輸入新名稱，表單子元件送出事件。
+7. `PlanPicker` 把新方案加進 `plans`，清單重新渲染。
+
+檢查點：
+
+- 新增方案後，清單多一筆，不需要重新整理頁面。
+- 點選方案後，只有一個方案是 active。
+- `CoffeePlan` 不直接修改 `plans`，它只發出「使用者選了我」的事件。
+- `AddCoffeePlan` 不保存整份清單，它只負責輸入與送出。
+
 ## Day 13：建立帶有 Prop 的 CoffeePlan 元件
 
 ### 這篇文章主要在講什麼
@@ -2315,6 +2367,33 @@ const emit = defineEmits<{ selectedPlan: [name: string] }>()
 
 ---
 
+## GitHub Card 主線補強：Day 18-21 從 API 到部署
+
+GitHub Card 階段要把「資料擷取、狀態、元件拆分、樣式、部署」視為同一條功能線。新手最容易漏掉的是：前端可以呼叫公開 API，但 token 與 secret 不能直接放在瀏覽器程式碼裡。
+
+| 步驟 | 對應 Day | 檔案 / 位置 | 檢查方式 |
+| --- | --- | --- | --- |
+| 建立資料型別 | Day 18 | `GithubProfile` type | TypeScript 能提示欄位 |
+| 擷取資料 | Day 18 | fetch / service / load function | 成功與失敗都能呈現 |
+| 元件組合 | Day 19 | `GithubCard`、avatar、stats | 畫面不直接塞在根元件 |
+| 樣式整理 | Day 20 | Tailwind / DaisyUI classes | 卡片在手機與桌面都可讀 |
+| 部署 | Day 21 | GitHub Actions / Pages | build log 無錯誤、路徑正確 |
+
+端到端流程：
+
+1. 建立 `GithubProfile`，先固定 API 回來的資料形狀。
+2. 父頁面或資料層呼叫 GitHub API，保存 loading / error / profile 三種狀態。
+3. `GithubCard` 只接收 profile，不自己決定 token 或 API URL。
+4. 樣式在 card 元件內收斂，避免每個頁面都重寫外觀。
+5. 部署時如果需要 token，改用後端代理或 build-time secret，不把 token commit 到 repo。
+
+檢查點：
+
+- 網路失敗時畫面有 error 狀態，不是空白頁。
+- loading 狀態不會和 profile 畫面重疊。
+- GitHub Pages 的 base path 設定正確，重新整理不會資源 404。
+- repository 內搜尋不到任何真實 token。
+
 ## Day 18：GitHub Card 專案資料擷取
 
 ### 這篇文章主要在講什麼
@@ -2737,6 +2816,33 @@ steps:
 部署前端時，要清楚哪些設定會進入瀏覽器，哪些必須留在伺服器。
 
 ---
+
+## Alert 主線補強：Day 22-26 從清單元件到狀態抽取
+
+Alert 階段看起來是小 UI，但它其實是最適合練「元件責任」的段落。完整流程不是只顯示一個 alert，而是要讓清單、單一警示、控制列、已關閉狀態、重開動作都透過資料流串起來。
+
+| 角色 | 對應 Day | 責任 |
+| --- | --- | --- |
+| `AlertList` | Day 22 | 保存 alert 清單並迭代顯示 |
+| `Alert` | Day 22-23 | 顯示單一警示、依 type 決定 icon |
+| `AlertBar` | Day 24-25 | 控制樣式、是否可關閉、重開已關閉 alert |
+| `AlertDropdown` | Day 26 | 抽出重複選單 UI |
+| composable / store / service | Day 26 | 封裝關閉與重開狀態 |
+
+端到端流程：
+
+1. 父層建立 `alerts` 與 `settings`。
+2. `AlertList` 根據 `closedTypes` 過濾要顯示的 alert。
+3. `Alert` 根據 `type` 顯示 icon、色彩與訊息。
+4. 使用者關閉 alert，事件回到父層或狀態服務。
+5. `AlertBar` 顯示可重開項目，按下後更新 `closedTypes`。
+6. Day 26 再把重複 dropdown 和狀態邏輯抽出，讓 `AlertBar` 只負責組合。
+
+檢查點：
+
+- 關閉 alert 後，資料狀態可追蹤，不只是 DOM 被藏起來。
+- 重開全部與重開單一類型都能運作。
+- Alert 類型、icon、樣式來自資料與設定，不靠手動 query DOM。
 
 ## Day 22：Alert List 與 Alert Component
 
@@ -3282,6 +3388,32 @@ export function useClosedNotifications() {
 好的抽取會讓元件更像組合者，讓狀態邏輯有自己的家。
 
 ---
+
+## Blog 主線補強：Day 27-29 從列表到錯誤狀態
+
+Blog 階段的完整性在於「路由、資料、關聯資料、loading、error」一起看。只會顯示文章列表還不夠，因為真實前端一定會遇到資料還沒回來、API 失敗、作者資料要另外查的情況。
+
+| 功能 | 對應 Day | 責任 |
+| --- | --- | --- |
+| 文章列表 | Day 27 | 取得 posts，顯示標題與摘要 |
+| 文章詳情 | Day 27 | 依 route param 取得單篇文章 |
+| 作者資料 | Day 28 | 用 `userId` 取得 author，組合成 view model |
+| loading | Day 29 | 資料載入前顯示等待狀態 |
+| error | Day 29 | API 失敗時顯示可理解訊息 |
+
+端到端流程：
+
+1. 進入 `/posts`，頁面先進入 loading。
+2. API 回傳文章清單後，渲染文章列表。
+3. 點擊文章進入 `/posts/:id`。
+4. 詳情頁先取得 post，再用 `post.userId` 取得 author。
+5. 任一 API 失敗時，畫面顯示 error，不讓使用者看到半成品資料。
+
+檢查點：
+
+- 直接重新整理詳情頁仍能正確載入資料。
+- loading、empty、error、success 四種狀態不互相重疊。
+- 文章資料與作者資料在畫面上是組合後的結果，不要讓模板到處散落 API 細節。
 
 ## Day 27：建立簡單部落格頁面
 

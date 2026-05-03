@@ -1797,6 +1797,75 @@ ls -lh ~/linux-practice-backup.tar.gz
 - Log 與排錯課程可以回頭看 `journalctl` 的查詢方式。
 - 備份與排程課程可以把 `linux-practice` 目錄改成自己的練習資料，再接 `cron` 或 systemd timer。
 
+#### 主線補強：把第 4 到第 15 堂串成一台可維護主機
+
+前面的 Day 如果只各自練一條指令，新手會知道 `chmod`、`systemctl`、`firewall-cmd`，但不知道它們怎麼合在一起。這裡把第 4 到第 15 堂串成一條主線：建立一台給練習網站使用的 Rocky Linux 主機，讓帳號、目錄、權限、服務、防火牆、log、備份都能互相對上。
+
+| 階段 | 對應課程 | 產出物 | 驗證方式 |
+| --- | --- | --- | --- |
+| 建立操作者 | 第 4、10 堂 | `student` 帳號、`wheel` 權限 | `id student`、`sudo -l` |
+| 建立網站目錄 | 第 2、3、4 堂 | `/srv/notes-site` | `ls -ld /srv/notes-site` |
+| 設定服務 | 第 13 堂 | `notes-site.service` | `systemctl status notes-site` |
+| 開放網路 | 第 13、15 堂 | firewalld 開放 HTTP | `firewall-cmd --list-services` |
+| 查錯與紀錄 | 第 5、12、13 堂 | systemd journal | `journalctl -u notes-site` |
+| 備份資料 | 第 11 堂 | `/backup/notes-site-*.tar.gz` | `tar -tzf` |
+
+建立目錄與權限：
+
+```bash
+sudo mkdir -p /srv/notes-site /backup
+sudo chown -R student:student /srv/notes-site
+sudo chmod 750 /srv/notes-site
+
+echo "Rocky Linux practice site" | sudo tee /srv/notes-site/index.txt
+ls -ld /srv/notes-site
+ls -l /srv/notes-site
+```
+
+建立最小服務，先用 shell 模擬後續會換成真正網站服務：
+
+```bash
+sudo tee /etc/systemd/system/notes-site.service > /dev/null <<'EOF'
+[Unit]
+Description=Practice notes site service
+After=network.target
+
+[Service]
+Type=simple
+User=student
+WorkingDirectory=/srv/notes-site
+ExecStart=/usr/bin/bash -c 'while true; do date; sleep 60; done'
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+sudo systemctl daemon-reload
+sudo systemctl enable --now notes-site
+systemctl status notes-site --no-pager
+```
+
+開放服務與查 log：
+
+```bash
+sudo firewall-cmd --add-service=http --permanent
+sudo firewall-cmd --reload
+sudo firewall-cmd --list-services
+
+journalctl -u notes-site -n 20 --no-pager
+```
+
+備份與還原檢查：
+
+```bash
+sudo tar -czf /backup/notes-site-$(date +%Y%m%d).tar.gz -C /srv notes-site
+ls -lh /backup
+sudo tar -tzf /backup/notes-site-$(date +%Y%m%d).tar.gz | head
+```
+
+這條主線讀法是：第 4 堂學權限時看 `/srv/notes-site`，第 13 堂學服務時看 `notes-site.service`，第 15 堂做基線檢查時確認帳號、服務、防火牆、log、備份都還在。這樣每一個指令就不再是散的，而是在保護同一台主機。
+
 ### Step-by-step 實作：新主機基線 checklist
 
 ```bash
