@@ -617,6 +617,12 @@ docker logs notes-api
 4. `docker run -p 8080:8080` 把 host 的 8080 對到 container 的 8080。
 5. `curl` 或瀏覽器呼叫 `/health`，再用 `docker logs` 確認服務啟動過程。
 
+#### 後續 Day 怎麼沿用這個範例
+
+- Day 7 到 Day 10 講 container 操作時，可以都用 `notes-api` 觀察 `ps`、`logs`、`exec` 與停止刪除流程。
+- Day 18 到 Day 28 講 image 與 Dockerfile 時，可以回到這個 `Dockerfile` 看 layer、cache、multi-stage 與 `.dockerignore`。
+- Day 29 到 Day 30 講 volume 時，可以把 `/health` 擴充成寫檔或連資料庫，再觀察資料是否跟 container 生命週期分開。
+
 ### 如果結果和預期不同
 
 - Container 沒起來：先看 `docker ps -a` 和 `docker logs <container>`。

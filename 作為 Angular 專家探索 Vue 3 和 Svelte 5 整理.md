@@ -325,7 +325,7 @@ export class ShoppingCartComponent {}
 
 這份筆記原本有很多單日元件範例，但前端框架學習不能只看單一 component。正常實作會有「入口檔、父元件、子元件、狀態、事件、樣式、驗證方式」一起配合。下面用購物車的最小功能建立完整範圍，後面 Day 1-11 都可以回到這個地圖對照。
 
-### 範例範圍地圖
+#### 範例範圍地圖
 
 | 部分 | Vue 3 | Svelte 5 | Angular |
 | --- | --- | --- | --- |
@@ -337,7 +337,7 @@ export class ShoppingCartComponent {}
 | 樣式 | component scoped style 或 CSS | component style | component styles |
 | 驗證 | 瀏覽器畫面、console、測試資料 | 瀏覽器畫面、console、測試資料 | 瀏覽器畫面、Angular dev server |
 
-### 最小資料模型
+#### 最小資料模型
 
 三個框架都先用同一種資料形狀，這樣比較才公平：
 
@@ -350,7 +350,7 @@ type CartItem = {
 }
 ```
 
-### Vue 3：父元件持有狀態，子元件呈現與觸發事件
+#### Vue 3：父元件持有狀態，子元件呈現與觸發事件
 
 `src/App.vue`：
 
@@ -425,7 +425,7 @@ const emit = defineEmits<{
 </template>
 ```
 
-### Svelte 5：父元件用 `$state`，子元件用 callback prop
+#### Svelte 5：父元件用 `$state`，子元件用 callback prop
 
 `src/App.svelte`：
 
@@ -492,7 +492,7 @@ const emit = defineEmits<{
 </section>
 ```
 
-### Angular：父元件用 signal，子元件用 input / output
+#### Angular：父元件用 signal，子元件用 input / output
 
 `shopping-cart.component.ts`：
 
@@ -574,7 +574,7 @@ export class AppComponent {
 }
 ```
 
-### 端到端流程
+#### 端到端流程
 
 1. 父元件建立 `items` 狀態與 `total` 衍生狀態。
 2. 父元件把 `items` 和 `total` 傳給 `ShoppingCart` 子元件。
@@ -583,12 +583,19 @@ export class AppComponent {
 5. 子元件透過 emit / callback / output 通知父元件。
 6. 父元件修改狀態，框架重新渲染畫面。
 
-### 做完後檢查
+#### 做完後檢查
 
 - 畫面顯示 `Coffee`、`Cake` 與總金額。
 - 按下 `+` 後，對應商品數量增加。
 - 總金額會跟著增加。
 - 若畫面不更新，先檢查狀態是否用該框架的響應式 API 建立，而不是普通變數。
+
+#### 後續 Day 怎麼沿用這個範例
+
+- Day 3 的模板表達式，可以直接拿 `total` 與 `item.quantity` 觀察畫面如何讀取狀態。
+- Day 4 的清單渲染，可以回到 `items` 與 `v-for` / `{#each}` / `@for` 對照。
+- Day 5 到 Day 6 的輸入與事件，可以回到 `increaseQuantity` 與 emit / callback / output。
+- Day 8 到 Day 10 的樣式與衍生狀態，可以回到 `total`、按鈕狀態與購物車顯示結果。
 
 ### 如果結果和預期不同
 

@@ -1790,6 +1790,13 @@ ls -lh ~/linux-practice-backup.tar.gz
 - `firewall-cmd --list-all` 能列出目前 zone 的服務與 port。
 - `~/linux-practice-backup.tar.gz` 存在，而且大小不是 0。
 
+#### 後續課程怎麼沿用這個範例
+
+- 權限課程可以回頭看 `student` 帳號、`wheel` 群組與 sudo 行為。
+- 服務管理課程可以回頭看 `sshd`、`firewalld` 與 `systemctl status`。
+- Log 與排錯課程可以回頭看 `journalctl` 的查詢方式。
+- 備份與排程課程可以把 `linux-practice` 目錄改成自己的練習資料，再接 `cron` 或 systemd timer。
+
 ### Step-by-step 實作：新主機基線 checklist
 
 ```bash
