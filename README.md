@@ -4,6 +4,7 @@
 
 ## 筆記索引
 
+- [CSharp ASP.NET MVC 30天網站應用程式 2026更新整理](CSharp_ASP.NET_MVC_30天網站應用程式_2026更新整理.md)
 - [Design Pattern 系列 Day11-Day29 整理](Design%20Pattern%20系列%20Day11-Day29%20整理.md)
 - [Linux 基礎學習訓練教材 Rocky Linux 2026更新整理](Linux_基礎學習訓練教材_Rocky_Linux_2026更新整理.md)
 - [用 Docker 了嗎 30天 Docker基本教學 CSharp 2026更新整理](用_Docker_了嗎_30天_Docker基本教學_CSharp_2026更新整理.md)
