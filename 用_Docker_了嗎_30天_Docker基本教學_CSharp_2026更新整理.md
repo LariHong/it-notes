@@ -1377,6 +1377,19 @@ Docker 會替同一個 network 裡的 container 提供 DNS。Compose 會自動�
 
 本篇範例以 Docker 原生命令、Dockerfile、Compose YAML 或 C# / ASP.NET Core 專案整合為主。讀的時候不要只複製命令，要同時記下：這一步建立了什麼資源、是否會修改本機 Docker 狀態、執行後要用哪個命令驗證。
 
+### 主線落地：API 用 service name 連資料庫
+
+範例規則：這段範例必須看成當天 Day 的完整範圍，不是孤立程式碼；先確認前置檔案或前一 Day 產物存在，再照檔案位置、命令或程式碼修改，最後用本段列出的畫面、指令、log、資料庫或狀態檢查驗證結果。
+
+DNS 這一天直接用 Compose 驗證。API container 裡的 `localhost` 是 API 自己，不是資料庫。
+
+```bash
+docker compose exec api getent hosts db
+docker compose exec api printenv ConnectionStrings__Default
+```
+
+connection string 應該使用 `Host=db`，因為 `db` 是 Compose service name。這會接到後面 Day 30 的 API + database + volume 範例。
+
 ### 如果結果和預期不同
 
 - Container 沒起來：先看 `docker ps -a` 和 `docker logs <container>`。
@@ -1399,105 +1412,6 @@ Docker 會替同一個 network 裡的 container 提供 DNS。Compose 會自動�
 ### 一句話總結
 
 container 溝通要靠名稱，不要靠容易變動的 IP。
-
-## C# API 容器化主線補強：Day 18-30 怎麼從 Image 走到 Compose
-
-Day 18-30 不能只分別學 image、tag、Dockerfile、volume。對 C# 開發者來說，真正有用的主線是：把 ASP.NET Core API 建成 image，透過 Compose 串資料庫，用 network 讓服務互通，用 volume 保存資料，最後用 multi-stage Dockerfile 讓 image 可部署。
-
-| 階段 | 對應 Day | 產出物 | 驗證方式 |
-| --- | --- | --- | --- |
-| Image 概念 | Day 18-19 | `notes-api:dev` | `docker images` |
-| 快取與 Dockerfile | Day 20、24-28 | multi-stage `Dockerfile`、`.dockerignore` | 第二次 build 變快、image 不含原始碼垃圾 |
-| Registry | Day 22-23 | `ghcr.io/<user>/notes-api:<tag>` | image 名稱可追蹤版本 |
-| Network / DNS | Day 14-17 | Compose service name `db` | API 用 `Host=db` 連資料庫 |
-| Volume | Day 29-30 | `postgres-data` volume | 重建 container 後資料仍在 |
-
-專案檔案地圖：
-
-```text
-NotesApi/
-  Program.cs
-  NotesApi.csproj
-  Dockerfile
-  .dockerignore
-  compose.yaml
-```
-
-`Program.cs` 保留健康檢查，再加一個可驗證資料庫連線設定的 endpoint：
-
-```csharp
-var builder = WebApplication.CreateBuilder(args);
-var connectionString = builder.Configuration.GetConnectionString("Default");
-var app = builder.Build();
-
-app.MapGet("/health", () => Results.Ok(new { Status = "OK" }));
-
-app.MapGet("/config-check", () => Results.Ok(new
-{
-    HasConnectionString = !string.IsNullOrWhiteSpace(connectionString)
-}));
-
-app.Run();
-```
-
-`.dockerignore`：
-
-```text
-bin/
-obj/
-.git/
-.vs/
-*.user
-README.md
-```
-
-`compose.yaml`：
-
-```yaml
-services:
-  api:
-    build: .
-    image: notes-api:dev
-    ports:
-      - "8080:8080"
-    environment:
-      ASPNETCORE_URLS: http://+:8080
-      ConnectionStrings__Default: Host=db;Port=5432;Database=notes;Username=notes;Password=notes_password
-    depends_on:
-      - db
-
-  db:
-    image: postgres:18
-    environment:
-      POSTGRES_DB: notes
-      POSTGRES_USER: notes
-      POSTGRES_PASSWORD: notes_password
-    volumes:
-      - postgres-data:/var/lib/postgresql/data
-
-volumes:
-  postgres-data:
-```
-
-端到端操作：
-
-```bash
-docker compose up --build
-curl http://localhost:8080/health
-curl http://localhost:8080/config-check
-docker compose ps
-docker volume ls
-docker compose down
-docker compose up -d
-```
-
-新手要觀察的不是「指令有沒有跑完」而已，而是每一步建立了什麼：
-
-1. `docker compose up --build` 會 build API image，建立 API container、DB container、network、volume。
-2. API 連資料庫時使用 `Host=db`，因為 `db` 是 Compose service name。
-3. `postgres-data` volume 保存資料，不會因為 `docker compose down` 就消失。
-4. Dockerfile 與 `.dockerignore` 決定 image 裡有什麼，也決定 build cache 好不好用。
-5. 如果要推送 registry，先確認 tag 能看出版本，例如 `notes-api:2026.05.03`，不要只用 `latest`。
 
 ## Day 18：什麼是 Docker Image？
 
@@ -1952,6 +1866,32 @@ ENTRYPOINT ["dotnet", "DockerCSharpDemo.dll"]
 
 本篇範例以 Docker 原生命令、Dockerfile、Compose YAML 或 C# / ASP.NET Core 專案整合為主。讀的時候不要只複製命令，要同時記下：這一步建立了什麼資源、是否會修改本機 Docker 狀態、執行後要用哪個命令驗證。
 
+### 主線落地：NotesApi 的 multi-stage Dockerfile
+
+範例規則：這段範例必須看成當天 Day 的完整範圍，不是孤立程式碼；先確認前置檔案或前一 Day 產物存在，再照檔案位置、命令或程式碼修改，最後用本段列出的畫面、指令、log、資料庫或狀態檢查驗證結果。
+
+Dockerfile 指令要放回 C# API 專案，而不是孤立背語法。
+
+```dockerfile
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
+WORKDIR /src
+
+COPY NotesApi.csproj ./
+RUN dotnet restore
+
+COPY . ./
+RUN dotnet publish -c Release -o /app/publish /p:UseAppHost=false
+
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
+WORKDIR /app
+COPY --from=build /app/publish ./
+USER $APP_UID
+EXPOSE 8080
+ENTRYPOINT ["dotnet", "NotesApi.dll"]
+```
+
+先 copy `.csproj` 是保護 restore cache；runtime 階段不用 SDK 是降低 image 體積；`USER $APP_UID` 是避免正式 container 用 root 跑。
+
 ### 如果結果和預期不同
 
 - Container 沒起來：先看 `docker ps -a` 和 `docker logs <container>`。
@@ -2385,6 +2325,22 @@ volumes:
 ### 範例形式與實作
 
 本篇範例以 Docker 原生命令、Dockerfile、Compose YAML 或 C# / ASP.NET Core 專案整合為主。讀的時候不要只複製命令，要同時記下：這一步建立了什麼資源、是否會修改本機 Docker 狀態、執行後要用哪個命令驗證。
+
+### 主線落地：用資料庫確認 volume 真的保存資料
+
+範例規則：這段範例必須看成當天 Day 的完整範圍，不是孤立程式碼；先確認前置檔案或前一 Day 產物存在，再照檔案位置、命令或程式碼修改，最後用本段列出的畫面、指令、log、資料庫或狀態檢查驗證結果。
+
+Volume 不能只看 `docker volume ls`，要用資料庫資料是否還在來驗證。
+
+```bash
+docker compose exec db psql -U notes -d notes -c "CREATE TABLE IF NOT EXISTS checks (id serial primary key, message text);"
+docker compose exec db psql -U notes -d notes -c "INSERT INTO checks (message) VALUES ('volume works');"
+docker compose down
+docker compose up -d db
+docker compose exec db psql -U notes -d notes -c "SELECT * FROM checks;"
+```
+
+如果資料不見，回頭檢查 `compose.yaml` 的 `volumes:` 是否掛到 PostgreSQL 的資料目錄。
 
 ### 如果結果和預期不同
 

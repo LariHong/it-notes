@@ -508,6 +508,23 @@ ls -l hello.sh
 4. 再用 `ls -l hello.sh` 驗證權限是否變成類似 `-rwxr-xr-x`。
 5. 執行 `./hello.sh`，確認腳本能跑。
 
+### 主線落地：替練習網站目錄設定權限
+
+範例規則：這段範例必須看成當天 Day 的完整範圍，不是孤立程式碼；先確認前置檔案或前一 Day 產物存在，再照檔案位置、命令或程式碼修改，最後用本段列出的畫面、指令、log、資料庫或狀態檢查驗證結果。
+
+這一堂的權限範例直接套到後續會反覆使用的 `/srv/notes-site`。目標是讓 `student` 可以部署練習檔案，但其他無關帳號不能亂寫。
+
+```bash
+sudo mkdir -p /srv/notes-site/releases /srv/notes-site/shared
+sudo groupadd webops
+sudo usermod -aG webops student
+sudo chown -R student:webops /srv/notes-site
+sudo chmod 2775 /srv/notes-site /srv/notes-site/releases /srv/notes-site/shared
+ls -ld /srv/notes-site /srv/notes-site/releases
+```
+
+`2775` 裡的 `2` 是 setgid，代表新檔案會繼承 `webops` 群組。做完後要用 `ls -ld` 確認 owner、group、permission 都正確。
+
 ### 如果結果和預期不同
 
 - `./hello.sh` 顯示 `Permission denied`：代表沒有執行權限，檢查 `ls -l`。
@@ -1203,6 +1220,21 @@ getfacl shared.txt
 5. 建立 `shared.txt`，用 ACL 給 `dev01` 讀寫權限。
 6. 用 `getfacl` 驗證 ACL。
 
+### 主線落地：用 ACL 給臨時查核權限
+
+範例規則：這段範例必須看成當天 Day 的完整範圍，不是孤立程式碼；先確認前置檔案或前一 Day 產物存在，再照檔案位置、命令或程式碼修改，最後用本段列出的畫面、指令、log、資料庫或狀態檢查驗證結果。
+
+如果臨時要讓 `auditor` 查看網站目錄，不要直接把他加進部署群組。用 ACL 給讀取與進入目錄權限即可。
+
+```bash
+sudo useradd auditor
+sudo setfacl -m u:auditor:rx /srv/notes-site
+sudo setfacl -m u:auditor:rx /srv/notes-site/releases
+getfacl /srv/notes-site
+```
+
+這個範例接續第 4 堂的 `/srv/notes-site`，讓帳號管理、群組權限、ACL 都指向同一台主機的同一個目錄。
+
 ### 如果結果和預期不同
 
 - `useradd: user already exists`：帳號已存在，先用 `id dev01` 查。
@@ -1315,6 +1347,22 @@ cron 範例：
 3. 回到家目錄，使用 `tar -czf` 備份 `linux-practice`。
 4. 用 `tar -tzf` 查看壓縮包內容，確認真的備到目標資料夾。
 5. 閱讀 cron 格式：分、時、日、月、星期、命令。
+
+### 主線落地：備份練習網站與 systemd 設定
+
+範例規則：這段範例必須看成當天 Day 的完整範圍，不是孤立程式碼；先確認前置檔案或前一 Day 產物存在，再照檔案位置、命令或程式碼修改，最後用本段列出的畫面、指令、log、資料庫或狀態檢查驗證結果。
+
+備份不要只壓縮任意測試檔，應該備份後續能還原服務的內容：網站目錄與 systemd service。
+
+```bash
+sudo mkdir -p /backup/notes-site
+sudo tar -czf /backup/notes-site/notes-site-$(date +%Y%m%d-%H%M).tar.gz \
+  -C /srv notes-site \
+  -C /etc/systemd/system notes-site.service
+sudo tar -tzf /backup/notes-site/$(ls -t /backup/notes-site | head -n 1) | head
+```
+
+檢查重點是壓縮檔能列出內容，而不是只看到檔案存在。後續若加入 cron 或 systemd timer，也應該先保留這個還原檢查。
 
 ### 如果結果和預期不同
 
@@ -1534,6 +1582,37 @@ journalctl -u nginx -n 30 --no-pager
 2. 用 `enable --now` 同時啟動 nginx 並設定開機自動啟動。
 3. 用 `systemctl status nginx` 看 active 狀態。
 4. 用 `journalctl -u nginx` 看服務最近 log。
+
+### 主線落地：把練習網站掛成 systemd service
+
+範例規則：這段範例必須看成當天 Day 的完整範圍，不是孤立程式碼；先確認前置檔案或前一 Day 產物存在，再照檔案位置、命令或程式碼修改，最後用本段列出的畫面、指令、log、資料庫或狀態檢查驗證結果。
+
+這一堂直接把前面建立的 `/srv/notes-site` 變成一個可管理的服務。即使用 shell 模擬，也要練完整的 reload、enable、restart、查 log 流程。
+
+```bash
+sudo tee /etc/systemd/system/notes-site.service > /dev/null <<'EOF'
+[Unit]
+Description=Practice notes site service
+After=network.target
+
+[Service]
+Type=simple
+User=student
+WorkingDirectory=/srv/notes-site
+ExecStart=/usr/bin/bash -c 'while true; do date; sleep 60; done'
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+sudo systemctl daemon-reload
+sudo systemctl enable --now notes-site
+systemctl status notes-site --no-pager
+journalctl -u notes-site -n 30 --no-pager
+```
+
+如果服務不是 `active`，先看 `journalctl -u notes-site` 的第一個錯誤，再回頭檢查使用者、目錄權限與 `ExecStart`。
 
 ### 如果結果和預期不同
 
@@ -1796,75 +1875,6 @@ ls -lh ~/linux-practice-backup.tar.gz
 - 服務管理課程可以回頭看 `sshd`、`firewalld` 與 `systemctl status`。
 - Log 與排錯課程可以回頭看 `journalctl` 的查詢方式。
 - 備份與排程課程可以把 `linux-practice` 目錄改成自己的練習資料，再接 `cron` 或 systemd timer。
-
-#### 主線補強：把第 4 到第 15 堂串成一台可維護主機
-
-前面的 Day 如果只各自練一條指令，新手會知道 `chmod`、`systemctl`、`firewall-cmd`，但不知道它們怎麼合在一起。這裡把第 4 到第 15 堂串成一條主線：建立一台給練習網站使用的 Rocky Linux 主機，讓帳號、目錄、權限、服務、防火牆、log、備份都能互相對上。
-
-| 階段 | 對應課程 | 產出物 | 驗證方式 |
-| --- | --- | --- | --- |
-| 建立操作者 | 第 4、10 堂 | `student` 帳號、`wheel` 權限 | `id student`、`sudo -l` |
-| 建立網站目錄 | 第 2、3、4 堂 | `/srv/notes-site` | `ls -ld /srv/notes-site` |
-| 設定服務 | 第 13 堂 | `notes-site.service` | `systemctl status notes-site` |
-| 開放網路 | 第 13、15 堂 | firewalld 開放 HTTP | `firewall-cmd --list-services` |
-| 查錯與紀錄 | 第 5、12、13 堂 | systemd journal | `journalctl -u notes-site` |
-| 備份資料 | 第 11 堂 | `/backup/notes-site-*.tar.gz` | `tar -tzf` |
-
-建立目錄與權限：
-
-```bash
-sudo mkdir -p /srv/notes-site /backup
-sudo chown -R student:student /srv/notes-site
-sudo chmod 750 /srv/notes-site
-
-echo "Rocky Linux practice site" | sudo tee /srv/notes-site/index.txt
-ls -ld /srv/notes-site
-ls -l /srv/notes-site
-```
-
-建立最小服務，先用 shell 模擬後續會換成真正網站服務：
-
-```bash
-sudo tee /etc/systemd/system/notes-site.service > /dev/null <<'EOF'
-[Unit]
-Description=Practice notes site service
-After=network.target
-
-[Service]
-Type=simple
-User=student
-WorkingDirectory=/srv/notes-site
-ExecStart=/usr/bin/bash -c 'while true; do date; sleep 60; done'
-Restart=always
-
-[Install]
-WantedBy=multi-user.target
-EOF
-
-sudo systemctl daemon-reload
-sudo systemctl enable --now notes-site
-systemctl status notes-site --no-pager
-```
-
-開放服務與查 log：
-
-```bash
-sudo firewall-cmd --add-service=http --permanent
-sudo firewall-cmd --reload
-sudo firewall-cmd --list-services
-
-journalctl -u notes-site -n 20 --no-pager
-```
-
-備份與還原檢查：
-
-```bash
-sudo tar -czf /backup/notes-site-$(date +%Y%m%d).tar.gz -C /srv notes-site
-ls -lh /backup
-sudo tar -tzf /backup/notes-site-$(date +%Y%m%d).tar.gz | head
-```
-
-這條主線讀法是：第 4 堂學權限時看 `/srv/notes-site`，第 13 堂學服務時看 `notes-site.service`，第 15 堂做基線檢查時確認帳號、服務、防火牆、log、備份都還在。這樣每一個指令就不再是散的，而是在保護同一台主機。
 
 ### Step-by-step 實作：新主機基線 checklist
 
