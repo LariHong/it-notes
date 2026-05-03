@@ -173,6 +173,45 @@ dotnet run
 
 修正方向：在 `global.json`、Dockerfile、CI 中明確指定版本，例如 .NET 10 或 .NET 8。
 
+### 學完這篇你應該會做到什麼
+
+- 能說明 Day 1：Docker 怎麼來的？ 對 C# / ASP.NET Core 開發流程的影響。
+- 能照著本篇範例完成 Docker 指令、Dockerfile、Compose、network、image 或 volume 操作。
+- 能用 `docker ps`、`docker logs`、瀏覽器、API response、建置輸出或資料持久化結果驗證自己做對了。
+
+### 實作任務情境
+
+把這篇當成一個容器化任務：你要讓一個 C# / ASP.NET Core 專案更容易在不同機器上建置、啟動、連線或保存資料，並能用 Docker 工具查證結果。
+
+### 操作前檢查
+
+- 確認 Docker Desktop 或 Docker Engine 已啟動，並且目前終端機能執行 `docker version`。
+- 若會建立 image、container、volume 或 network，先確認名稱是練習用，不要誤刪正式資源。
+- 若會處理連線字串、密碼或 token，使用環境變數或 secret，不要寫死在 Dockerfile。
+
+### 範例形式與實作
+
+本篇範例以 Docker 原生命令、Dockerfile、Compose YAML 或 C# / ASP.NET Core 專案整合為主。讀的時候不要只複製命令，要同時記下：這一步建立了什麼資源、是否會修改本機 Docker 狀態、執行後要用哪個命令驗證。
+
+### 如果結果和預期不同
+
+- Container 沒起來：先看 `docker ps -a` 和 `docker logs <container>`。
+- Port 連不到：確認 `-p` / compose ports、應用程式 listen 位址與防火牆。
+- Image 建置失敗：先看第一個 Dockerfile 錯誤，確認 COPY 路徑、build context、NuGet restore 與 `.dockerignore`。
+- 服務彼此連不到：確認 compose service name、network、connection string，不要在 container 內使用 `localhost` 連另一個 container。
+
+### 做完後檢查
+
+- 用 `docker ps` 確認 container 狀態。
+- 用 `docker logs` 或應用程式 endpoint 確認服務真的啟動。
+- 若有 volume 或 database，重啟 container 後確認資料是否仍存在。
+
+### 小練習
+
+1. 把範例中的 image 或 container 名稱改成自己的專案名稱。
+2. 故意改錯 port 或 connection string，練習從 log 找原因。
+3. 寫一句話記錄這篇 Docker 概念解決了哪個部署或開發痛點。
+
 ### 一句話總結
 
 Docker 的核心價值不是炫技，而是讓 C# 程式的執行環境可以被描述、重建與搬運。
@@ -207,6 +246,45 @@ git --version
 問題：錯誤不在程式，而是 Docker 服務沒跑。
 
 修正方向：先跑 `docker version`，確認 Client 和 Server 都有資訊。
+
+### 學完這篇你應該會做到什麼
+
+- 能說明 Day 2：Docker 之旅的行前須知 對 C# / ASP.NET Core 開發流程的影響。
+- 能照著本篇範例完成 Docker 指令、Dockerfile、Compose、network、image 或 volume 操作。
+- 能用 `docker ps`、`docker logs`、瀏覽器、API response、建置輸出或資料持久化結果驗證自己做對了。
+
+### 實作任務情境
+
+把這篇當成一個容器化任務：你要讓一個 C# / ASP.NET Core 專案更容易在不同機器上建置、啟動、連線或保存資料，並能用 Docker 工具查證結果。
+
+### 操作前檢查
+
+- 確認 Docker Desktop 或 Docker Engine 已啟動，並且目前終端機能執行 `docker version`。
+- 若會建立 image、container、volume 或 network，先確認名稱是練習用，不要誤刪正式資源。
+- 若會處理連線字串、密碼或 token，使用環境變數或 secret，不要寫死在 Dockerfile。
+
+### 範例形式與實作
+
+本篇範例以 Docker 原生命令、Dockerfile、Compose YAML 或 C# / ASP.NET Core 專案整合為主。讀的時候不要只複製命令，要同時記下：這一步建立了什麼資源、是否會修改本機 Docker 狀態、執行後要用哪個命令驗證。
+
+### 如果結果和預期不同
+
+- Container 沒起來：先看 `docker ps -a` 和 `docker logs <container>`。
+- Port 連不到：確認 `-p` / compose ports、應用程式 listen 位址與防火牆。
+- Image 建置失敗：先看第一個 Dockerfile 錯誤，確認 COPY 路徑、build context、NuGet restore 與 `.dockerignore`。
+- 服務彼此連不到：確認 compose service name、network、connection string，不要在 container 內使用 `localhost` 連另一個 container。
+
+### 做完後檢查
+
+- 用 `docker ps` 確認 container 狀態。
+- 用 `docker logs` 或應用程式 endpoint 確認服務真的啟動。
+- 若有 volume 或 database，重啟 container 後確認資料是否仍存在。
+
+### 小練習
+
+1. 把範例中的 image 或 container 名稱改成自己的專案名稱。
+2. 故意改錯 port 或 connection string，練習從 log 找原因。
+3. 寫一句話記錄這篇 Docker 概念解決了哪個部署或開發痛點。
 
 ### 一句話總結
 
@@ -243,6 +321,45 @@ docker run --rm -p 8080:8080 mcr.microsoft.com/dotnet/samples:aspnetapp
 
 修正方向：初學者先用 Linux container。
 
+### 學完這篇你應該會做到什麼
+
+- 能說明 Day 3：安裝 Docker 對 C# / ASP.NET Core 開發流程的影響。
+- 能照著本篇範例完成 Docker 指令、Dockerfile、Compose、network、image 或 volume 操作。
+- 能用 `docker ps`、`docker logs`、瀏覽器、API response、建置輸出或資料持久化結果驗證自己做對了。
+
+### 實作任務情境
+
+把這篇當成一個容器化任務：你要讓一個 C# / ASP.NET Core 專案更容易在不同機器上建置、啟動、連線或保存資料，並能用 Docker 工具查證結果。
+
+### 操作前檢查
+
+- 確認 Docker Desktop 或 Docker Engine 已啟動，並且目前終端機能執行 `docker version`。
+- 若會建立 image、container、volume 或 network，先確認名稱是練習用，不要誤刪正式資源。
+- 若會處理連線字串、密碼或 token，使用環境變數或 secret，不要寫死在 Dockerfile。
+
+### 範例形式與實作
+
+本篇範例以 Docker 原生命令、Dockerfile、Compose YAML 或 C# / ASP.NET Core 專案整合為主。讀的時候不要只複製命令，要同時記下：這一步建立了什麼資源、是否會修改本機 Docker 狀態、執行後要用哪個命令驗證。
+
+### 如果結果和預期不同
+
+- Container 沒起來：先看 `docker ps -a` 和 `docker logs <container>`。
+- Port 連不到：確認 `-p` / compose ports、應用程式 listen 位址與防火牆。
+- Image 建置失敗：先看第一個 Dockerfile 錯誤，確認 COPY 路徑、build context、NuGet restore 與 `.dockerignore`。
+- 服務彼此連不到：確認 compose service name、network、connection string，不要在 container 內使用 `localhost` 連另一個 container。
+
+### 做完後檢查
+
+- 用 `docker ps` 確認 container 狀態。
+- 用 `docker logs` 或應用程式 endpoint 確認服務真的啟動。
+- 若有 volume 或 database，重啟 container 後確認資料是否仍存在。
+
+### 小練習
+
+1. 把範例中的 image 或 container 名稱改成自己的專案名稱。
+2. 故意改錯 port 或 connection string，練習從 log 找原因。
+3. 寫一句話記錄這篇 Docker 概念解決了哪個部署或開發痛點。
+
 ### 一句話總結
 
 先讓 Docker 本身能跑，再開始處理 C# 專案 container 化。
@@ -273,6 +390,45 @@ docker image ls
 問題：container 刪掉後變更就不見，且無法重現。
 
 修正方向：所有變更寫進 Dockerfile 或原始碼。
+
+### 學完這篇你應該會做到什麼
+
+- 能說明 Day 4：Docker 的基礎架構 對 C# / ASP.NET Core 開發流程的影響。
+- 能照著本篇範例完成 Docker 指令、Dockerfile、Compose、network、image 或 volume 操作。
+- 能用 `docker ps`、`docker logs`、瀏覽器、API response、建置輸出或資料持久化結果驗證自己做對了。
+
+### 實作任務情境
+
+把這篇當成一個容器化任務：你要讓一個 C# / ASP.NET Core 專案更容易在不同機器上建置、啟動、連線或保存資料，並能用 Docker 工具查證結果。
+
+### 操作前檢查
+
+- 確認 Docker Desktop 或 Docker Engine 已啟動，並且目前終端機能執行 `docker version`。
+- 若會建立 image、container、volume 或 network，先確認名稱是練習用，不要誤刪正式資源。
+- 若會處理連線字串、密碼或 token，使用環境變數或 secret，不要寫死在 Dockerfile。
+
+### 範例形式與實作
+
+本篇範例以 Docker 原生命令、Dockerfile、Compose YAML 或 C# / ASP.NET Core 專案整合為主。讀的時候不要只複製命令，要同時記下：這一步建立了什麼資源、是否會修改本機 Docker 狀態、執行後要用哪個命令驗證。
+
+### 如果結果和預期不同
+
+- Container 沒起來：先看 `docker ps -a` 和 `docker logs <container>`。
+- Port 連不到：確認 `-p` / compose ports、應用程式 listen 位址與防火牆。
+- Image 建置失敗：先看第一個 Dockerfile 錯誤，確認 COPY 路徑、build context、NuGet restore 與 `.dockerignore`。
+- 服務彼此連不到：確認 compose service name、network、connection string，不要在 container 內使用 `localhost` 連另一個 container。
+
+### 做完後檢查
+
+- 用 `docker ps` 確認 container 狀態。
+- 用 `docker logs` 或應用程式 endpoint 確認服務真的啟動。
+- 若有 volume 或 database，重啟 container 後確認資料是否仍存在。
+
+### 小練習
+
+1. 把範例中的 image 或 container 名稱改成自己的專案名稱。
+2. 故意改錯 port 或 connection string，練習從 log 找原因。
+3. 寫一句話記錄這篇 Docker 概念解決了哪個部署或開發痛點。
 
 ### 一句話總結
 
@@ -305,6 +461,45 @@ app.Run();
 - 你的專案完全依賴 Windows 桌面 UI，例如 WinForms 入門練習。
 - 團隊尚未理解 image 與資料保存，直接把正式資料放進 container 內。
 
+### 學完這篇你應該會做到什麼
+
+- 能說明 Day 5：所以說 Docker 是什麼？ 對 C# / ASP.NET Core 開發流程的影響。
+- 能照著本篇範例完成 Docker 指令、Dockerfile、Compose、network、image 或 volume 操作。
+- 能用 `docker ps`、`docker logs`、瀏覽器、API response、建置輸出或資料持久化結果驗證自己做對了。
+
+### 實作任務情境
+
+把這篇當成一個容器化任務：你要讓一個 C# / ASP.NET Core 專案更容易在不同機器上建置、啟動、連線或保存資料，並能用 Docker 工具查證結果。
+
+### 操作前檢查
+
+- 確認 Docker Desktop 或 Docker Engine 已啟動，並且目前終端機能執行 `docker version`。
+- 若會建立 image、container、volume 或 network，先確認名稱是練習用，不要誤刪正式資源。
+- 若會處理連線字串、密碼或 token，使用環境變數或 secret，不要寫死在 Dockerfile。
+
+### 範例形式與實作
+
+本篇範例以 Docker 原生命令、Dockerfile、Compose YAML 或 C# / ASP.NET Core 專案整合為主。讀的時候不要只複製命令，要同時記下：這一步建立了什麼資源、是否會修改本機 Docker 狀態、執行後要用哪個命令驗證。
+
+### 如果結果和預期不同
+
+- Container 沒起來：先看 `docker ps -a` 和 `docker logs <container>`。
+- Port 連不到：確認 `-p` / compose ports、應用程式 listen 位址與防火牆。
+- Image 建置失敗：先看第一個 Dockerfile 錯誤，確認 COPY 路徑、build context、NuGet restore 與 `.dockerignore`。
+- 服務彼此連不到：確認 compose service name、network、connection string，不要在 container 內使用 `localhost` 連另一個 container。
+
+### 做完後檢查
+
+- 用 `docker ps` 確認 container 狀態。
+- 用 `docker logs` 或應用程式 endpoint 確認服務真的啟動。
+- 若有 volume 或 database，重啟 container 後確認資料是否仍存在。
+
+### 小練習
+
+1. 把範例中的 image 或 container 名稱改成自己的專案名稱。
+2. 故意改錯 port 或 connection string，練習從 log 找原因。
+3. 寫一句話記錄這篇 Docker 概念解決了哪個部署或開發痛點。
+
 ### 一句話總結
 
 Docker 是把「程式如何被執行」變成專案一部分的工具。
@@ -335,6 +530,45 @@ docker stop <container-id>
 
 修正方向：理解 `hostPort:containerPort`。
 
+### 學完這篇你應該會做到什麼
+
+- 能說明 Day 6：啟動 Docker Container 對 C# / ASP.NET Core 開發流程的影響。
+- 能照著本篇範例完成 Docker 指令、Dockerfile、Compose、network、image 或 volume 操作。
+- 能用 `docker ps`、`docker logs`、瀏覽器、API response、建置輸出或資料持久化結果驗證自己做對了。
+
+### 實作任務情境
+
+把這篇當成一個容器化任務：你要讓一個 C# / ASP.NET Core 專案更容易在不同機器上建置、啟動、連線或保存資料，並能用 Docker 工具查證結果。
+
+### 操作前檢查
+
+- 確認 Docker Desktop 或 Docker Engine 已啟動，並且目前終端機能執行 `docker version`。
+- 若會建立 image、container、volume 或 network，先確認名稱是練習用，不要誤刪正式資源。
+- 若會處理連線字串、密碼或 token，使用環境變數或 secret，不要寫死在 Dockerfile。
+
+### 範例形式與實作
+
+本篇範例以 Docker 原生命令、Dockerfile、Compose YAML 或 C# / ASP.NET Core 專案整合為主。讀的時候不要只複製命令，要同時記下：這一步建立了什麼資源、是否會修改本機 Docker 狀態、執行後要用哪個命令驗證。
+
+### 如果結果和預期不同
+
+- Container 沒起來：先看 `docker ps -a` 和 `docker logs <container>`。
+- Port 連不到：確認 `-p` / compose ports、應用程式 listen 位址與防火牆。
+- Image 建置失敗：先看第一個 Dockerfile 錯誤，確認 COPY 路徑、build context、NuGet restore 與 `.dockerignore`。
+- 服務彼此連不到：確認 compose service name、network、connection string，不要在 container 內使用 `localhost` 連另一個 container。
+
+### 做完後檢查
+
+- 用 `docker ps` 確認 container 狀態。
+- 用 `docker logs` 或應用程式 endpoint 確認服務真的啟動。
+- 若有 volume 或 database，重啟 container 後確認資料是否仍存在。
+
+### 小練習
+
+1. 把範例中的 image 或 container 名稱改成自己的專案名稱。
+2. 故意改錯 port 或 connection string，練習從 log 找原因。
+3. 寫一句話記錄這篇 Docker 概念解決了哪個部署或開發痛點。
+
 ### 一句話總結
 
 container 不是啟動就等於外部可連，要明確 publish port。
@@ -360,6 +594,45 @@ ENTRYPOINT ["dotnet", "DockerCSharpDemo.dll"]
 問題：container 會立刻退出，log 顯示找不到檔案。
 
 修正方向：用 `docker logs <container>` 看錯誤，再檢查 `.csproj` 名稱與 `ENTRYPOINT`。
+
+### 學完這篇你應該會做到什麼
+
+- 能說明 Day 7：Container 啟動時發生了什麼？ 對 C# / ASP.NET Core 開發流程的影響。
+- 能照著本篇範例完成 Docker 指令、Dockerfile、Compose、network、image 或 volume 操作。
+- 能用 `docker ps`、`docker logs`、瀏覽器、API response、建置輸出或資料持久化結果驗證自己做對了。
+
+### 實作任務情境
+
+把這篇當成一個容器化任務：你要讓一個 C# / ASP.NET Core 專案更容易在不同機器上建置、啟動、連線或保存資料，並能用 Docker 工具查證結果。
+
+### 操作前檢查
+
+- 確認 Docker Desktop 或 Docker Engine 已啟動，並且目前終端機能執行 `docker version`。
+- 若會建立 image、container、volume 或 network，先確認名稱是練習用，不要誤刪正式資源。
+- 若會處理連線字串、密碼或 token，使用環境變數或 secret，不要寫死在 Dockerfile。
+
+### 範例形式與實作
+
+本篇範例以 Docker 原生命令、Dockerfile、Compose YAML 或 C# / ASP.NET Core 專案整合為主。讀的時候不要只複製命令，要同時記下：這一步建立了什麼資源、是否會修改本機 Docker 狀態、執行後要用哪個命令驗證。
+
+### 如果結果和預期不同
+
+- Container 沒起來：先看 `docker ps -a` 和 `docker logs <container>`。
+- Port 連不到：確認 `-p` / compose ports、應用程式 listen 位址與防火牆。
+- Image 建置失敗：先看第一個 Dockerfile 錯誤，確認 COPY 路徑、build context、NuGet restore 與 `.dockerignore`。
+- 服務彼此連不到：確認 compose service name、network、connection string，不要在 container 內使用 `localhost` 連另一個 container。
+
+### 做完後檢查
+
+- 用 `docker ps` 確認 container 狀態。
+- 用 `docker logs` 或應用程式 endpoint 確認服務真的啟動。
+- 若有 volume 或 database，重啟 container 後確認資料是否仍存在。
+
+### 小練習
+
+1. 把範例中的 image 或 container 名稱改成自己的專案名稱。
+2. 故意改錯 port 或 connection string，練習從 log 找原因。
+3. 寫一句話記錄這篇 Docker 概念解決了哪個部署或開發痛點。
 
 ### 一句話總結
 
@@ -398,6 +671,45 @@ docker run --rm -p 8080:8080 -e DemoMessage="hello config" docker-csharp-demo:de
 
 修正方向：用環境變數、secret manager、雲端 secret 服務。
 
+### 學完這篇你應該會做到什麼
+
+- 能說明 Day 8：Container 操作指令（上） 對 C# / ASP.NET Core 開發流程的影響。
+- 能照著本篇範例完成 Docker 指令、Dockerfile、Compose、network、image 或 volume 操作。
+- 能用 `docker ps`、`docker logs`、瀏覽器、API response、建置輸出或資料持久化結果驗證自己做對了。
+
+### 實作任務情境
+
+把這篇當成一個容器化任務：你要讓一個 C# / ASP.NET Core 專案更容易在不同機器上建置、啟動、連線或保存資料，並能用 Docker 工具查證結果。
+
+### 操作前檢查
+
+- 確認 Docker Desktop 或 Docker Engine 已啟動，並且目前終端機能執行 `docker version`。
+- 若會建立 image、container、volume 或 network，先確認名稱是練習用，不要誤刪正式資源。
+- 若會處理連線字串、密碼或 token，使用環境變數或 secret，不要寫死在 Dockerfile。
+
+### 範例形式與實作
+
+本篇範例以 Docker 原生命令、Dockerfile、Compose YAML 或 C# / ASP.NET Core 專案整合為主。讀的時候不要只複製命令，要同時記下：這一步建立了什麼資源、是否會修改本機 Docker 狀態、執行後要用哪個命令驗證。
+
+### 如果結果和預期不同
+
+- Container 沒起來：先看 `docker ps -a` 和 `docker logs <container>`。
+- Port 連不到：確認 `-p` / compose ports、應用程式 listen 位址與防火牆。
+- Image 建置失敗：先看第一個 Dockerfile 錯誤，確認 COPY 路徑、build context、NuGet restore 與 `.dockerignore`。
+- 服務彼此連不到：確認 compose service name、network、connection string，不要在 container 內使用 `localhost` 連另一個 container。
+
+### 做完後檢查
+
+- 用 `docker ps` 確認 container 狀態。
+- 用 `docker logs` 或應用程式 endpoint 確認服務真的啟動。
+- 若有 volume 或 database，重啟 container 後確認資料是否仍存在。
+
+### 小練習
+
+1. 把範例中的 image 或 container 名稱改成自己的專案名稱。
+2. 故意改錯 port 或 connection string，練習從 log 找原因。
+3. 寫一句話記錄這篇 Docker 概念解決了哪個部署或開發痛點。
+
 ### 一句話總結
 
 `logs`、`inspect`、環境變數，是排查 C# container 的基本工具。
@@ -429,6 +741,45 @@ ls -la /app
 
 修正方向：用環境變數或掛載設定檔，並把正式設定交給部署平台管理。
 
+### 學完這篇你應該會做到什麼
+
+- 能說明 Day 9：Container 操作指令（中） 對 C# / ASP.NET Core 開發流程的影響。
+- 能照著本篇範例完成 Docker 指令、Dockerfile、Compose、network、image 或 volume 操作。
+- 能用 `docker ps`、`docker logs`、瀏覽器、API response、建置輸出或資料持久化結果驗證自己做對了。
+
+### 實作任務情境
+
+把這篇當成一個容器化任務：你要讓一個 C# / ASP.NET Core 專案更容易在不同機器上建置、啟動、連線或保存資料，並能用 Docker 工具查證結果。
+
+### 操作前檢查
+
+- 確認 Docker Desktop 或 Docker Engine 已啟動，並且目前終端機能執行 `docker version`。
+- 若會建立 image、container、volume 或 network，先確認名稱是練習用，不要誤刪正式資源。
+- 若會處理連線字串、密碼或 token，使用環境變數或 secret，不要寫死在 Dockerfile。
+
+### 範例形式與實作
+
+本篇範例以 Docker 原生命令、Dockerfile、Compose YAML 或 C# / ASP.NET Core 專案整合為主。讀的時候不要只複製命令，要同時記下：這一步建立了什麼資源、是否會修改本機 Docker 狀態、執行後要用哪個命令驗證。
+
+### 如果結果和預期不同
+
+- Container 沒起來：先看 `docker ps -a` 和 `docker logs <container>`。
+- Port 連不到：確認 `-p` / compose ports、應用程式 listen 位址與防火牆。
+- Image 建置失敗：先看第一個 Dockerfile 錯誤，確認 COPY 路徑、build context、NuGet restore 與 `.dockerignore`。
+- 服務彼此連不到：確認 compose service name、network、connection string，不要在 container 內使用 `localhost` 連另一個 container。
+
+### 做完後檢查
+
+- 用 `docker ps` 確認 container 狀態。
+- 用 `docker logs` 或應用程式 endpoint 確認服務真的啟動。
+- 若有 volume 或 database，重啟 container 後確認資料是否仍存在。
+
+### 小練習
+
+1. 把範例中的 image 或 container 名稱改成自己的專案名稱。
+2. 故意改錯 port 或 connection string，練習從 log 找原因。
+3. 寫一句話記錄這篇 Docker 概念解決了哪個部署或開發痛點。
+
 ### 一句話總結
 
 可以進 container 檢查，但不應該把手動修改 container 當部署方式。
@@ -456,6 +807,45 @@ docker image prune
 
 修正方向：先用 `docker ps -a`、`docker volume ls` 確認再清。
 
+### 學完這篇你應該會做到什麼
+
+- 能說明 Day 10：Container 操作指令（下） 對 C# / ASP.NET Core 開發流程的影響。
+- 能照著本篇範例完成 Docker 指令、Dockerfile、Compose、network、image 或 volume 操作。
+- 能用 `docker ps`、`docker logs`、瀏覽器、API response、建置輸出或資料持久化結果驗證自己做對了。
+
+### 實作任務情境
+
+把這篇當成一個容器化任務：你要讓一個 C# / ASP.NET Core 專案更容易在不同機器上建置、啟動、連線或保存資料，並能用 Docker 工具查證結果。
+
+### 操作前檢查
+
+- 確認 Docker Desktop 或 Docker Engine 已啟動，並且目前終端機能執行 `docker version`。
+- 若會建立 image、container、volume 或 network，先確認名稱是練習用，不要誤刪正式資源。
+- 若會處理連線字串、密碼或 token，使用環境變數或 secret，不要寫死在 Dockerfile。
+
+### 範例形式與實作
+
+本篇範例以 Docker 原生命令、Dockerfile、Compose YAML 或 C# / ASP.NET Core 專案整合為主。讀的時候不要只複製命令，要同時記下：這一步建立了什麼資源、是否會修改本機 Docker 狀態、執行後要用哪個命令驗證。
+
+### 如果結果和預期不同
+
+- Container 沒起來：先看 `docker ps -a` 和 `docker logs <container>`。
+- Port 連不到：確認 `-p` / compose ports、應用程式 listen 位址與防火牆。
+- Image 建置失敗：先看第一個 Dockerfile 錯誤，確認 COPY 路徑、build context、NuGet restore 與 `.dockerignore`。
+- 服務彼此連不到：確認 compose service name、network、connection string，不要在 container 內使用 `localhost` 連另一個 container。
+
+### 做完後檢查
+
+- 用 `docker ps` 確認 container 狀態。
+- 用 `docker logs` 或應用程式 endpoint 確認服務真的啟動。
+- 若有 volume 或 database，重啟 container 後確認資料是否仍存在。
+
+### 小練習
+
+1. 把範例中的 image 或 container 名稱改成自己的專案名稱。
+2. 故意改錯 port 或 connection string，練習從 log 找原因。
+3. 寫一句話記錄這篇 Docker 概念解決了哪個部署或開發痛點。
+
 ### 一句話總結
 
 清理 Docker 資源前，要知道自己正在刪 container、image 還是 volume。
@@ -480,6 +870,45 @@ VM 包一整套作業系統；container 共用 host kernel，只包應用程式�
 問題：難維護、難擴充、難監控。
 
 修正方向：一個 container 優先負責一個主要 process。
+
+### 學完這篇你應該會做到什麼
+
+- 能說明 Day 11：Container vs 虛擬機 對 C# / ASP.NET Core 開發流程的影響。
+- 能照著本篇範例完成 Docker 指令、Dockerfile、Compose、network、image 或 volume 操作。
+- 能用 `docker ps`、`docker logs`、瀏覽器、API response、建置輸出或資料持久化結果驗證自己做對了。
+
+### 實作任務情境
+
+把這篇當成一個容器化任務：你要讓一個 C# / ASP.NET Core 專案更容易在不同機器上建置、啟動、連線或保存資料，並能用 Docker 工具查證結果。
+
+### 操作前檢查
+
+- 確認 Docker Desktop 或 Docker Engine 已啟動，並且目前終端機能執行 `docker version`。
+- 若會建立 image、container、volume 或 network，先確認名稱是練習用，不要誤刪正式資源。
+- 若會處理連線字串、密碼或 token，使用環境變數或 secret，不要寫死在 Dockerfile。
+
+### 範例形式與實作
+
+本篇範例以 Docker 原生命令、Dockerfile、Compose YAML 或 C# / ASP.NET Core 專案整合為主。讀的時候不要只複製命令，要同時記下：這一步建立了什麼資源、是否會修改本機 Docker 狀態、執行後要用哪個命令驗證。
+
+### 如果結果和預期不同
+
+- Container 沒起來：先看 `docker ps -a` 和 `docker logs <container>`。
+- Port 連不到：確認 `-p` / compose ports、應用程式 listen 位址與防火牆。
+- Image 建置失敗：先看第一個 Dockerfile 錯誤，確認 COPY 路徑、build context、NuGet restore 與 `.dockerignore`。
+- 服務彼此連不到：確認 compose service name、network、connection string，不要在 container 內使用 `localhost` 連另一個 container。
+
+### 做完後檢查
+
+- 用 `docker ps` 確認 container 狀態。
+- 用 `docker logs` 或應用程式 endpoint 確認服務真的啟動。
+- 若有 volume 或 database，重啟 container 後確認資料是否仍存在。
+
+### 小練習
+
+1. 把範例中的 image 或 container 名稱改成自己的專案名稱。
+2. 故意改錯 port 或 connection string，練習從 log 找原因。
+3. 寫一句話記錄這篇 Docker 概念解決了哪個部署或開發痛點。
 
 ### 一句話總結
 
@@ -512,6 +941,45 @@ app.MapPost("/temp-file", () =>
 
 修正方向：使用 object storage、volume 或外部檔案服務。
 
+### 學完這篇你應該會做到什麼
+
+- 能說明 Day 12：深入 Container 內部（上） 對 C# / ASP.NET Core 開發流程的影響。
+- 能照著本篇範例完成 Docker 指令、Dockerfile、Compose、network、image 或 volume 操作。
+- 能用 `docker ps`、`docker logs`、瀏覽器、API response、建置輸出或資料持久化結果驗證自己做對了。
+
+### 實作任務情境
+
+把這篇當成一個容器化任務：你要讓一個 C# / ASP.NET Core 專案更容易在不同機器上建置、啟動、連線或保存資料，並能用 Docker 工具查證結果。
+
+### 操作前檢查
+
+- 確認 Docker Desktop 或 Docker Engine 已啟動，並且目前終端機能執行 `docker version`。
+- 若會建立 image、container、volume 或 network，先確認名稱是練習用，不要誤刪正式資源。
+- 若會處理連線字串、密碼或 token，使用環境變數或 secret，不要寫死在 Dockerfile。
+
+### 範例形式與實作
+
+本篇範例以 Docker 原生命令、Dockerfile、Compose YAML 或 C# / ASP.NET Core 專案整合為主。讀的時候不要只複製命令，要同時記下：這一步建立了什麼資源、是否會修改本機 Docker 狀態、執行後要用哪個命令驗證。
+
+### 如果結果和預期不同
+
+- Container 沒起來：先看 `docker ps -a` 和 `docker logs <container>`。
+- Port 連不到：確認 `-p` / compose ports、應用程式 listen 位址與防火牆。
+- Image 建置失敗：先看第一個 Dockerfile 錯誤，確認 COPY 路徑、build context、NuGet restore 與 `.dockerignore`。
+- 服務彼此連不到：確認 compose service name、network、connection string，不要在 container 內使用 `localhost` 連另一個 container。
+
+### 做完後檢查
+
+- 用 `docker ps` 確認 container 狀態。
+- 用 `docker logs` 或應用程式 endpoint 確認服務真的啟動。
+- 若有 volume 或 database，重啟 container 後確認資料是否仍存在。
+
+### 小練習
+
+1. 把範例中的 image 或 container 名稱改成自己的專案名稱。
+2. 故意改錯 port 或 connection string，練習從 log 找原因。
+3. 寫一句話記錄這篇 Docker 概念解決了哪個部署或開發痛點。
+
 ### 一句話總結
 
 container 內的可寫層是短暫的，不要把它當長期儲存。
@@ -538,6 +1006,45 @@ USER app
 
 修正方向：debug image 和 production image 分開；正式 image 使用較小、非 root 的 runtime image。
 
+### 學完這篇你應該會做到什麼
+
+- 能說明 Day 13：深入 Container 內部（下） 對 C# / ASP.NET Core 開發流程的影響。
+- 能照著本篇範例完成 Docker 指令、Dockerfile、Compose、network、image 或 volume 操作。
+- 能用 `docker ps`、`docker logs`、瀏覽器、API response、建置輸出或資料持久化結果驗證自己做對了。
+
+### 實作任務情境
+
+把這篇當成一個容器化任務：你要讓一個 C# / ASP.NET Core 專案更容易在不同機器上建置、啟動、連線或保存資料，並能用 Docker 工具查證結果。
+
+### 操作前檢查
+
+- 確認 Docker Desktop 或 Docker Engine 已啟動，並且目前終端機能執行 `docker version`。
+- 若會建立 image、container、volume 或 network，先確認名稱是練習用，不要誤刪正式資源。
+- 若會處理連線字串、密碼或 token，使用環境變數或 secret，不要寫死在 Dockerfile。
+
+### 範例形式與實作
+
+本篇範例以 Docker 原生命令、Dockerfile、Compose YAML 或 C# / ASP.NET Core 專案整合為主。讀的時候不要只複製命令，要同時記下：這一步建立了什麼資源、是否會修改本機 Docker 狀態、執行後要用哪個命令驗證。
+
+### 如果結果和預期不同
+
+- Container 沒起來：先看 `docker ps -a` 和 `docker logs <container>`。
+- Port 連不到：確認 `-p` / compose ports、應用程式 listen 位址與防火牆。
+- Image 建置失敗：先看第一個 Dockerfile 錯誤，確認 COPY 路徑、build context、NuGet restore 與 `.dockerignore`。
+- 服務彼此連不到：確認 compose service name、network、connection string，不要在 container 內使用 `localhost` 連另一個 container。
+
+### 做完後檢查
+
+- 用 `docker ps` 確認 container 狀態。
+- 用 `docker logs` 或應用程式 endpoint 確認服務真的啟動。
+- 若有 volume 或 database，重啟 container 後確認資料是否仍存在。
+
+### 小練習
+
+1. 把範例中的 image 或 container 名稱改成自己的專案名稱。
+2. 故意改錯 port 或 connection string，練習從 log 找原因。
+3. 寫一句話記錄這篇 Docker 概念解決了哪個部署或開發痛點。
+
 ### 一句話總結
 
 container 有隔離，但安全仍要靠最小權限與乾淨 image。
@@ -562,6 +1069,45 @@ docker run --rm --network demo-net --name api -p 8080:8080 docker-csharp-demo:de
 問題：`localhost` 是「自己這個 container」，不是別的 container。
 
 修正方向：用 Compose service name，例如 `Host=postgres`。
+
+### 學完這篇你應該會做到什麼
+
+- 能說明 Day 14：Docker 的網路世界（上） 對 C# / ASP.NET Core 開發流程的影響。
+- 能照著本篇範例完成 Docker 指令、Dockerfile、Compose、network、image 或 volume 操作。
+- 能用 `docker ps`、`docker logs`、瀏覽器、API response、建置輸出或資料持久化結果驗證自己做對了。
+
+### 實作任務情境
+
+把這篇當成一個容器化任務：你要讓一個 C# / ASP.NET Core 專案更容易在不同機器上建置、啟動、連線或保存資料，並能用 Docker 工具查證結果。
+
+### 操作前檢查
+
+- 確認 Docker Desktop 或 Docker Engine 已啟動，並且目前終端機能執行 `docker version`。
+- 若會建立 image、container、volume 或 network，先確認名稱是練習用，不要誤刪正式資源。
+- 若會處理連線字串、密碼或 token，使用環境變數或 secret，不要寫死在 Dockerfile。
+
+### 範例形式與實作
+
+本篇範例以 Docker 原生命令、Dockerfile、Compose YAML 或 C# / ASP.NET Core 專案整合為主。讀的時候不要只複製命令，要同時記下：這一步建立了什麼資源、是否會修改本機 Docker 狀態、執行後要用哪個命令驗證。
+
+### 如果結果和預期不同
+
+- Container 沒起來：先看 `docker ps -a` 和 `docker logs <container>`。
+- Port 連不到：確認 `-p` / compose ports、應用程式 listen 位址與防火牆。
+- Image 建置失敗：先看第一個 Dockerfile 錯誤，確認 COPY 路徑、build context、NuGet restore 與 `.dockerignore`。
+- 服務彼此連不到：確認 compose service name、network、connection string，不要在 container 內使用 `localhost` 連另一個 container。
+
+### 做完後檢查
+
+- 用 `docker ps` 確認 container 狀態。
+- 用 `docker logs` 或應用程式 endpoint 確認服務真的啟動。
+- 若有 volume 或 database，重啟 container 後確認資料是否仍存在。
+
+### 小練習
+
+1. 把範例中的 image 或 container 名稱改成自己的專案名稱。
+2. 故意改錯 port 或 connection string，練習從 log 找原因。
+3. 寫一句話記錄這篇 Docker 概念解決了哪個部署或開發痛點。
 
 ### 一句話總結
 
@@ -602,6 +1148,45 @@ volumes:
 
 修正方向：在 Compose 裡用 `Host=db`，因為 `db` 是 service name。
 
+### 學完這篇你應該會做到什麼
+
+- 能說明 Day 15：Docker 的網路世界（下） 對 C# / ASP.NET Core 開發流程的影響。
+- 能照著本篇範例完成 Docker 指令、Dockerfile、Compose、network、image 或 volume 操作。
+- 能用 `docker ps`、`docker logs`、瀏覽器、API response、建置輸出或資料持久化結果驗證自己做對了。
+
+### 實作任務情境
+
+把這篇當成一個容器化任務：你要讓一個 C# / ASP.NET Core 專案更容易在不同機器上建置、啟動、連線或保存資料，並能用 Docker 工具查證結果。
+
+### 操作前檢查
+
+- 確認 Docker Desktop 或 Docker Engine 已啟動，並且目前終端機能執行 `docker version`。
+- 若會建立 image、container、volume 或 network，先確認名稱是練習用，不要誤刪正式資源。
+- 若會處理連線字串、密碼或 token，使用環境變數或 secret，不要寫死在 Dockerfile。
+
+### 範例形式與實作
+
+本篇範例以 Docker 原生命令、Dockerfile、Compose YAML 或 C# / ASP.NET Core 專案整合為主。讀的時候不要只複製命令，要同時記下：這一步建立了什麼資源、是否會修改本機 Docker 狀態、執行後要用哪個命令驗證。
+
+### 如果結果和預期不同
+
+- Container 沒起來：先看 `docker ps -a` 和 `docker logs <container>`。
+- Port 連不到：確認 `-p` / compose ports、應用程式 listen 位址與防火牆。
+- Image 建置失敗：先看第一個 Dockerfile 錯誤，確認 COPY 路徑、build context、NuGet restore 與 `.dockerignore`。
+- 服務彼此連不到：確認 compose service name、network、connection string，不要在 container 內使用 `localhost` 連另一個 container。
+
+### 做完後檢查
+
+- 用 `docker ps` 確認 container 狀態。
+- 用 `docker logs` 或應用程式 endpoint 確認服務真的啟動。
+- 若有 volume 或 database，重啟 container 後確認資料是否仍存在。
+
+### 小練習
+
+1. 把範例中的 image 或 container 名稱改成自己的專案名稱。
+2. 故意改錯 port 或 connection string，練習從 log 找原因。
+3. 寫一句話記錄這篇 Docker 概念解決了哪個部署或開發痛點。
+
 ### 一句話總結
 
 Compose 裡的 service name 就是 container 之間的 DNS 名稱。
@@ -632,6 +1217,45 @@ docker network rm app-net
 
 修正方向：用自訂 network 與 container name / service name。
 
+### 學完這篇你應該會做到什麼
+
+- 能說明 Day 16：Docker Network 指令 對 C# / ASP.NET Core 開發流程的影響。
+- 能照著本篇範例完成 Docker 指令、Dockerfile、Compose、network、image 或 volume 操作。
+- 能用 `docker ps`、`docker logs`、瀏覽器、API response、建置輸出或資料持久化結果驗證自己做對了。
+
+### 實作任務情境
+
+把這篇當成一個容器化任務：你要讓一個 C# / ASP.NET Core 專案更容易在不同機器上建置、啟動、連線或保存資料，並能用 Docker 工具查證結果。
+
+### 操作前檢查
+
+- 確認 Docker Desktop 或 Docker Engine 已啟動，並且目前終端機能執行 `docker version`。
+- 若會建立 image、container、volume 或 network，先確認名稱是練習用，不要誤刪正式資源。
+- 若會處理連線字串、密碼或 token，使用環境變數或 secret，不要寫死在 Dockerfile。
+
+### 範例形式與實作
+
+本篇範例以 Docker 原生命令、Dockerfile、Compose YAML 或 C# / ASP.NET Core 專案整合為主。讀的時候不要只複製命令，要同時記下：這一步建立了什麼資源、是否會修改本機 Docker 狀態、執行後要用哪個命令驗證。
+
+### 如果結果和預期不同
+
+- Container 沒起來：先看 `docker ps -a` 和 `docker logs <container>`。
+- Port 連不到：確認 `-p` / compose ports、應用程式 listen 位址與防火牆。
+- Image 建置失敗：先看第一個 Dockerfile 錯誤，確認 COPY 路徑、build context、NuGet restore 與 `.dockerignore`。
+- 服務彼此連不到：確認 compose service name、network、connection string，不要在 container 內使用 `localhost` 連另一個 container。
+
+### 做完後檢查
+
+- 用 `docker ps` 確認 container 狀態。
+- 用 `docker logs` 或應用程式 endpoint 確認服務真的啟動。
+- 若有 volume 或 database，重啟 container 後確認資料是否仍存在。
+
+### 小練習
+
+1. 把範例中的 image 或 container 名稱改成自己的專案名稱。
+2. 故意改錯 port 或 connection string，練習從 log 找原因。
+3. 寫一句話記錄這篇 Docker 概念解決了哪個部署或開發痛點。
+
 ### 一句話總結
 
 Docker network 的重點不是背指令，而是讓服務用穩定名稱互相找到。
@@ -660,6 +1284,45 @@ Docker 會替同一個 network 裡的 container 提供 DNS。Compose 會自動�
 
 修正方向：使用 DNS 名稱、環境變數與部署平台提供的 service discovery。
 
+### 學完這篇你應該會做到什麼
+
+- 能說明 Day 17：Docker 中的 DNS 對 C# / ASP.NET Core 開發流程的影響。
+- 能照著本篇範例完成 Docker 指令、Dockerfile、Compose、network、image 或 volume 操作。
+- 能用 `docker ps`、`docker logs`、瀏覽器、API response、建置輸出或資料持久化結果驗證自己做對了。
+
+### 實作任務情境
+
+把這篇當成一個容器化任務：你要讓一個 C# / ASP.NET Core 專案更容易在不同機器上建置、啟動、連線或保存資料，並能用 Docker 工具查證結果。
+
+### 操作前檢查
+
+- 確認 Docker Desktop 或 Docker Engine 已啟動，並且目前終端機能執行 `docker version`。
+- 若會建立 image、container、volume 或 network，先確認名稱是練習用，不要誤刪正式資源。
+- 若會處理連線字串、密碼或 token，使用環境變數或 secret，不要寫死在 Dockerfile。
+
+### 範例形式與實作
+
+本篇範例以 Docker 原生命令、Dockerfile、Compose YAML 或 C# / ASP.NET Core 專案整合為主。讀的時候不要只複製命令，要同時記下：這一步建立了什麼資源、是否會修改本機 Docker 狀態、執行後要用哪個命令驗證。
+
+### 如果結果和預期不同
+
+- Container 沒起來：先看 `docker ps -a` 和 `docker logs <container>`。
+- Port 連不到：確認 `-p` / compose ports、應用程式 listen 位址與防火牆。
+- Image 建置失敗：先看第一個 Dockerfile 錯誤，確認 COPY 路徑、build context、NuGet restore 與 `.dockerignore`。
+- 服務彼此連不到：確認 compose service name、network、connection string，不要在 container 內使用 `localhost` 連另一個 container。
+
+### 做完後檢查
+
+- 用 `docker ps` 確認 container 狀態。
+- 用 `docker logs` 或應用程式 endpoint 確認服務真的啟動。
+- 若有 volume 或 database，重啟 container 後確認資料是否仍存在。
+
+### 小練習
+
+1. 把範例中的 image 或 container 名稱改成自己的專案名稱。
+2. 故意改錯 port 或 connection string，練習從 log 找原因。
+3. 寫一句話記錄這篇 Docker 概念解決了哪個部署或開發痛點。
+
 ### 一句話總結
 
 container 溝通要靠名稱，不要靠容易變動的 IP。
@@ -686,6 +1349,45 @@ image 是唯讀模板，包含檔案系統與啟動設定。C# image 通常分�
 
 修正方向：multi-stage build，正式階段只用 runtime / aspnet image。
 
+### 學完這篇你應該會做到什麼
+
+- 能說明 Day 18：什麼是 Docker Image？ 對 C# / ASP.NET Core 開發流程的影響。
+- 能照著本篇範例完成 Docker 指令、Dockerfile、Compose、network、image 或 volume 操作。
+- 能用 `docker ps`、`docker logs`、瀏覽器、API response、建置輸出或資料持久化結果驗證自己做對了。
+
+### 實作任務情境
+
+把這篇當成一個容器化任務：你要讓一個 C# / ASP.NET Core 專案更容易在不同機器上建置、啟動、連線或保存資料，並能用 Docker 工具查證結果。
+
+### 操作前檢查
+
+- 確認 Docker Desktop 或 Docker Engine 已啟動，並且目前終端機能執行 `docker version`。
+- 若會建立 image、container、volume 或 network，先確認名稱是練習用，不要誤刪正式資源。
+- 若會處理連線字串、密碼或 token，使用環境變數或 secret，不要寫死在 Dockerfile。
+
+### 範例形式與實作
+
+本篇範例以 Docker 原生命令、Dockerfile、Compose YAML 或 C# / ASP.NET Core 專案整合為主。讀的時候不要只複製命令，要同時記下：這一步建立了什麼資源、是否會修改本機 Docker 狀態、執行後要用哪個命令驗證。
+
+### 如果結果和預期不同
+
+- Container 沒起來：先看 `docker ps -a` 和 `docker logs <container>`。
+- Port 連不到：確認 `-p` / compose ports、應用程式 listen 位址與防火牆。
+- Image 建置失敗：先看第一個 Dockerfile 錯誤，確認 COPY 路徑、build context、NuGet restore 與 `.dockerignore`。
+- 服務彼此連不到：確認 compose service name、network、connection string，不要在 container 內使用 `localhost` 連另一個 container。
+
+### 做完後檢查
+
+- 用 `docker ps` 確認 container 狀態。
+- 用 `docker logs` 或應用程式 endpoint 確認服務真的啟動。
+- 若有 volume 或 database，重啟 container 後確認資料是否仍存在。
+
+### 小練習
+
+1. 把範例中的 image 或 container 名稱改成自己的專案名稱。
+2. 故意改錯 port 或 connection string，練習從 log 找原因。
+3. 寫一句話記錄這篇 Docker 概念解決了哪個部署或開發痛點。
+
 ### 一句話總結
 
 建置需要 SDK，執行通常只需要 runtime。
@@ -710,6 +1412,45 @@ docker tag my-api:dev ghcr.io/your-name/my-api:2026.05.03
 問題：很難追蹤目前跑哪個版本，也不容易 rollback。
 
 修正方向：使用 git SHA、版本號、日期 tag。
+
+### 學完這篇你應該會做到什麼
+
+- 能說明 Day 19：Docker Image 的標籤 對 C# / ASP.NET Core 開發流程的影響。
+- 能照著本篇範例完成 Docker 指令、Dockerfile、Compose、network、image 或 volume 操作。
+- 能用 `docker ps`、`docker logs`、瀏覽器、API response、建置輸出或資料持久化結果驗證自己做對了。
+
+### 實作任務情境
+
+把這篇當成一個容器化任務：你要讓一個 C# / ASP.NET Core 專案更容易在不同機器上建置、啟動、連線或保存資料，並能用 Docker 工具查證結果。
+
+### 操作前檢查
+
+- 確認 Docker Desktop 或 Docker Engine 已啟動，並且目前終端機能執行 `docker version`。
+- 若會建立 image、container、volume 或 network，先確認名稱是練習用，不要誤刪正式資源。
+- 若會處理連線字串、密碼或 token，使用環境變數或 secret，不要寫死在 Dockerfile。
+
+### 範例形式與實作
+
+本篇範例以 Docker 原生命令、Dockerfile、Compose YAML 或 C# / ASP.NET Core 專案整合為主。讀的時候不要只複製命令，要同時記下：這一步建立了什麼資源、是否會修改本機 Docker 狀態、執行後要用哪個命令驗證。
+
+### 如果結果和預期不同
+
+- Container 沒起來：先看 `docker ps -a` 和 `docker logs <container>`。
+- Port 連不到：確認 `-p` / compose ports、應用程式 listen 位址與防火牆。
+- Image 建置失敗：先看第一個 Dockerfile 錯誤，確認 COPY 路徑、build context、NuGet restore 與 `.dockerignore`。
+- 服務彼此連不到：確認 compose service name、network、connection string，不要在 container 內使用 `localhost` 連另一個 container。
+
+### 做完後檢查
+
+- 用 `docker ps` 確認 container 狀態。
+- 用 `docker logs` 或應用程式 endpoint 確認服務真的啟動。
+- 若有 volume 或 database，重啟 container 後確認資料是否仍存在。
+
+### 小練習
+
+1. 把範例中的 image 或 container 名稱改成自己的專案名稱。
+2. 故意改錯 port 或 connection string，練習從 log 找原因。
+3. 寫一句話記錄這篇 Docker 概念解決了哪個部署或開發痛點。
 
 ### 一句話總結
 
@@ -744,6 +1485,45 @@ RUN dotnet publish -c Release -o /app/publish
 
 修正方向：先 copy `.csproj` restore，再 copy 全部原始碼。
 
+### 學完這篇你應該會做到什麼
+
+- 能說明 Day 20：Docker Image 快取的秘密 對 C# / ASP.NET Core 開發流程的影響。
+- 能照著本篇範例完成 Docker 指令、Dockerfile、Compose、network、image 或 volume 操作。
+- 能用 `docker ps`、`docker logs`、瀏覽器、API response、建置輸出或資料持久化結果驗證自己做對了。
+
+### 實作任務情境
+
+把這篇當成一個容器化任務：你要讓一個 C# / ASP.NET Core 專案更容易在不同機器上建置、啟動、連線或保存資料，並能用 Docker 工具查證結果。
+
+### 操作前檢查
+
+- 確認 Docker Desktop 或 Docker Engine 已啟動，並且目前終端機能執行 `docker version`。
+- 若會建立 image、container、volume 或 network，先確認名稱是練習用，不要誤刪正式資源。
+- 若會處理連線字串、密碼或 token，使用環境變數或 secret，不要寫死在 Dockerfile。
+
+### 範例形式與實作
+
+本篇範例以 Docker 原生命令、Dockerfile、Compose YAML 或 C# / ASP.NET Core 專案整合為主。讀的時候不要只複製命令，要同時記下：這一步建立了什麼資源、是否會修改本機 Docker 狀態、執行後要用哪個命令驗證。
+
+### 如果結果和預期不同
+
+- Container 沒起來：先看 `docker ps -a` 和 `docker logs <container>`。
+- Port 連不到：確認 `-p` / compose ports、應用程式 listen 位址與防火牆。
+- Image 建置失敗：先看第一個 Dockerfile 錯誤，確認 COPY 路徑、build context、NuGet restore 與 `.dockerignore`。
+- 服務彼此連不到：確認 compose service name、network、connection string，不要在 container 內使用 `localhost` 連另一個 container。
+
+### 做完後檢查
+
+- 用 `docker ps` 確認 container 狀態。
+- 用 `docker logs` 或應用程式 endpoint 確認服務真的啟動。
+- 若有 volume 或 database，重啟 container 後確認資料是否仍存在。
+
+### 小練習
+
+1. 把範例中的 image 或 container 名稱改成自己的專案名稱。
+2. 故意改錯 port 或 connection string，練習從 log 找原因。
+3. 寫一句話記錄這篇 Docker 概念解決了哪個部署或開發痛點。
+
 ### 一句話總結
 
 Dockerfile 順序會影響建置速度，.NET 專案要特別保護 restore cache。
@@ -770,6 +1550,45 @@ app.Logger.LogInformation("API started at {Time}", DateTimeOffset.UtcNow);
 
 修正方向：密碼透過環境變數、secret、Key Vault 或部署平台注入。
 
+### 學完這篇你應該會做到什麼
+
+- 能說明 Day 21：Docker Image 的唯讀性 對 C# / ASP.NET Core 開發流程的影響。
+- 能照著本篇範例完成 Docker 指令、Dockerfile、Compose、network、image 或 volume 操作。
+- 能用 `docker ps`、`docker logs`、瀏覽器、API response、建置輸出或資料持久化結果驗證自己做對了。
+
+### 實作任務情境
+
+把這篇當成一個容器化任務：你要讓一個 C# / ASP.NET Core 專案更容易在不同機器上建置、啟動、連線或保存資料，並能用 Docker 工具查證結果。
+
+### 操作前檢查
+
+- 確認 Docker Desktop 或 Docker Engine 已啟動，並且目前終端機能執行 `docker version`。
+- 若會建立 image、container、volume 或 network，先確認名稱是練習用，不要誤刪正式資源。
+- 若會處理連線字串、密碼或 token，使用環境變數或 secret，不要寫死在 Dockerfile。
+
+### 範例形式與實作
+
+本篇範例以 Docker 原生命令、Dockerfile、Compose YAML 或 C# / ASP.NET Core 專案整合為主。讀的時候不要只複製命令，要同時記下：這一步建立了什麼資源、是否會修改本機 Docker 狀態、執行後要用哪個命令驗證。
+
+### 如果結果和預期不同
+
+- Container 沒起來：先看 `docker ps -a` 和 `docker logs <container>`。
+- Port 連不到：確認 `-p` / compose ports、應用程式 listen 位址與防火牆。
+- Image 建置失敗：先看第一個 Dockerfile 錯誤，確認 COPY 路徑、build context、NuGet restore 與 `.dockerignore`。
+- 服務彼此連不到：確認 compose service name、network、connection string，不要在 container 內使用 `localhost` 連另一個 container。
+
+### 做完後檢查
+
+- 用 `docker ps` 確認 container 狀態。
+- 用 `docker logs` 或應用程式 endpoint 確認服務真的啟動。
+- 若有 volume 或 database，重啟 container 後確認資料是否仍存在。
+
+### 小練習
+
+1. 把範例中的 image 或 container 名稱改成自己的專案名稱。
+2. 故意改錯 port 或 connection string，練習從 log 找原因。
+3. 寫一句話記錄這篇 Docker 概念解決了哪個部署或開發痛點。
+
 ### 一句話總結
 
 image 應該描述程式與執行環境，不應該包含秘密或執行後資料。
@@ -795,6 +1614,45 @@ docker push yourname/my-api:1.0.0
 問題：原始檔、設定、套件版本與內部路徑可能外洩。
 
 修正方向：確認 registry 權限與 repository visibility。
+
+### 學完這篇你應該會做到什麼
+
+- 能說明 Day 22：推送映像檔至 DockerHub 對 C# / ASP.NET Core 開發流程的影響。
+- 能照著本篇範例完成 Docker 指令、Dockerfile、Compose、network、image 或 volume 操作。
+- 能用 `docker ps`、`docker logs`、瀏覽器、API response、建置輸出或資料持久化結果驗證自己做對了。
+
+### 實作任務情境
+
+把這篇當成一個容器化任務：你要讓一個 C# / ASP.NET Core 專案更容易在不同機器上建置、啟動、連線或保存資料，並能用 Docker 工具查證結果。
+
+### 操作前檢查
+
+- 確認 Docker Desktop 或 Docker Engine 已啟動，並且目前終端機能執行 `docker version`。
+- 若會建立 image、container、volume 或 network，先確認名稱是練習用，不要誤刪正式資源。
+- 若會處理連線字串、密碼或 token，使用環境變數或 secret，不要寫死在 Dockerfile。
+
+### 範例形式與實作
+
+本篇範例以 Docker 原生命令、Dockerfile、Compose YAML 或 C# / ASP.NET Core 專案整合為主。讀的時候不要只複製命令，要同時記下：這一步建立了什麼資源、是否會修改本機 Docker 狀態、執行後要用哪個命令驗證。
+
+### 如果結果和預期不同
+
+- Container 沒起來：先看 `docker ps -a` 和 `docker logs <container>`。
+- Port 連不到：確認 `-p` / compose ports、應用程式 listen 位址與防火牆。
+- Image 建置失敗：先看第一個 Dockerfile 錯誤，確認 COPY 路徑、build context、NuGet restore 與 `.dockerignore`。
+- 服務彼此連不到：確認 compose service name、network、connection string，不要在 container 內使用 `localhost` 連另一個 container。
+
+### 做完後檢查
+
+- 用 `docker ps` 確認 container 狀態。
+- 用 `docker logs` 或應用程式 endpoint 確認服務真的啟動。
+- 若有 volume 或 database，重啟 container 後確認資料是否仍存在。
+
+### 小練習
+
+1. 把範例中的 image 或 container 名稱改成自己的專案名稱。
+2. 故意改錯 port 或 connection string，練習從 log 找原因。
+3. 寫一句話記錄這篇 Docker 概念解決了哪個部署或開發痛點。
 
 ### 一句話總結
 
@@ -824,6 +1682,45 @@ mcr.microsoft.com/dotnet/aspnet:10.0
 問題：供應鏈風險高。
 
 修正方向：優先使用官方 image、可信任組織 image，並固定版本 tag。
+
+### 學完這篇你應該會做到什麼
+
+- 能說明 Day 23：Image 完整名稱與 Registry 對 C# / ASP.NET Core 開發流程的影響。
+- 能照著本篇範例完成 Docker 指令、Dockerfile、Compose、network、image 或 volume 操作。
+- 能用 `docker ps`、`docker logs`、瀏覽器、API response、建置輸出或資料持久化結果驗證自己做對了。
+
+### 實作任務情境
+
+把這篇當成一個容器化任務：你要讓一個 C# / ASP.NET Core 專案更容易在不同機器上建置、啟動、連線或保存資料，並能用 Docker 工具查證結果。
+
+### 操作前檢查
+
+- 確認 Docker Desktop 或 Docker Engine 已啟動，並且目前終端機能執行 `docker version`。
+- 若會建立 image、container、volume 或 network，先確認名稱是練習用，不要誤刪正式資源。
+- 若會處理連線字串、密碼或 token，使用環境變數或 secret，不要寫死在 Dockerfile。
+
+### 範例形式與實作
+
+本篇範例以 Docker 原生命令、Dockerfile、Compose YAML 或 C# / ASP.NET Core 專案整合為主。讀的時候不要只複製命令，要同時記下：這一步建立了什麼資源、是否會修改本機 Docker 狀態、執行後要用哪個命令驗證。
+
+### 如果結果和預期不同
+
+- Container 沒起來：先看 `docker ps -a` 和 `docker logs <container>`。
+- Port 連不到：確認 `-p` / compose ports、應用程式 listen 位址與防火牆。
+- Image 建置失敗：先看第一個 Dockerfile 錯誤，確認 COPY 路徑、build context、NuGet restore 與 `.dockerignore`。
+- 服務彼此連不到：確認 compose service name、network、connection string，不要在 container 內使用 `localhost` 連另一個 container。
+
+### 做完後檢查
+
+- 用 `docker ps` 確認 container 狀態。
+- 用 `docker logs` 或應用程式 endpoint 確認服務真的啟動。
+- 若有 volume 或 database，重啟 container 後確認資料是否仍存在。
+
+### 小練習
+
+1. 把範例中的 image 或 container 名稱改成自己的專案名稱。
+2. 故意改錯 port 或 connection string，練習從 log 找原因。
+3. 寫一句話記錄這篇 Docker 概念解決了哪個部署或開發痛點。
 
 ### 一句話總結
 
@@ -863,6 +1760,45 @@ ENTRYPOINT ["dotnet", "DockerCSharpDemo.dll"]
 
 修正方向：建置用 `RUN dotnet publish`，啟動用 `ENTRYPOINT`。
 
+### 學完這篇你應該會做到什麼
+
+- 能說明 Day 24：Dockerfile 指令解析 對 C# / ASP.NET Core 開發流程的影響。
+- 能照著本篇範例完成 Docker 指令、Dockerfile、Compose、network、image 或 volume 操作。
+- 能用 `docker ps`、`docker logs`、瀏覽器、API response、建置輸出或資料持久化結果驗證自己做對了。
+
+### 實作任務情境
+
+把這篇當成一個容器化任務：你要讓一個 C# / ASP.NET Core 專案更容易在不同機器上建置、啟動、連線或保存資料，並能用 Docker 工具查證結果。
+
+### 操作前檢查
+
+- 確認 Docker Desktop 或 Docker Engine 已啟動，並且目前終端機能執行 `docker version`。
+- 若會建立 image、container、volume 或 network，先確認名稱是練習用，不要誤刪正式資源。
+- 若會處理連線字串、密碼或 token，使用環境變數或 secret，不要寫死在 Dockerfile。
+
+### 範例形式與實作
+
+本篇範例以 Docker 原生命令、Dockerfile、Compose YAML 或 C# / ASP.NET Core 專案整合為主。讀的時候不要只複製命令，要同時記下：這一步建立了什麼資源、是否會修改本機 Docker 狀態、執行後要用哪個命令驗證。
+
+### 如果結果和預期不同
+
+- Container 沒起來：先看 `docker ps -a` 和 `docker logs <container>`。
+- Port 連不到：確認 `-p` / compose ports、應用程式 listen 位址與防火牆。
+- Image 建置失敗：先看第一個 Dockerfile 錯誤，確認 COPY 路徑、build context、NuGet restore 與 `.dockerignore`。
+- 服務彼此連不到：確認 compose service name、network、connection string，不要在 container 內使用 `localhost` 連另一個 container。
+
+### 做完後檢查
+
+- 用 `docker ps` 確認 container 狀態。
+- 用 `docker logs` 或應用程式 endpoint 確認服務真的啟動。
+- 若有 volume 或 database，重啟 container 後確認資料是否仍存在。
+
+### 小練習
+
+1. 把範例中的 image 或 container 名稱改成自己的專案名稱。
+2. 故意改錯 port 或 connection string，練習從 log 找原因。
+3. 寫一句話記錄這篇 Docker 概念解決了哪個部署或開發痛點。
+
 ### 一句話總結
 
 Dockerfile 要分清楚 build-time 與 run-time。
@@ -890,6 +1826,45 @@ docker run --rm -p 8080:8080 docker-csharp-demo:dev
 問題：image 存在不代表 app 能啟動。
 
 修正方向：每次 build 後至少驗證 `/health`。
+
+### 學完這篇你應該會做到什麼
+
+- 能說明 Day 25：建置 Docker Image 對 C# / ASP.NET Core 開發流程的影響。
+- 能照著本篇範例完成 Docker 指令、Dockerfile、Compose、network、image 或 volume 操作。
+- 能用 `docker ps`、`docker logs`、瀏覽器、API response、建置輸出或資料持久化結果驗證自己做對了。
+
+### 實作任務情境
+
+把這篇當成一個容器化任務：你要讓一個 C# / ASP.NET Core 專案更容易在不同機器上建置、啟動、連線或保存資料，並能用 Docker 工具查證結果。
+
+### 操作前檢查
+
+- 確認 Docker Desktop 或 Docker Engine 已啟動，並且目前終端機能執行 `docker version`。
+- 若會建立 image、container、volume 或 network，先確認名稱是練習用，不要誤刪正式資源。
+- 若會處理連線字串、密碼或 token，使用環境變數或 secret，不要寫死在 Dockerfile。
+
+### 範例形式與實作
+
+本篇範例以 Docker 原生命令、Dockerfile、Compose YAML 或 C# / ASP.NET Core 專案整合為主。讀的時候不要只複製命令，要同時記下：這一步建立了什麼資源、是否會修改本機 Docker 狀態、執行後要用哪個命令驗證。
+
+### 如果結果和預期不同
+
+- Container 沒起來：先看 `docker ps -a` 和 `docker logs <container>`。
+- Port 連不到：確認 `-p` / compose ports、應用程式 listen 位址與防火牆。
+- Image 建置失敗：先看第一個 Dockerfile 錯誤，確認 COPY 路徑、build context、NuGet restore 與 `.dockerignore`。
+- 服務彼此連不到：確認 compose service name、network、connection string，不要在 container 內使用 `localhost` 連另一個 container。
+
+### 做完後檢查
+
+- 用 `docker ps` 確認 container 狀態。
+- 用 `docker logs` 或應用程式 endpoint 確認服務真的啟動。
+- 若有 volume 或 database，重啟 container 後確認資料是否仍存在。
+
+### 小練習
+
+1. 把範例中的 image 或 container 名稱改成自己的專案名稱。
+2. 故意改錯 port 或 connection string，練習從 log 找原因。
+3. 寫一句話記錄這篇 Docker 概念解決了哪個部署或開發痛點。
 
 ### 一句話總結
 
@@ -921,6 +1896,45 @@ TestResults/
 問題：build 慢、cache 容易失效，也可能把不該進 image 的檔案帶進去。
 
 修正方向：每個可 containerize 的專案都放 `.dockerignore`。
+
+### 學完這篇你應該會做到什麼
+
+- 能說明 Day 26：建置 Image 的快取機制 對 C# / ASP.NET Core 開發流程的影響。
+- 能照著本篇範例完成 Docker 指令、Dockerfile、Compose、network、image 或 volume 操作。
+- 能用 `docker ps`、`docker logs`、瀏覽器、API response、建置輸出或資料持久化結果驗證自己做對了。
+
+### 實作任務情境
+
+把這篇當成一個容器化任務：你要讓一個 C# / ASP.NET Core 專案更容易在不同機器上建置、啟動、連線或保存資料，並能用 Docker 工具查證結果。
+
+### 操作前檢查
+
+- 確認 Docker Desktop 或 Docker Engine 已啟動，並且目前終端機能執行 `docker version`。
+- 若會建立 image、container、volume 或 network，先確認名稱是練習用，不要誤刪正式資源。
+- 若會處理連線字串、密碼或 token，使用環境變數或 secret，不要寫死在 Dockerfile。
+
+### 範例形式與實作
+
+本篇範例以 Docker 原生命令、Dockerfile、Compose YAML 或 C# / ASP.NET Core 專案整合為主。讀的時候不要只複製命令，要同時記下：這一步建立了什麼資源、是否會修改本機 Docker 狀態、執行後要用哪個命令驗證。
+
+### 如果結果和預期不同
+
+- Container 沒起來：先看 `docker ps -a` 和 `docker logs <container>`。
+- Port 連不到：確認 `-p` / compose ports、應用程式 listen 位址與防火牆。
+- Image 建置失敗：先看第一個 Dockerfile 錯誤，確認 COPY 路徑、build context、NuGet restore 與 `.dockerignore`。
+- 服務彼此連不到：確認 compose service name、network、connection string，不要在 container 內使用 `localhost` 連另一個 container。
+
+### 做完後檢查
+
+- 用 `docker ps` 確認 container 狀態。
+- 用 `docker logs` 或應用程式 endpoint 確認服務真的啟動。
+- 若有 volume 或 database，重啟 container 後確認資料是否仍存在。
+
+### 小練習
+
+1. 把範例中的 image 或 container 名稱改成自己的專案名稱。
+2. 故意改錯 port 或 connection string，練習從 log 找原因。
+3. 寫一句話記錄這篇 Docker 概念解決了哪個部署或開發痛點。
 
 ### 一句話總結
 
@@ -958,6 +1972,45 @@ ENTRYPOINT ["dotnet", "DockerCSharpDemo.dll"]
 
 修正方向：用 multi-stage，只 copy publish 結果。
 
+### 學完這篇你應該會做到什麼
+
+- 能說明 Day 27：多階段建置 Docker Image 對 C# / ASP.NET Core 開發流程的影響。
+- 能照著本篇範例完成 Docker 指令、Dockerfile、Compose、network、image 或 volume 操作。
+- 能用 `docker ps`、`docker logs`、瀏覽器、API response、建置輸出或資料持久化結果驗證自己做對了。
+
+### 實作任務情境
+
+把這篇當成一個容器化任務：你要讓一個 C# / ASP.NET Core 專案更容易在不同機器上建置、啟動、連線或保存資料，並能用 Docker 工具查證結果。
+
+### 操作前檢查
+
+- 確認 Docker Desktop 或 Docker Engine 已啟動，並且目前終端機能執行 `docker version`。
+- 若會建立 image、container、volume 或 network，先確認名稱是練習用，不要誤刪正式資源。
+- 若會處理連線字串、密碼或 token，使用環境變數或 secret，不要寫死在 Dockerfile。
+
+### 範例形式與實作
+
+本篇範例以 Docker 原生命令、Dockerfile、Compose YAML 或 C# / ASP.NET Core 專案整合為主。讀的時候不要只複製命令，要同時記下：這一步建立了什麼資源、是否會修改本機 Docker 狀態、執行後要用哪個命令驗證。
+
+### 如果結果和預期不同
+
+- Container 沒起來：先看 `docker ps -a` 和 `docker logs <container>`。
+- Port 連不到：確認 `-p` / compose ports、應用程式 listen 位址與防火牆。
+- Image 建置失敗：先看第一個 Dockerfile 錯誤，確認 COPY 路徑、build context、NuGet restore 與 `.dockerignore`。
+- 服務彼此連不到：確認 compose service name、network、connection string，不要在 container 內使用 `localhost` 連另一個 container。
+
+### 做完後檢查
+
+- 用 `docker ps` 確認 container 狀態。
+- 用 `docker logs` 或應用程式 endpoint 確認服務真的啟動。
+- 若有 volume 或 database，重啟 container 後確認資料是否仍存在。
+
+### 小練習
+
+1. 把範例中的 image 或 container 名稱改成自己的專案名稱。
+2. 故意改錯 port 或 connection string，練習從 log 找原因。
+3. 寫一句話記錄這篇 Docker 概念解決了哪個部署或開發痛點。
+
 ### 一句話總結
 
 multi-stage build 是 .NET container 化的基本功。
@@ -988,6 +2041,45 @@ docker-compose*.yml
 
 修正方向：`.env` 加入 `.dockerignore`，正式秘密不要放在 repo。
 
+### 學完這篇你應該會做到什麼
+
+- 能說明 Day 28：.dockerignore 該怎麼使用？ 對 C# / ASP.NET Core 開發流程的影響。
+- 能照著本篇範例完成 Docker 指令、Dockerfile、Compose、network、image 或 volume 操作。
+- 能用 `docker ps`、`docker logs`、瀏覽器、API response、建置輸出或資料持久化結果驗證自己做對了。
+
+### 實作任務情境
+
+把這篇當成一個容器化任務：你要讓一個 C# / ASP.NET Core 專案更容易在不同機器上建置、啟動、連線或保存資料，並能用 Docker 工具查證結果。
+
+### 操作前檢查
+
+- 確認 Docker Desktop 或 Docker Engine 已啟動，並且目前終端機能執行 `docker version`。
+- 若會建立 image、container、volume 或 network，先確認名稱是練習用，不要誤刪正式資源。
+- 若會處理連線字串、密碼或 token，使用環境變數或 secret，不要寫死在 Dockerfile。
+
+### 範例形式與實作
+
+本篇範例以 Docker 原生命令、Dockerfile、Compose YAML 或 C# / ASP.NET Core 專案整合為主。讀的時候不要只複製命令，要同時記下：這一步建立了什麼資源、是否會修改本機 Docker 狀態、執行後要用哪個命令驗證。
+
+### 如果結果和預期不同
+
+- Container 沒起來：先看 `docker ps -a` 和 `docker logs <container>`。
+- Port 連不到：確認 `-p` / compose ports、應用程式 listen 位址與防火牆。
+- Image 建置失敗：先看第一個 Dockerfile 錯誤，確認 COPY 路徑、build context、NuGet restore 與 `.dockerignore`。
+- 服務彼此連不到：確認 compose service name、network、connection string，不要在 container 內使用 `localhost` 連另一個 container。
+
+### 做完後檢查
+
+- 用 `docker ps` 確認 container 狀態。
+- 用 `docker logs` 或應用程式 endpoint 確認服務真的啟動。
+- 若有 volume 或 database，重啟 container 後確認資料是否仍存在。
+
+### 小練習
+
+1. 把範例中的 image 或 container 名稱改成自己的專案名稱。
+2. 故意改錯 port 或 connection string，練習從 log 找原因。
+3. 寫一句話記錄這篇 Docker 概念解決了哪個部署或開發痛點。
+
 ### 一句話總結
 
 `.dockerignore` 是 image 乾淨度與安全性的第一道門。
@@ -1014,6 +2106,45 @@ volumes:
 問題：container 重建後資料消失。
 
 修正方向：使用 named volume、外部資料庫、object storage。
+
+### 學完這篇你應該會做到什麼
+
+- 能說明 Day 29：介紹 Docker Volume 對 C# / ASP.NET Core 開發流程的影響。
+- 能照著本篇範例完成 Docker 指令、Dockerfile、Compose、network、image 或 volume 操作。
+- 能用 `docker ps`、`docker logs`、瀏覽器、API response、建置輸出或資料持久化結果驗證自己做對了。
+
+### 實作任務情境
+
+把這篇當成一個容器化任務：你要讓一個 C# / ASP.NET Core 專案更容易在不同機器上建置、啟動、連線或保存資料，並能用 Docker 工具查證結果。
+
+### 操作前檢查
+
+- 確認 Docker Desktop 或 Docker Engine 已啟動，並且目前終端機能執行 `docker version`。
+- 若會建立 image、container、volume 或 network，先確認名稱是練習用，不要誤刪正式資源。
+- 若會處理連線字串、密碼或 token，使用環境變數或 secret，不要寫死在 Dockerfile。
+
+### 範例形式與實作
+
+本篇範例以 Docker 原生命令、Dockerfile、Compose YAML 或 C# / ASP.NET Core 專案整合為主。讀的時候不要只複製命令，要同時記下：這一步建立了什麼資源、是否會修改本機 Docker 狀態、執行後要用哪個命令驗證。
+
+### 如果結果和預期不同
+
+- Container 沒起來：先看 `docker ps -a` 和 `docker logs <container>`。
+- Port 連不到：確認 `-p` / compose ports、應用程式 listen 位址與防火牆。
+- Image 建置失敗：先看第一個 Dockerfile 錯誤，確認 COPY 路徑、build context、NuGet restore 與 `.dockerignore`。
+- 服務彼此連不到：確認 compose service name、network、connection string，不要在 container 內使用 `localhost` 連另一個 container。
+
+### 做完後檢查
+
+- 用 `docker ps` 確認 container 狀態。
+- 用 `docker logs` 或應用程式 endpoint 確認服務真的啟動。
+- 若有 volume 或 database，重啟 container 後確認資料是否仍存在。
+
+### 小練習
+
+1. 把範例中的 image 或 container 名稱改成自己的專案名稱。
+2. 故意改錯 port 或 connection string，練習從 log 找原因。
+3. 寫一句話記錄這篇 Docker 概念解決了哪個部署或開發痛點。
 
 ### 一句話總結
 
@@ -1062,6 +2193,45 @@ volumes:
 問題：`-v` 會刪除 volume，資料庫資料會消失。
 
 修正方向：日常關閉用 `docker compose down`；只有確定要重置資料時才加 `-v`。
+
+### 學完這篇你應該會做到什麼
+
+- 能說明 Day 30：實際使用 Docker Volume 對 C# / ASP.NET Core 開發流程的影響。
+- 能照著本篇範例完成 Docker 指令、Dockerfile、Compose、network、image 或 volume 操作。
+- 能用 `docker ps`、`docker logs`、瀏覽器、API response、建置輸出或資料持久化結果驗證自己做對了。
+
+### 實作任務情境
+
+把這篇當成一個容器化任務：你要讓一個 C# / ASP.NET Core 專案更容易在不同機器上建置、啟動、連線或保存資料，並能用 Docker 工具查證結果。
+
+### 操作前檢查
+
+- 確認 Docker Desktop 或 Docker Engine 已啟動，並且目前終端機能執行 `docker version`。
+- 若會建立 image、container、volume 或 network，先確認名稱是練習用，不要誤刪正式資源。
+- 若會處理連線字串、密碼或 token，使用環境變數或 secret，不要寫死在 Dockerfile。
+
+### 範例形式與實作
+
+本篇範例以 Docker 原生命令、Dockerfile、Compose YAML 或 C# / ASP.NET Core 專案整合為主。讀的時候不要只複製命令，要同時記下：這一步建立了什麼資源、是否會修改本機 Docker 狀態、執行後要用哪個命令驗證。
+
+### 如果結果和預期不同
+
+- Container 沒起來：先看 `docker ps -a` 和 `docker logs <container>`。
+- Port 連不到：確認 `-p` / compose ports、應用程式 listen 位址與防火牆。
+- Image 建置失敗：先看第一個 Dockerfile 錯誤，確認 COPY 路徑、build context、NuGet restore 與 `.dockerignore`。
+- 服務彼此連不到：確認 compose service name、network、connection string，不要在 container 內使用 `localhost` 連另一個 container。
+
+### 做完後檢查
+
+- 用 `docker ps` 確認 container 狀態。
+- 用 `docker logs` 或應用程式 endpoint 確認服務真的啟動。
+- 若有 volume 或 database，重啟 container 後確認資料是否仍存在。
+
+### 小練習
+
+1. 把範例中的 image 或 container 名稱改成自己的專案名稱。
+2. 故意改錯 port 或 connection string，練習從 log 找原因。
+3. 寫一句話記錄這篇 Docker 概念解決了哪個部署或開發痛點。
 
 ### 一句話總結
 

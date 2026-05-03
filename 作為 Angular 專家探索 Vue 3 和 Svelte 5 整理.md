@@ -40,6 +40,12 @@
 
 前端框架會變，但元件化、狀態、輸入輸出、事件、資料載入這些核心概念不會消失。只學某一個框架 API，容易把框架語法當成全部；跨框架練習能逼自己看懂概念本身。
 
+
+### 學完這篇你應該會做到什麼
+
+- 能用 Angular 開發者熟悉的角度，說明 Day 0：為什麼參加這個挑戰 的核心觀念。
+- 能照著範例完成對應的 Vue / Svelte 元件、狀態或部署流程。
+- 能用畫面、測試資料、瀏覽器 console 或建置結果驗證自己做對了。
 ### 定義名稱對照表
 
 | 角色 | 文章中的名稱 | 功能 / 責任 |
@@ -48,7 +54,17 @@
 | 新學習框架 | Vue 3、Svelte 5 | 用來重做相同範例，觀察差異 |
 | 共同核心 | Reactivity、Input / Output、Component Architecture | 三個框架都需要掌握的底層概念 |
 
-### 實作流程與程式碼例子
+
+### 實作任務情境
+
+把這篇當成一個小任務：你要在既有前端專案中完成 Day 0：為什麼參加這個挑戰 對應的功能，並比較 Angular、Vue 3、Svelte 5 在寫法與心智模型上的差異。
+
+### 操作前檢查
+
+- 先確認你知道本篇是在 Vue 3、Svelte 5，還是部署 / 工具流程中操作。
+- 若有程式碼，先確認檔案應放在哪個 component、page、route 或 workflow 設定檔。
+- 若有 CLI 或 YAML，先在測試專案或分支操作，不要直接改正式部署設定。
+### 範例形式與實作
 
 完整流程：
 
@@ -69,6 +85,25 @@ let title = $state('Shopping List App')
 // Angular：signal 是可追蹤狀態
 title = signal('Shopping List App')
 ```
+
+
+### 如果結果和預期不同
+
+- 畫面沒有更新：先檢查狀態變數、props / events、模板語法與瀏覽器 console。
+- 元件沒有渲染：確認元件是否正確 import、註冊、掛載，或 route / page 是否指到正確檔案。
+- 建置或部署失敗：先看 terminal / GitHub Actions log 的第一個錯誤，不要只看最後一行。
+
+### 做完後檢查
+
+- 用瀏覽器實際操作一次本篇功能。
+- 對照 Angular 中類似概念，寫下 Vue / Svelte 哪裡更像、哪裡不同。
+- 確認沒有 console error，且重新整理頁面後仍能看到預期結果。
+
+### 小練習
+
+1. 把範例中的命名改成另一個真實業務場景。
+2. 故意改錯一個 props、event 或 binding 名稱，觀察錯誤訊息。
+3. 寫一句話比較 Angular 與本篇 Vue / Svelte 寫法的差異。
 
 ### 實務使用情境
 
@@ -110,6 +145,12 @@ title = signal('Shopping List App')
 
 專案初始化不是雜事。相依套件、TypeScript、ESLint、Prettier、CSS 載入位置，會決定後續開發體驗與團隊一致性。
 
+
+### 學完這篇你應該會做到什麼
+
+- 能用 Angular 開發者熟悉的角度，說明 Day 1：建立專案、安裝相依套件與全域 CSS 的核心觀念。
+- 能照著範例完成對應的 Vue / Svelte 元件、狀態或部署流程。
+- 能用畫面、測試資料、瀏覽器 console 或建置結果驗證自己做對了。
 ### 定義名稱對照表
 
 | 角色 | 文章中的名稱 | 功能 / 責任 |
@@ -118,7 +159,17 @@ title = signal('Shopping List App')
 | 開發伺服器 | `npm run dev` / Angular serve | 本機預覽與熱更新 |
 | 全域樣式 | global CSS | 提供跨元件共用視覺基礎 |
 
-### 實作流程與程式碼例子
+
+### 實作任務情境
+
+把這篇當成一個小任務：你要在既有前端專案中完成 Day 1：建立專案、安裝相依套件與全域 CSS 對應的功能，並比較 Angular、Vue 3、Svelte 5 在寫法與心智模型上的差異。
+
+### 操作前檢查
+
+- 先確認你知道本篇是在 Vue 3、Svelte 5，還是部署 / 工具流程中操作。
+- 若有程式碼，先確認檔案應放在哪個 component、page、route 或 workflow 設定檔。
+- 若有 CLI 或 YAML，先在測試專案或分支操作，不要直接改正式部署設定。
+### 範例形式與實作
 
 完整流程：
 
@@ -147,6 +198,25 @@ import App from './App.vue'
 
 createApp(App).mount('#app')
 ```
+
+
+### 如果結果和預期不同
+
+- 畫面沒有更新：先檢查狀態變數、props / events、模板語法與瀏覽器 console。
+- 元件沒有渲染：確認元件是否正確 import、註冊、掛載，或 route / page 是否指到正確檔案。
+- 建置或部署失敗：先看 terminal / GitHub Actions log 的第一個錯誤，不要只看最後一行。
+
+### 做完後檢查
+
+- 用瀏覽器實際操作一次本篇功能。
+- 對照 Angular 中類似概念，寫下 Vue / Svelte 哪裡更像、哪裡不同。
+- 確認沒有 console error，且重新整理頁面後仍能看到預期結果。
+
+### 小練習
+
+1. 把範例中的命名改成另一個真實業務場景。
+2. 故意改錯一個 props、event 或 binding 名稱，觀察錯誤訊息。
+3. 寫一句話比較 Angular 與本篇 Vue / Svelte 寫法的差異。
 
 ### 實務使用情境
 
@@ -185,6 +255,12 @@ createApp(App).mount('#app')
 
 元件是前端應用的基本組織單位。即使一開始只有一行文字，也應該練習「建立元件、匯入元件、在模板使用元件」的完整路徑。
 
+
+### 學完這篇你應該會做到什麼
+
+- 能用 Angular 開發者熟悉的角度，說明 Day 2：建立 ShoppingCart 元件 的核心觀念。
+- 能照著範例完成對應的 Vue / Svelte 元件、狀態或部署流程。
+- 能用畫面、測試資料、瀏覽器 console 或建置結果驗證自己做對了。
 ### 定義名稱對照表
 
 | 角色 | 文章中的名稱 | 功能 / 責任 |
@@ -193,7 +269,17 @@ createApp(App).mount('#app')
 | 根元件 | `App.vue`、`+page.svelte`、Angular App | 掛載子元件 |
 | 模板 | template / markup | 顯示元件內容 |
 
-### 實作流程與程式碼例子
+
+### 實作任務情境
+
+把這篇當成一個小任務：你要在既有前端專案中完成 Day 2：建立 ShoppingCart 元件 對應的功能，並比較 Angular、Vue 3、Svelte 5 在寫法與心智模型上的差異。
+
+### 操作前檢查
+
+- 先確認你知道本篇是在 Vue 3、Svelte 5，還是部署 / 工具流程中操作。
+- 若有程式碼，先確認檔案應放在哪個 component、page、route 或 workflow 設定檔。
+- 若有 CLI 或 YAML，先在測試專案或分支操作，不要直接改正式部署設定。
+### 範例形式與實作
 
 完整流程：
 
@@ -234,6 +320,25 @@ createApp(App).mount('#app')
 export class ShoppingCartComponent {}
 ```
 
+
+### 如果結果和預期不同
+
+- 畫面沒有更新：先檢查狀態變數、props / events、模板語法與瀏覽器 console。
+- 元件沒有渲染：確認元件是否正確 import、註冊、掛載，或 route / page 是否指到正確檔案。
+- 建置或部署失敗：先看 terminal / GitHub Actions log 的第一個錯誤，不要只看最後一行。
+
+### 做完後檢查
+
+- 用瀏覽器實際操作一次本篇功能。
+- 對照 Angular 中類似概念，寫下 Vue / Svelte 哪裡更像、哪裡不同。
+- 確認沒有 console error，且重新整理頁面後仍能看到預期結果。
+
+### 小練習
+
+1. 把範例中的命名改成另一個真實業務場景。
+2. 故意改錯一個 props、event 或 binding 名稱，觀察錯誤訊息。
+3. 寫一句話比較 Angular 與本篇 Vue / Svelte 寫法的差異。
+
 ### 實務使用情境
 
 - 將頁面中的功能區塊拆成可測、可替換的元件。
@@ -271,6 +376,12 @@ export class ShoppingCartComponent {}
 
 模板不是靜態 HTML，它是 UI 與狀態之間的投影。學會把資料顯示到模板，是所有互動功能的第一步。
 
+
+### 學完這篇你應該會做到什麼
+
+- 能用 Angular 開發者熟悉的角度，說明 Day 3：在模板中使用表達式 的核心觀念。
+- 能照著範例完成對應的 Vue / Svelte 元件、狀態或部署流程。
+- 能用畫面、測試資料、瀏覽器 console 或建置結果驗證自己做對了。
 ### 定義名稱對照表
 
 | 角色 | 文章中的名稱 | 功能 / 責任 |
@@ -279,7 +390,17 @@ export class ShoppingCartComponent {}
 | 模板表達式 | `{{ header }}`、`{header}`、`{{ header() }}` | 把狀態渲染到畫面 |
 | 響應式容器 | `ref`、`$state`、`signal` | 讓狀態變動時 UI 可更新 |
 
-### 實作流程與程式碼例子
+
+### 實作任務情境
+
+把這篇當成一個小任務：你要在既有前端專案中完成 Day 3：在模板中使用表達式 對應的功能，並比較 Angular、Vue 3、Svelte 5 在寫法與心智模型上的差異。
+
+### 操作前檢查
+
+- 先確認你知道本篇是在 Vue 3、Svelte 5，還是部署 / 工具流程中操作。
+- 若有程式碼，先確認檔案應放在哪個 component、page、route 或 workflow 設定檔。
+- 若有 CLI 或 YAML，先在測試專案或分支操作，不要直接改正式部署設定。
+### 範例形式與實作
 
 完整流程：
 
@@ -316,6 +437,25 @@ header = signal('Shopping List App - Angular')
 <!-- 回傳結果 / 副作用：會影響畫面渲染、互動行為、樣式呈現或元件對外輸出的事件。 -->
 <h1>{{ header() }}</h1>
 ```
+
+
+### 如果結果和預期不同
+
+- 畫面沒有更新：先檢查狀態變數、props / events、模板語法與瀏覽器 console。
+- 元件沒有渲染：確認元件是否正確 import、註冊、掛載，或 route / page 是否指到正確檔案。
+- 建置或部署失敗：先看 terminal / GitHub Actions log 的第一個錯誤，不要只看最後一行。
+
+### 做完後檢查
+
+- 用瀏覽器實際操作一次本篇功能。
+- 對照 Angular 中類似概念，寫下 Vue / Svelte 哪裡更像、哪裡不同。
+- 確認沒有 console error，且重新整理頁面後仍能看到預期結果。
+
+### 小練習
+
+1. 把範例中的命名改成另一個真實業務場景。
+2. 故意改錯一個 props、event 或 binding 名稱，觀察錯誤訊息。
+3. 寫一句話比較 Angular 與本篇 Vue / Svelte 寫法的差異。
 
 ### 實務使用情境
 
@@ -362,6 +502,12 @@ header = signal('Shopping List App - Angular')
 
 大多數前端畫面都在顯示資料集合：商品、訂單、通知、文章、表格列。清單渲染的關鍵是「資料來源、迭代語法、穩定 key」。
 
+
+### 學完這篇你應該會做到什麼
+
+- 能用 Angular 開發者熟悉的角度，說明 Day 4：清單渲染 的核心觀念。
+- 能照著範例完成對應的 Vue / Svelte 元件、狀態或部署流程。
+- 能用畫面、測試資料、瀏覽器 console 或建置結果驗證自己做對了。
 ### 定義名稱對照表
 
 | 角色 | 文章中的名稱 | 功能 / 責任 |
@@ -371,7 +517,17 @@ header = signal('Shopping List App - Angular')
 | 迭代指令 | `v-for`、`{#each}`、`@for` | 根據資料產生多個 UI 節點 |
 | key / track | `item.id` | 幫助框架穩定追蹤每列 |
 
-### 實作流程與程式碼例子
+
+### 實作任務情境
+
+把這篇當成一個小任務：你要在既有前端專案中完成 Day 4：清單渲染 對應的功能，並比較 Angular、Vue 3、Svelte 5 在寫法與心智模型上的差異。
+
+### 操作前檢查
+
+- 先確認你知道本篇是在 Vue 3、Svelte 5，還是部署 / 工具流程中操作。
+- 若有程式碼，先確認檔案應放在哪個 component、page、route 或 workflow 設定檔。
+- 若有 CLI 或 YAML，先在測試專案或分支操作，不要直接改正式部署設定。
+### 範例形式與實作
 
 完整流程：
 
@@ -419,6 +575,25 @@ type Item = {
 }
 ```
 
+
+### 如果結果和預期不同
+
+- 畫面沒有更新：先檢查狀態變數、props / events、模板語法與瀏覽器 console。
+- 元件沒有渲染：確認元件是否正確 import、註冊、掛載，或 route / page 是否指到正確檔案。
+- 建置或部署失敗：先看 terminal / GitHub Actions log 的第一個錯誤，不要只看最後一行。
+
+### 做完後檢查
+
+- 用瀏覽器實際操作一次本篇功能。
+- 對照 Angular 中類似概念，寫下 Vue / Svelte 哪裡更像、哪裡不同。
+- 確認沒有 console error，且重新整理頁面後仍能看到預期結果。
+
+### 小練習
+
+1. 把範例中的命名改成另一個真實業務場景。
+2. 故意改錯一個 props、event 或 binding 名稱，觀察錯誤訊息。
+3. 寫一句話比較 Angular 與本篇 Vue / Svelte 寫法的差異。
+
 ### 實務使用情境
 
 - 商品列表、通知列表、留言列表、資料表。
@@ -456,6 +631,12 @@ type Item = {
 
 表單是使用者把資料送進系統的主要入口。輸入欄位如果沒有正確綁定，畫面顯示與元件狀態很容易不同步。
 
+
+### 學完這篇你應該會做到什麼
+
+- 能用 Angular 開發者熟悉的角度，說明 Day 5：用戶輸入處理 的核心觀念。
+- 能照著範例完成對應的 Vue / Svelte 元件、狀態或部署流程。
+- 能用畫面、測試資料、瀏覽器 console 或建置結果驗證自己做對了。
 ### 定義名稱對照表
 
 | 角色 | 文章中的名稱 | 功能 / 責任 |
@@ -464,7 +645,17 @@ type Item = {
 | 布林狀態 | `newItemHighPriority` | 暫存是否高優先 |
 | 雙向綁定 | `v-model`、`bind:value`、form binding | 讓 UI 與狀態同步 |
 
-### 實作流程與程式碼例子
+
+### 實作任務情境
+
+把這篇當成一個小任務：你要在既有前端專案中完成 Day 5：用戶輸入處理 對應的功能，並比較 Angular、Vue 3、Svelte 5 在寫法與心智模型上的差異。
+
+### 操作前檢查
+
+- 先確認你知道本篇是在 Vue 3、Svelte 5，還是部署 / 工具流程中操作。
+- 若有程式碼，先確認檔案應放在哪個 component、page、route 或 workflow 設定檔。
+- 若有 CLI 或 YAML，先在測試專案或分支操作，不要直接改正式部署設定。
+### 範例形式與實作
 
 完整流程：
 
@@ -492,6 +683,25 @@ const newItemHighPriority = ref(false)
   </label>
 </template>
 ```
+
+
+### 如果結果和預期不同
+
+- 畫面沒有更新：先檢查狀態變數、props / events、模板語法與瀏覽器 console。
+- 元件沒有渲染：確認元件是否正確 import、註冊、掛載，或 route / page 是否指到正確檔案。
+- 建置或部署失敗：先看 terminal / GitHub Actions log 的第一個錯誤，不要只看最後一行。
+
+### 做完後檢查
+
+- 用瀏覽器實際操作一次本篇功能。
+- 對照 Angular 中類似概念，寫下 Vue / Svelte 哪裡更像、哪裡不同。
+- 確認沒有 console error，且重新整理頁面後仍能看到預期結果。
+
+### 小練習
+
+1. 把範例中的命名改成另一個真實業務場景。
+2. 故意改錯一個 props、event 或 binding 名稱，觀察錯誤訊息。
+3. 寫一句話比較 Angular 與本篇 Vue / Svelte 寫法的差異。
 
 ### 實務使用情境
 
@@ -530,6 +740,12 @@ const newItemHighPriority = ref(false)
 
 事件是使用者行為進入應用程式的入口。沒有事件處理，畫面只能顯示資料，不能改變資料。
 
+
+### 學完這篇你應該會做到什麼
+
+- 能用 Angular 開發者熟悉的角度，說明 Day 6：用戶事件處理 的核心觀念。
+- 能照著範例完成對應的 Vue / Svelte 元件、狀態或部署流程。
+- 能用畫面、測試資料、瀏覽器 console 或建置結果驗證自己做對了。
 ### 定義名稱對照表
 
 | 角色 | 文章中的名稱 | 功能 / 責任 |
@@ -538,7 +754,17 @@ const newItemHighPriority = ref(false)
 | 刪除事件 | click | 依 ID 移除項目 |
 | 事件處理函式 | `saveItem`、`deleteItem` | 封裝狀態更新 |
 
-### 實作流程與程式碼例子
+
+### 實作任務情境
+
+把這篇當成一個小任務：你要在既有前端專案中完成 Day 6：用戶事件處理 對應的功能，並比較 Angular、Vue 3、Svelte 5 在寫法與心智模型上的差異。
+
+### 操作前檢查
+
+- 先確認你知道本篇是在 Vue 3、Svelte 5，還是部署 / 工具流程中操作。
+- 若有程式碼，先確認檔案應放在哪個 component、page、route 或 workflow 設定檔。
+- 若有 CLI 或 YAML，先在測試專案或分支操作，不要直接改正式部署設定。
+### 範例形式與實作
 
 完整流程：
 
@@ -578,6 +804,25 @@ const deleteItem = (id: number) => {
 </form>
 ```
 
+
+### 如果結果和預期不同
+
+- 畫面沒有更新：先檢查狀態變數、props / events、模板語法與瀏覽器 console。
+- 元件沒有渲染：確認元件是否正確 import、註冊、掛載，或 route / page 是否指到正確檔案。
+- 建置或部署失敗：先看 terminal / GitHub Actions log 的第一個錯誤，不要只看最後一行。
+
+### 做完後檢查
+
+- 用瀏覽器實際操作一次本篇功能。
+- 對照 Angular 中類似概念，寫下 Vue / Svelte 哪裡更像、哪裡不同。
+- 確認沒有 console error，且重新整理頁面後仍能看到預期結果。
+
+### 小練習
+
+1. 把範例中的命名改成另一個真實業務場景。
+2. 故意改錯一個 props、event 或 binding 名稱，觀察錯誤訊息。
+3. 寫一句話比較 Angular 與本篇 Vue / Svelte 寫法的差異。
+
 ### 實務使用情境
 
 - CRUD 的新增、刪除、儲存。
@@ -615,6 +860,12 @@ const deleteItem = (id: number) => {
 
 真實 UI 會有不同狀態：空資料、載入中、錯誤、編輯中、唯讀、成功。條件渲染讓畫面根據狀態切換。
 
+
+### 學完這篇你應該會做到什麼
+
+- 能用 Angular 開發者熟悉的角度，說明 Day 7：條件渲染 的核心觀念。
+- 能照著範例完成對應的 Vue / Svelte 元件、狀態或部署流程。
+- 能用畫面、測試資料、瀏覽器 console 或建置結果驗證自己做對了。
 ### 定義名稱對照表
 
 | 角色 | 文章中的名稱 | 功能 / 責任 |
@@ -623,7 +874,17 @@ const deleteItem = (id: number) => {
 | 條件語法 | `v-if`、`{#if}`、`@if` | 控制元素是否渲染 |
 | 空狀態 | Nothing to see here | 沒有資料時的回饋 |
 
-### 實作流程與程式碼例子
+
+### 實作任務情境
+
+把這篇當成一個小任務：你要在既有前端專案中完成 Day 7：條件渲染 對應的功能，並比較 Angular、Vue 3、Svelte 5 在寫法與心智模型上的差異。
+
+### 操作前檢查
+
+- 先確認你知道本篇是在 Vue 3、Svelte 5，還是部署 / 工具流程中操作。
+- 若有程式碼，先確認檔案應放在哪個 component、page、route 或 workflow 設定檔。
+- 若有 CLI 或 YAML，先在測試專案或分支操作，不要直接改正式部署設定。
+### 範例形式與實作
 
 完整流程：
 
@@ -643,6 +904,25 @@ const deleteItem = (id: number) => {
 </template>
 <p v-else>Nothing to see here.</p>
 ```
+
+
+### 如果結果和預期不同
+
+- 畫面沒有更新：先檢查狀態變數、props / events、模板語法與瀏覽器 console。
+- 元件沒有渲染：確認元件是否正確 import、註冊、掛載，或 route / page 是否指到正確檔案。
+- 建置或部署失敗：先看 terminal / GitHub Actions log 的第一個錯誤，不要只看最後一行。
+
+### 做完後檢查
+
+- 用瀏覽器實際操作一次本篇功能。
+- 對照 Angular 中類似概念，寫下 Vue / Svelte 哪裡更像、哪裡不同。
+- 確認沒有 console error，且重新整理頁面後仍能看到預期結果。
+
+### 小練習
+
+1. 把範例中的命名改成另一個真實業務場景。
+2. 故意改錯一個 props、event 或 binding 名稱，觀察錯誤訊息。
+3. 寫一句話比較 Angular 與本篇 Vue / Svelte 寫法的差異。
 
 ### 實務使用情境
 
@@ -681,6 +961,12 @@ const deleteItem = (id: number) => {
 
 UI 不只顯示文字，也要用視覺狀態提示使用者：已完成、錯誤、高優先、不可用、選取中。
 
+
+### 學完這篇你應該會做到什麼
+
+- 能用 Angular 開發者熟悉的角度，說明 Day 8：動態綁定 CSS 類別與樣式 的核心觀念。
+- 能照著範例完成對應的 Vue / Svelte 元件、狀態或部署流程。
+- 能用畫面、測試資料、瀏覽器 console 或建置結果驗證自己做對了。
 ### 定義名稱對照表
 
 | 角色 | 文章中的名稱 | 功能 / 責任 |
@@ -689,7 +975,17 @@ UI 不只顯示文字，也要用視覺狀態提示使用者：已完成、錯�
 | 類別綁定 | `:class`、`class:`、`[class.xxx]` | 根據狀態套 class |
 | 樣式綁定 | `:style`、`style:`、`[style.xxx]` | 根據狀態套 inline style |
 
-### 實作流程與程式碼例子
+
+### 實作任務情境
+
+把這篇當成一個小任務：你要在既有前端專案中完成 Day 8：動態綁定 CSS 類別與樣式 對應的功能，並比較 Angular、Vue 3、Svelte 5 在寫法與心智模型上的差異。
+
+### 操作前檢查
+
+- 先確認你知道本篇是在 Vue 3、Svelte 5，還是部署 / 工具流程中操作。
+- 若有程式碼，先確認檔案應放在哪個 component、page、route 或 workflow 設定檔。
+- 若有 CLI 或 YAML，先在測試專案或分支操作，不要直接改正式部署設定。
+### 範例形式與實作
 
 完整流程：
 
@@ -719,6 +1015,25 @@ UI 不只顯示文字，也要用視覺狀態提示使用者：已完成、錯�
 .priority { color: #b45309; }
 .strikeout { text-decoration: line-through; color: #6b7280; }
 ```
+
+
+### 如果結果和預期不同
+
+- 畫面沒有更新：先檢查狀態變數、props / events、模板語法與瀏覽器 console。
+- 元件沒有渲染：確認元件是否正確 import、註冊、掛載，或 route / page 是否指到正確檔案。
+- 建置或部署失敗：先看 terminal / GitHub Actions log 的第一個錯誤，不要只看最後一行。
+
+### 做完後檢查
+
+- 用瀏覽器實際操作一次本篇功能。
+- 對照 Angular 中類似概念，寫下 Vue / Svelte 哪裡更像、哪裡不同。
+- 確認沒有 console error，且重新整理頁面後仍能看到預期結果。
+
+### 小練習
+
+1. 把範例中的命名改成另一個真實業務場景。
+2. 故意改錯一個 props、event 或 binding 名稱，觀察錯誤訊息。
+3. 寫一句話比較 Angular 與本篇 Vue / Svelte 寫法的差異。
 
 ### 實務使用情境
 
@@ -757,6 +1072,12 @@ UI 不只顯示文字，也要用視覺狀態提示使用者：已完成、錯�
 
 屬性綁定讓 HTML 屬性可以由狀態控制，例如 disabled、aria、href、src、title。這會影響互動能力與可存取性。
 
+
+### 學完這篇你應該會做到什麼
+
+- 能用 Angular 開發者熟悉的角度，說明 Day 9：屬性綁定 的核心觀念。
+- 能照著範例完成對應的 Vue / Svelte 元件、狀態或部署流程。
+- 能用畫面、測試資料、瀏覽器 console 或建置結果驗證自己做對了。
 ### 定義名稱對照表
 
 | 角色 | 文章中的名稱 | 功能 / 責任 |
@@ -765,7 +1086,17 @@ UI 不只顯示文字，也要用視覺狀態提示使用者：已完成、錯�
 | DOM 屬性 | `disabled` | 控制按鈕是否可用 |
 | 條件規則 | `newItem.length < 5` | 基礎驗證條件 |
 
-### 實作流程與程式碼例子
+
+### 實作任務情境
+
+把這篇當成一個小任務：你要在既有前端專案中完成 Day 9：屬性綁定 對應的功能，並比較 Angular、Vue 3、Svelte 5 在寫法與心智模型上的差異。
+
+### 操作前檢查
+
+- 先確認你知道本篇是在 Vue 3、Svelte 5，還是部署 / 工具流程中操作。
+- 若有程式碼，先確認檔案應放在哪個 component、page、route 或 workflow 設定檔。
+- 若有 CLI 或 YAML，先在測試專案或分支操作，不要直接改正式部署設定。
+### 範例形式與實作
 
 完整流程：
 
@@ -789,6 +1120,25 @@ UI 不只顯示文字，也要用視覺狀態提示使用者：已完成、錯�
 // 回傳結果 / 副作用：可能回傳物件、集合、HTTP response、狀態碼，或造成資料寫入、log、外部服務呼叫等副作用。
 const canSave = computed(() => newItem.value.trim().length >= 5)
 ```
+
+
+### 如果結果和預期不同
+
+- 畫面沒有更新：先檢查狀態變數、props / events、模板語法與瀏覽器 console。
+- 元件沒有渲染：確認元件是否正確 import、註冊、掛載，或 route / page 是否指到正確檔案。
+- 建置或部署失敗：先看 terminal / GitHub Actions log 的第一個錯誤，不要只看最後一行。
+
+### 做完後檢查
+
+- 用瀏覽器實際操作一次本篇功能。
+- 對照 Angular 中類似概念，寫下 Vue / Svelte 哪裡更像、哪裡不同。
+- 確認沒有 console error，且重新整理頁面後仍能看到預期結果。
+
+### 小練習
+
+1. 把範例中的命名改成另一個真實業務場景。
+2. 故意改錯一個 props、event 或 binding 名稱，觀察錯誤訊息。
+3. 寫一句話比較 Angular 與本篇 Vue / Svelte 寫法的差異。
 
 ### 實務使用情境
 
@@ -827,6 +1177,12 @@ const canSave = computed(() => newItem.value.trim().length >= 5)
 
 很多 UI 值不應重複保存，而應從來源資料推導。這可以避免狀態不同步。
 
+
+### 學完這篇你應該會做到什麼
+
+- 能用 Angular 開發者熟悉的角度，說明 Day 10：響應式與衍生狀態 的核心觀念。
+- 能照著範例完成對應的 Vue / Svelte 元件、狀態或部署流程。
+- 能用畫面、測試資料、瀏覽器 console 或建置結果驗證自己做對了。
 ### 定義名稱對照表
 
 | 角色 | 文章中的名稱 | 功能 / 責任 |
@@ -835,7 +1191,17 @@ const canSave = computed(() => newItem.value.trim().length >= 5)
 | 衍生狀態 | `reversedItems`、`purchasedCount` | 從來源狀態計算 |
 | 響應式計算 | `computed`、`$derived` | 來源變更時自動更新 |
 
-### 實作流程與程式碼例子
+
+### 實作任務情境
+
+把這篇當成一個小任務：你要在既有前端專案中完成 Day 10：響應式與衍生狀態 對應的功能，並比較 Angular、Vue 3、Svelte 5 在寫法與心智模型上的差異。
+
+### 操作前檢查
+
+- 先確認你知道本篇是在 Vue 3、Svelte 5，還是部署 / 工具流程中操作。
+- 若有程式碼，先確認檔案應放在哪個 component、page、route 或 workflow 設定檔。
+- 若有 CLI 或 YAML，先在測試專案或分支操作，不要直接改正式部署設定。
+### 範例形式與實作
 
 完整流程：
 
@@ -858,6 +1224,25 @@ const purchasedLabel = computed(() =>
   `${purchasedCount.value} ${purchasedCount.value === 1 ? 'item' : 'items'} purchased`
 )
 ```
+
+
+### 如果結果和預期不同
+
+- 畫面沒有更新：先檢查狀態變數、props / events、模板語法與瀏覽器 console。
+- 元件沒有渲染：確認元件是否正確 import、註冊、掛載，或 route / page 是否指到正確檔案。
+- 建置或部署失敗：先看 terminal / GitHub Actions log 的第一個錯誤，不要只看最後一行。
+
+### 做完後檢查
+
+- 用瀏覽器實際操作一次本篇功能。
+- 對照 Angular 中類似概念，寫下 Vue / Svelte 哪裡更像、哪裡不同。
+- 確認沒有 console error，且重新整理頁面後仍能看到預期結果。
+
+### 小練習
+
+1. 把範例中的命名改成另一個真實業務場景。
+2. 故意改錯一個 props、event 或 binding 名稱，觀察錯誤訊息。
+3. 寫一句話比較 Angular 與本篇 Vue / Svelte 寫法的差異。
 
 ### 實務使用情境
 
@@ -896,6 +1281,12 @@ const purchasedLabel = computed(() =>
 
 前端專案在本機能跑不代表部署後能跑。GitHub Pages 通常掛在子路徑，若 base path 錯誤，靜態資源會 404。
 
+
+### 學完這篇你應該會做到什麼
+
+- 能用 Angular 開發者熟悉的角度，說明 Day 11：部署到 GitHub Pages 的核心觀念。
+- 能照著範例完成對應的 Vue / Svelte 元件、狀態或部署流程。
+- 能用畫面、測試資料、瀏覽器 console 或建置結果驗證自己做對了。
 ### 定義名稱對照表
 
 | 角色 | 文章中的名稱 | 功能 / 責任 |
@@ -904,7 +1295,17 @@ const purchasedLabel = computed(() =>
 | 子路徑設定 | `base` | 告訴 Vite 資源路徑前綴 |
 | 自動化部署 | GitHub Actions | push 後建置並發布 |
 
-### 實作流程與程式碼例子
+
+### 實作任務情境
+
+把這篇當成一個小任務：你要在既有前端專案中完成 Day 11：部署到 GitHub Pages 對應的功能，並比較 Angular、Vue 3、Svelte 5 在寫法與心智模型上的差異。
+
+### 操作前檢查
+
+- 先確認你知道本篇是在 Vue 3、Svelte 5，還是部署 / 工具流程中操作。
+- 若有程式碼，先確認檔案應放在哪個 component、page、route 或 workflow 設定檔。
+- 若有 CLI 或 YAML，先在測試專案或分支操作，不要直接改正式部署設定。
+### 範例形式與實作
 
 完整流程：
 
@@ -943,6 +1344,25 @@ jobs:
       - run: npm run build
 ```
 
+
+### 如果結果和預期不同
+
+- 畫面沒有更新：先檢查狀態變數、props / events、模板語法與瀏覽器 console。
+- 元件沒有渲染：確認元件是否正確 import、註冊、掛載，或 route / page 是否指到正確檔案。
+- 建置或部署失敗：先看 terminal / GitHub Actions log 的第一個錯誤，不要只看最後一行。
+
+### 做完後檢查
+
+- 用瀏覽器實際操作一次本篇功能。
+- 對照 Angular 中類似概念，寫下 Vue / Svelte 哪裡更像、哪裡不同。
+- 確認沒有 console error，且重新整理頁面後仍能看到預期結果。
+
+### 小練習
+
+1. 把範例中的命名改成另一個真實業務場景。
+2. 故意改錯一個 props、event 或 binding 名稱，觀察錯誤訊息。
+3. 寫一句話比較 Angular 與本篇 Vue / Svelte 寫法的差異。
+
 ### 實務使用情境
 
 - 文件網站、demo app、作品集小專案。
@@ -980,6 +1400,12 @@ jobs:
 
 換一個小專案可以驗證同一套框架概念是否能轉移：從單一購物車元件，進到父子元件、props、slot、資料擷取與動態元件。
 
+
+### 學完這篇你應該會做到什麼
+
+- 能用 Angular 開發者熟悉的角度，說明 Day 12：開始 Vue 元件入門課程 的核心觀念。
+- 能照著範例完成對應的 Vue / Svelte 元件、狀態或部署流程。
+- 能用畫面、測試資料、瀏覽器 console 或建置結果驗證自己做對了。
 ### 定義名稱對照表
 
 | 角色 | 文章中的名稱 | 功能 / 責任 |
@@ -988,7 +1414,17 @@ jobs:
 | 小專案 | Coffee Plan、GitHub Profile、Alert | 用不同場景練習元件設計 |
 | 全域樣式 | copied global CSS | 統一 UI 起點 |
 
-### 實作流程與程式碼例子
+
+### 實作任務情境
+
+把這篇當成一個小任務：你要在既有前端專案中完成 Day 12：開始 Vue 元件入門課程 對應的功能，並比較 Angular、Vue 3、Svelte 5 在寫法與心智模型上的差異。
+
+### 操作前檢查
+
+- 先確認你知道本篇是在 Vue 3、Svelte 5，還是部署 / 工具流程中操作。
+- 若有程式碼，先確認檔案應放在哪個 component、page、route 或 workflow 設定檔。
+- 若有 CLI 或 YAML，先在測試專案或分支操作，不要直接改正式部署設定。
+### 範例形式與實作
 
 完整流程：
 
@@ -1008,6 +1444,25 @@ export type CoffeePlan = {
   selected: boolean
 }
 ```
+
+
+### 如果結果和預期不同
+
+- 畫面沒有更新：先檢查狀態變數、props / events、模板語法與瀏覽器 console。
+- 元件沒有渲染：確認元件是否正確 import、註冊、掛載，或 route / page 是否指到正確檔案。
+- 建置或部署失敗：先看 terminal / GitHub Actions log 的第一個錯誤，不要只看最後一行。
+
+### 做完後檢查
+
+- 用瀏覽器實際操作一次本篇功能。
+- 對照 Angular 中類似概念，寫下 Vue / Svelte 哪裡更像、哪裡不同。
+- 確認沒有 console error，且重新整理頁面後仍能看到預期結果。
+
+### 小練習
+
+1. 把範例中的命名改成另一個真實業務場景。
+2. 故意改錯一個 props、event 或 binding 名稱，觀察錯誤訊息。
+3. 寫一句話比較 Angular 與本篇 Vue / Svelte 寫法的差異。
 
 ### 實務使用情境
 
@@ -1046,6 +1501,12 @@ export type CoffeePlan = {
 
 props 是父元件把資料交給子元件的主要方式。它讓同一個子元件能重複使用，但內容由父元件決定。
 
+
+### 學完這篇你應該會做到什麼
+
+- 能用 Angular 開發者熟悉的角度，說明 Day 13：建立帶有 Prop 的 CoffeePlan 元件 的核心觀念。
+- 能照著範例完成對應的 Vue / Svelte 元件、狀態或部署流程。
+- 能用畫面、測試資料、瀏覽器 console 或建置結果驗證自己做對了。
 ### 定義名稱對照表
 
 | 角色 | 文章中的名稱 | 功能 / 責任 |
@@ -1054,7 +1515,17 @@ props 是父元件把資料交給子元件的主要方式。它讓同一個子�
 | 輸入資料 | `name` prop | 由父元件提供方案名稱 |
 | 父元件 | App / PlanPicker | 持有方案清單並建立子元件 |
 
-### 實作流程與程式碼例子
+
+### 實作任務情境
+
+把這篇當成一個小任務：你要在既有前端專案中完成 Day 13：建立帶有 Prop 的 CoffeePlan 元件 對應的功能，並比較 Angular、Vue 3、Svelte 5 在寫法與心智模型上的差異。
+
+### 操作前檢查
+
+- 先確認你知道本篇是在 Vue 3、Svelte 5，還是部署 / 工具流程中操作。
+- 若有程式碼，先確認檔案應放在哪個 component、page、route 或 workflow 設定檔。
+- 若有 CLI 或 YAML，先在測試專案或分支操作，不要直接改正式部署設定。
+### 範例形式與實作
 
 完整流程：
 
@@ -1085,6 +1556,25 @@ defineProps<{ name: string }>()
 <CoffeePlan name="The Single" />
 <CoffeePlan name="The Curious" />
 ```
+
+
+### 如果結果和預期不同
+
+- 畫面沒有更新：先檢查狀態變數、props / events、模板語法與瀏覽器 console。
+- 元件沒有渲染：確認元件是否正確 import、註冊、掛載，或 route / page 是否指到正確檔案。
+- 建置或部署失敗：先看 terminal / GitHub Actions log 的第一個錯誤，不要只看最後一行。
+
+### 做完後檢查
+
+- 用瀏覽器實際操作一次本篇功能。
+- 對照 Angular 中類似概念，寫下 Vue / Svelte 哪裡更像、哪裡不同。
+- 確認沒有 console error，且重新整理頁面後仍能看到預期結果。
+
+### 小練習
+
+1. 把範例中的命名改成另一個真實業務場景。
+2. 故意改錯一個 props、event 或 binding 名稱，觀察錯誤訊息。
+3. 寫一句話比較 Angular 與本篇 Vue / Svelte 寫法的差異。
 
 ### 實務使用情境
 
@@ -1123,6 +1613,12 @@ props 讓子元件從硬編內容變成可重用的資料顯示器。
 
 當一組子元件共享同一份清單或互動狀態時，需要一個父元件作為協調者，而不是讓根元件越來越肥。
 
+
+### 學完這篇你應該會做到什麼
+
+- 能用 Angular 開發者熟悉的角度，說明 Day 14：建立 PlanPicker 父元件 的核心觀念。
+- 能照著範例完成對應的 Vue / Svelte 元件、狀態或部署流程。
+- 能用畫面、測試資料、瀏覽器 console 或建置結果驗證自己做對了。
 ### 定義名稱對照表
 
 | 角色 | 文章中的名稱 | 功能 / 責任 |
@@ -1131,7 +1627,17 @@ props 讓子元件從硬編內容變成可重用的資料顯示器。
 | 子元件 | `CoffeePlan` | 顯示單一方案 |
 | 根元件 | App | 掛載 PlanPicker |
 
-### 實作流程與程式碼例子
+
+### 實作任務情境
+
+把這篇當成一個小任務：你要在既有前端專案中完成 Day 14：建立 PlanPicker 父元件 對應的功能，並比較 Angular、Vue 3、Svelte 5 在寫法與心智模型上的差異。
+
+### 操作前檢查
+
+- 先確認你知道本篇是在 Vue 3、Svelte 5，還是部署 / 工具流程中操作。
+- 若有程式碼，先確認檔案應放在哪個 component、page、route 或 workflow 設定檔。
+- 若有 CLI 或 YAML，先在測試專案或分支操作，不要直接改正式部署設定。
+### 範例形式與實作
 
 完整流程：
 
@@ -1157,6 +1663,25 @@ const plans = ref(['The Single', 'The Curious', 'The Addict'])
   </div>
 </template>
 ```
+
+
+### 如果結果和預期不同
+
+- 畫面沒有更新：先檢查狀態變數、props / events、模板語法與瀏覽器 console。
+- 元件沒有渲染：確認元件是否正確 import、註冊、掛載，或 route / page 是否指到正確檔案。
+- 建置或部署失敗：先看 terminal / GitHub Actions log 的第一個錯誤，不要只看最後一行。
+
+### 做完後檢查
+
+- 用瀏覽器實際操作一次本篇功能。
+- 對照 Angular 中類似概念，寫下 Vue / Svelte 哪裡更像、哪裡不同。
+- 確認沒有 console error，且重新整理頁面後仍能看到預期結果。
+
+### 小練習
+
+1. 把範例中的命名改成另一個真實業務場景。
+2. 故意改錯一個 props、event 或 binding 名稱，觀察錯誤訊息。
+3. 寫一句話比較 Angular 與本篇 Vue / Svelte 寫法的差異。
 
 ### 實務使用情境
 
@@ -1195,6 +1720,12 @@ const plans = ref(['The Single', 'The Curious', 'The Addict'])
 
 表單子元件通常不應直接改父層清單，而是透過 emit / callback / output 通知父元件。這能維持資料流清楚。
 
+
+### 學完這篇你應該會做到什麼
+
+- 能用 Angular 開發者熟悉的角度，說明 Day 15：新增 Coffee Plan 表單 的核心觀念。
+- 能照著範例完成對應的 Vue / Svelte 元件、狀態或部署流程。
+- 能用畫面、測試資料、瀏覽器 console 或建置結果驗證自己做對了。
 ### 定義名稱對照表
 
 | 角色 | 文章中的名稱 | 功能 / 責任 |
@@ -1203,7 +1734,17 @@ const plans = ref(['The Single', 'The Curious', 'The Addict'])
 | 父元件 | `PlanPicker` | 實際更新方案清單 |
 | 自訂事件 | `newCoffeePlan` | 子元件通知父元件新增資料 |
 
-### 實作流程與程式碼例子
+
+### 實作任務情境
+
+把這篇當成一個小任務：你要在既有前端專案中完成 Day 15：新增 Coffee Plan 表單 對應的功能，並比較 Angular、Vue 3、Svelte 5 在寫法與心智模型上的差異。
+
+### 操作前檢查
+
+- 先確認你知道本篇是在 Vue 3、Svelte 5，還是部署 / 工具流程中操作。
+- 若有程式碼，先確認檔案應放在哪個 component、page、route 或 workflow 設定檔。
+- 若有 CLI 或 YAML，先在測試專案或分支操作，不要直接改正式部署設定。
+### 範例形式與實作
 
 完整流程：
 
@@ -1236,6 +1777,25 @@ function addPlan() {
   </form>
 </template>
 ```
+
+
+### 如果結果和預期不同
+
+- 畫面沒有更新：先檢查狀態變數、props / events、模板語法與瀏覽器 console。
+- 元件沒有渲染：確認元件是否正確 import、註冊、掛載，或 route / page 是否指到正確檔案。
+- 建置或部署失敗：先看 terminal / GitHub Actions log 的第一個錯誤，不要只看最後一行。
+
+### 做完後檢查
+
+- 用瀏覽器實際操作一次本篇功能。
+- 對照 Angular 中類似概念，寫下 Vue / Svelte 哪裡更像、哪裡不同。
+- 確認沒有 console error，且重新整理頁面後仍能看到預期結果。
+
+### 小練習
+
+1. 把範例中的命名改成另一個真實業務場景。
+2. 故意改錯一個 props、event 或 binding 名稱，觀察錯誤訊息。
+3. 寫一句話比較 Angular 與本篇 Vue / Svelte 寫法的差異。
 
 ### 實務使用情境
 
@@ -1274,6 +1834,12 @@ function addPlan() {
 
 多個兄弟元件之間通常不能直接互相改狀態，應把共享狀態提升到共同父元件。
 
+
+### 學完這篇你應該會做到什麼
+
+- 能用 Angular 開發者熟悉的角度，說明 Day 16：使用元件事件選擇咖啡方案 的核心觀念。
+- 能照著範例完成對應的 Vue / Svelte 元件、狀態或部署流程。
+- 能用畫面、測試資料、瀏覽器 console 或建置結果驗證自己做對了。
 ### 定義名稱對照表
 
 | 角色 | 文章中的名稱 | 功能 / 責任 |
@@ -1282,7 +1848,17 @@ function addPlan() {
 | 共享狀態 | active plan | 父元件保存目前選取 |
 | 視覺狀態 | selected border / inactive | 根據 active plan 顯示 |
 
-### 實作流程與程式碼例子
+
+### 實作任務情境
+
+把這篇當成一個小任務：你要在既有前端專案中完成 Day 16：使用元件事件選擇咖啡方案 對應的功能，並比較 Angular、Vue 3、Svelte 5 在寫法與心智模型上的差異。
+
+### 操作前檢查
+
+- 先確認你知道本篇是在 Vue 3、Svelte 5，還是部署 / 工具流程中操作。
+- 若有程式碼，先確認檔案應放在哪個 component、page、route 或 workflow 設定檔。
+- 若有 CLI 或 YAML，先在測試專案或分支操作，不要直接改正式部署設定。
+### 範例形式與實作
 
 完整流程：
 
@@ -1307,6 +1883,25 @@ const emit = defineEmits<{ selectedPlan: [name: string] }>()
   </button>
 </template>
 ```
+
+
+### 如果結果和預期不同
+
+- 畫面沒有更新：先檢查狀態變數、props / events、模板語法與瀏覽器 console。
+- 元件沒有渲染：確認元件是否正確 import、註冊、掛載，或 route / page 是否指到正確檔案。
+- 建置或部署失敗：先看 terminal / GitHub Actions log 的第一個錯誤，不要只看最後一行。
+
+### 做完後檢查
+
+- 用瀏覽器實際操作一次本篇功能。
+- 對照 Angular 中類似概念，寫下 Vue / Svelte 哪裡更像、哪裡不同。
+- 確認沒有 console error，且重新整理頁面後仍能看到預期結果。
+
+### 小練習
+
+1. 把範例中的命名改成另一個真實業務場景。
+2. 故意改錯一個 props、event 或 binding 名稱，觀察錯誤訊息。
+3. 寫一句話比較 Angular 與本篇 Vue / Svelte 寫法的差異。
 
 ### 實務使用情境
 
@@ -1345,6 +1940,12 @@ const emit = defineEmits<{ selectedPlan: [name: string] }>()
 
 有些元件只知道「版位」，不知道內容。像按鈕文字、卡片 actions、選中圖示，應由使用端決定，元件提供插槽位置。
 
+
+### 學完這篇你應該會做到什麼
+
+- 能用 Angular 開發者熟悉的角度，說明 Day 17：在 HTML 模板中渲染動態內容 的核心觀念。
+- 能照著範例完成對應的 Vue / Svelte 元件、狀態或部署流程。
+- 能用畫面、測試資料、瀏覽器 console 或建置結果驗證自己做對了。
 ### 定義名稱對照表
 
 | 角色 | 文章中的名稱 | 功能 / 責任 |
@@ -1353,7 +1954,17 @@ const emit = defineEmits<{ selectedPlan: [name: string] }>()
 | 插槽屬性 | slot props | 子元件把狀態傳回父層模板 |
 | 模板片段 | render / ng-template | 延後渲染的 UI 片段 |
 
-### 實作流程與程式碼例子
+
+### 實作任務情境
+
+把這篇當成一個小任務：你要在既有前端專案中完成 Day 17：在 HTML 模板中渲染動態內容 對應的功能，並比較 Angular、Vue 3、Svelte 5 在寫法與心智模型上的差異。
+
+### 操作前檢查
+
+- 先確認你知道本篇是在 Vue 3、Svelte 5，還是部署 / 工具流程中操作。
+- 若有程式碼，先確認檔案應放在哪個 component、page、route 或 workflow 設定檔。
+- 若有 CLI 或 YAML，先在測試專案或分支操作，不要直接改正式部署設定。
+### 範例形式與實作
 
 完整流程：
 
@@ -1381,6 +1992,25 @@ const emit = defineEmits<{ selectedPlan: [name: string] }>()
   {{ hover ? 'Add this plan' : 'Add' }}
 </template>
 ```
+
+
+### 如果結果和預期不同
+
+- 畫面沒有更新：先檢查狀態變數、props / events、模板語法與瀏覽器 console。
+- 元件沒有渲染：確認元件是否正確 import、註冊、掛載，或 route / page 是否指到正確檔案。
+- 建置或部署失敗：先看 terminal / GitHub Actions log 的第一個錯誤，不要只看最後一行。
+
+### 做完後檢查
+
+- 用瀏覽器實際操作一次本篇功能。
+- 對照 Angular 中類似概念，寫下 Vue / Svelte 哪裡更像、哪裡不同。
+- 確認沒有 console error，且重新整理頁面後仍能看到預期結果。
+
+### 小練習
+
+1. 把範例中的命名改成另一個真實業務場景。
+2. 故意改錯一個 props、event 或 binding 名稱，觀察錯誤訊息。
+3. 寫一句話比較 Angular 與本篇 Vue / Svelte 寫法的差異。
 
 ### 實務使用情境
 
@@ -1419,6 +2049,12 @@ const emit = defineEmits<{ selectedPlan: [name: string] }>()
 
 前端常需要呼叫外部 API。資料擷取不能只會 `fetch`，還要處理 token、型別、非同步狀態與不同框架的資料載入模式。
 
+
+### 學完這篇你應該會做到什麼
+
+- 能用 Angular 開發者熟悉的角度，說明 Day 18：GitHub Card 專案資料擷取 的核心觀念。
+- 能照著範例完成對應的 Vue / Svelte 元件、狀態或部署流程。
+- 能用畫面、測試資料、瀏覽器 console 或建置結果驗證自己做對了。
 ### 定義名稱對照表
 
 | 角色 | 文章中的名稱 | 功能 / 責任 |
@@ -1428,7 +2064,17 @@ const emit = defineEmits<{ selectedPlan: [name: string] }>()
 | 型別 | `GithubProfile` | 定義 API 回傳資料形狀 |
 | 資料擷取封裝 | Vue composable、Svelte load、Angular service/httpResource | 封裝 API 呼叫 |
 
-### 實作流程與程式碼例子
+
+### 實作任務情境
+
+把這篇當成一個小任務：你要在既有前端專案中完成 Day 18：GitHub Card 專案資料擷取 對應的功能，並比較 Angular、Vue 3、Svelte 5 在寫法與心智模型上的差異。
+
+### 操作前檢查
+
+- 先確認你知道本篇是在 Vue 3、Svelte 5，還是部署 / 工具流程中操作。
+- 若有程式碼，先確認檔案應放在哪個 component、page、route 或 workflow 設定檔。
+- 若有 CLI 或 YAML，先在測試專案或分支操作，不要直接改正式部署設定。
+### 範例形式與實作
 
 完整流程：
 
@@ -1456,6 +2102,25 @@ export async function fetchGithubProfile(username: string, token: string) {
   return response.json() as Promise<GithubProfile>
 }
 ```
+
+
+### 如果結果和預期不同
+
+- 畫面沒有更新：先檢查狀態變數、props / events、模板語法與瀏覽器 console。
+- 元件沒有渲染：確認元件是否正確 import、註冊、掛載，或 route / page 是否指到正確檔案。
+- 建置或部署失敗：先看 terminal / GitHub Actions log 的第一個錯誤，不要只看最後一行。
+
+### 做完後檢查
+
+- 用瀏覽器實際操作一次本篇功能。
+- 對照 Angular 中類似概念，寫下 Vue / Svelte 哪裡更像、哪裡不同。
+- 確認沒有 console error，且重新整理頁面後仍能看到預期結果。
+
+### 小練習
+
+1. 把範例中的命名改成另一個真實業務場景。
+2. 故意改錯一個 props、event 或 binding 名稱，觀察錯誤訊息。
+3. 寫一句話比較 Angular 與本篇 Vue / Svelte 寫法的差異。
 
 ### 實務使用情境
 
@@ -1494,6 +2159,12 @@ export async function fetchGithubProfile(username: string, token: string) {
 
 列表與卡片是常見組合：容器元件負責資料集合，項目元件負責單筆資料呈現。這能讓 UI 結構更清楚。
 
+
+### 學完這篇你應該會做到什麼
+
+- 能用 Angular 開發者熟悉的角度，說明 Day 19：GitHub Card 元件組合 的核心觀念。
+- 能照著範例完成對應的 Vue / Svelte 元件、狀態或部署流程。
+- 能用畫面、測試資料、瀏覽器 console 或建置結果驗證自己做對了。
 ### 定義名稱對照表
 
 | 角色 | 文章中的名稱 | 功能 / 責任 |
@@ -1502,7 +2173,17 @@ export async function fetchGithubProfile(username: string, token: string) {
 | 展示元件 | `GithubProfileCard` | 顯示單一使用者 |
 | 資料來源 | username prop | 決定要抓哪位使用者 |
 
-### 實作流程與程式碼例子
+
+### 實作任務情境
+
+把這篇當成一個小任務：你要在既有前端專案中完成 Day 19：GitHub Card 元件組合 對應的功能，並比較 Angular、Vue 3、Svelte 5 在寫法與心智模型上的差異。
+
+### 操作前檢查
+
+- 先確認你知道本篇是在 Vue 3、Svelte 5，還是部署 / 工具流程中操作。
+- 若有程式碼，先確認檔案應放在哪個 component、page、route 或 workflow 設定檔。
+- 若有 CLI 或 YAML，先在測試專案或分支操作，不要直接改正式部署設定。
+### 範例形式與實作
 
 完整流程：
 
@@ -1529,6 +2210,25 @@ const usernames = ['yyx990803', 'angular', 'sveltejs']
   />
 </template>
 ```
+
+
+### 如果結果和預期不同
+
+- 畫面沒有更新：先檢查狀態變數、props / events、模板語法與瀏覽器 console。
+- 元件沒有渲染：確認元件是否正確 import、註冊、掛載，或 route / page 是否指到正確檔案。
+- 建置或部署失敗：先看 terminal / GitHub Actions log 的第一個錯誤，不要只看最後一行。
+
+### 做完後檢查
+
+- 用瀏覽器實際操作一次本篇功能。
+- 對照 Angular 中類似概念，寫下 Vue / Svelte 哪裡更像、哪裡不同。
+- 確認沒有 console error，且重新整理頁面後仍能看到預期結果。
+
+### 小練習
+
+1. 把範例中的命名改成另一個真實業務場景。
+2. 故意改錯一個 props、event 或 binding 名稱，觀察錯誤訊息。
+3. 寫一句話比較 Angular 與本篇 Vue / Svelte 寫法的差異。
 
 ### 實務使用情境
 
@@ -1566,6 +2266,12 @@ const usernames = ['yyx990803', 'angular', 'sveltejs']
 
 樣式框架能加速 UI 實作，但前提是資料結構與元件分工已經清楚。樣式不應掩蓋元件責任。
 
+
+### 學完這篇你應該會做到什麼
+
+- 能用 Angular 開發者熟悉的角度，說明 Day 20：GitHub Card 樣式設計 的核心觀念。
+- 能照著範例完成對應的 Vue / Svelte 元件、狀態或部署流程。
+- 能用畫面、測試資料、瀏覽器 console 或建置結果驗證自己做對了。
 ### 定義名稱對照表
 
 | 角色 | 文章中的名稱 | 功能 / 責任 |
@@ -1574,7 +2280,17 @@ const usernames = ['yyx990803', 'angular', 'sveltejs']
 | UI 元件樣式 | DaisyUI card | 提供預設卡片外觀 |
 | Profile 資料 | `profile` | 填入卡片內容 |
 
-### 實作流程與程式碼例子
+
+### 實作任務情境
+
+把這篇當成一個小任務：你要在既有前端專案中完成 Day 20：GitHub Card 樣式設計 對應的功能，並比較 Angular、Vue 3、Svelte 5 在寫法與心智模型上的差異。
+
+### 操作前檢查
+
+- 先確認你知道本篇是在 Vue 3、Svelte 5，還是部署 / 工具流程中操作。
+- 若有程式碼，先確認檔案應放在哪個 component、page、route 或 workflow 設定檔。
+- 若有 CLI 或 YAML，先在測試專案或分支操作，不要直接改正式部署設定。
+### 範例形式與實作
 
 完整流程：
 
@@ -1597,6 +2313,25 @@ const usernames = ['yyx990803', 'angular', 'sveltejs']
   </div>
 </div>
 ```
+
+
+### 如果結果和預期不同
+
+- 畫面沒有更新：先檢查狀態變數、props / events、模板語法與瀏覽器 console。
+- 元件沒有渲染：確認元件是否正確 import、註冊、掛載，或 route / page 是否指到正確檔案。
+- 建置或部署失敗：先看 terminal / GitHub Actions log 的第一個錯誤，不要只看最後一行。
+
+### 做完後檢查
+
+- 用瀏覽器實際操作一次本篇功能。
+- 對照 Angular 中類似概念，寫下 Vue / Svelte 哪裡更像、哪裡不同。
+- 確認沒有 console error，且重新整理頁面後仍能看到預期結果。
+
+### 小練習
+
+1. 把範例中的命名改成另一個真實業務場景。
+2. 故意改錯一個 props、event 或 binding 名稱，觀察錯誤訊息。
+3. 寫一句話比較 Angular 與本篇 Vue / Svelte 寫法的差異。
 
 ### 實務使用情境
 
@@ -1634,6 +2369,12 @@ const usernames = ['yyx990803', 'angular', 'sveltejs']
 
 部署含 API token 的前端專案時，要分清楚 build-time 變數與 runtime 安全。公開前端無法真正保護秘密。
 
+
+### 學完這篇你應該會做到什麼
+
+- 能用 Angular 開發者熟悉的角度，說明 Day 21：部署 GitHub Profile 專案 的核心觀念。
+- 能照著範例完成對應的 Vue / Svelte 元件、狀態或部署流程。
+- 能用畫面、測試資料、瀏覽器 console 或建置結果驗證自己做對了。
 ### 定義名稱對照表
 
 | 角色 | 文章中的名稱 | 功能 / 責任 |
@@ -1642,7 +2383,17 @@ const usernames = ['yyx990803', 'angular', 'sveltejs']
 | CI/CD | GitHub Actions | build 並部署 |
 | Secret | GitHub token / environment variable | 建置時提供設定 |
 
-### 實作流程與程式碼例子
+
+### 實作任務情境
+
+把這篇當成一個小任務：你要在既有前端專案中完成 Day 21：部署 GitHub Profile 專案 對應的功能，並比較 Angular、Vue 3、Svelte 5 在寫法與心智模型上的差異。
+
+### 操作前檢查
+
+- 先確認你知道本篇是在 Vue 3、Svelte 5，還是部署 / 工具流程中操作。
+- 若有程式碼，先確認檔案應放在哪個 component、page、route 或 workflow 設定檔。
+- 若有 CLI 或 YAML，先在測試專案或分支操作，不要直接改正式部署設定。
+### 範例形式與實作
 
 完整流程：
 
@@ -1664,6 +2415,25 @@ steps:
   - run: npm ci
   - run: npm run build
 ```
+
+
+### 如果結果和預期不同
+
+- 畫面沒有更新：先檢查狀態變數、props / events、模板語法與瀏覽器 console。
+- 元件沒有渲染：確認元件是否正確 import、註冊、掛載，或 route / page 是否指到正確檔案。
+- 建置或部署失敗：先看 terminal / GitHub Actions log 的第一個錯誤，不要只看最後一行。
+
+### 做完後檢查
+
+- 用瀏覽器實際操作一次本篇功能。
+- 對照 Angular 中類似概念，寫下 Vue / Svelte 哪裡更像、哪裡不同。
+- 確認沒有 console error，且重新整理頁面後仍能看到預期結果。
+
+### 小練習
+
+1. 把範例中的命名改成另一個真實業務場景。
+2. 故意改錯一個 props、event 或 binding 名稱，觀察錯誤訊息。
+3. 寫一句話比較 Angular 與本篇 Vue / Svelte 寫法的差異。
 
 ### 實務使用情境
 
@@ -1702,6 +2472,12 @@ steps:
 
 Alert 是常見 UI，但它包含資料清單、類型、關閉狀態、樣式與父子同步。小元件也能練到完整資料流。
 
+
+### 學完這篇你應該會做到什麼
+
+- 能用 Angular 開發者熟悉的角度，說明 Day 22：Alert List 與 Alert Component 的核心觀念。
+- 能照著範例完成對應的 Vue / Svelte 元件、狀態或部署流程。
+- 能用畫面、測試資料、瀏覽器 console 或建置結果驗證自己做對了。
 ### 定義名稱對照表
 
 | 角色 | 文章中的名稱 | 功能 / 責任 |
@@ -1711,7 +2487,17 @@ Alert 是常見 UI，但它包含資料清單、類型、關閉狀態、樣式�
 | 警示型別 | info、success、warning、error | 決定樣式與語意 |
 | 雙向狀態 | `defineModel`、`$bindable`、`model` | 父子同步關閉狀態 |
 
-### 實作流程與程式碼例子
+
+### 實作任務情境
+
+把這篇當成一個小任務：你要在既有前端專案中完成 Day 22：Alert List 與 Alert Component 對應的功能，並比較 Angular、Vue 3、Svelte 5 在寫法與心智模型上的差異。
+
+### 操作前檢查
+
+- 先確認你知道本篇是在 Vue 3、Svelte 5，還是部署 / 工具流程中操作。
+- 若有程式碼，先確認檔案應放在哪個 component、page、route 或 workflow 設定檔。
+- 若有 CLI 或 YAML，先在測試專案或分支操作，不要直接改正式部署設定。
+### 範例形式與實作
 
 完整流程：
 
@@ -1742,6 +2528,25 @@ type AlertMessage = {
   <button @click="close(alert.id)">Close</button>
 </div>
 ```
+
+
+### 如果結果和預期不同
+
+- 畫面沒有更新：先檢查狀態變數、props / events、模板語法與瀏覽器 console。
+- 元件沒有渲染：確認元件是否正確 import、註冊、掛載，或 route / page 是否指到正確檔案。
+- 建置或部署失敗：先看 terminal / GitHub Actions log 的第一個錯誤，不要只看最後一行。
+
+### 做完後檢查
+
+- 用瀏覽器實際操作一次本篇功能。
+- 對照 Angular 中類似概念，寫下 Vue / Svelte 哪裡更像、哪裡不同。
+- 確認沒有 console error，且重新整理頁面後仍能看到預期結果。
+
+### 小練習
+
+1. 把範例中的命名改成另一個真實業務場景。
+2. 故意改錯一個 props、event 或 binding 名稱，觀察錯誤訊息。
+3. 寫一句話比較 Angular 與本篇 Vue / Svelte 寫法的差異。
 
 ### 實務使用情境
 
@@ -1779,6 +2584,12 @@ Alert 元件雖小，但很適合練習清單、型別、樣式與父子同步�
 
 當 UI 類型會擴充時，不應在模板寫一大串 if/else。動態元件讓「type 對應 component」變成可維護的映射表。
 
+
+### 學完這篇你應該會做到什麼
+
+- 能用 Angular 開發者熟悉的角度，說明 Day 23：動態渲染 SVG 圖示 的核心觀念。
+- 能照著範例完成對應的 Vue / Svelte 元件、狀態或部署流程。
+- 能用畫面、測試資料、瀏覽器 console 或建置結果驗證自己做對了。
 ### 定義名稱對照表
 
 | 角色 | 文章中的名稱 | 功能 / 責任 |
@@ -1787,7 +2598,17 @@ Alert 元件雖小，但很適合練習清單、型別、樣式與父子同步�
 | 動態渲染 | `:is`、dynamic component、`ngComponentOutlet` | 根據 type 選元件 |
 | 映射表 | icon map | 將 alert type 對應到圖示 |
 
-### 實作流程與程式碼例子
+
+### 實作任務情境
+
+把這篇當成一個小任務：你要在既有前端專案中完成 Day 23：動態渲染 SVG 圖示 對應的功能，並比較 Angular、Vue 3、Svelte 5 在寫法與心智模型上的差異。
+
+### 操作前檢查
+
+- 先確認你知道本篇是在 Vue 3、Svelte 5，還是部署 / 工具流程中操作。
+- 若有程式碼，先確認檔案應放在哪個 component、page、route 或 workflow 設定檔。
+- 若有 CLI 或 YAML，先在測試專案或分支操作，不要直接改正式部署設定。
+### 範例形式與實作
 
 完整流程：
 
@@ -1815,6 +2636,25 @@ const iconByType = {
 <component :is="iconByType[alert.type]" />
 <span>{{ alert.text }}</span>
 ```
+
+
+### 如果結果和預期不同
+
+- 畫面沒有更新：先檢查狀態變數、props / events、模板語法與瀏覽器 console。
+- 元件沒有渲染：確認元件是否正確 import、註冊、掛載，或 route / page 是否指到正確檔案。
+- 建置或部署失敗：先看 terminal / GitHub Actions log 的第一個錯誤，不要只看最後一行。
+
+### 做完後檢查
+
+- 用瀏覽器實際操作一次本篇功能。
+- 對照 Angular 中類似概念，寫下 Vue / Svelte 哪裡更像、哪裡不同。
+- 確認沒有 console error，且重新整理頁面後仍能看到預期結果。
+
+### 小練習
+
+1. 把範例中的命名改成另一個真實業務場景。
+2. 故意改錯一個 props、event 或 binding 名稱，觀察錯誤訊息。
+3. 寫一句話比較 Angular 與本篇 Vue / Svelte 寫法的差異。
 
 ### 實務使用情境
 
@@ -1854,6 +2694,12 @@ const iconByType = {
 
 當一個控制列會影響一組元件時，需要清楚定義「控制狀態」與「被控制 UI」之間的資料流。
 
+
+### 學完這篇你應該會做到什麼
+
+- 能用 Angular 開發者熟悉的角度，說明 Day 24：新增 Alert Bar 更換樣式 的核心觀念。
+- 能照著範例完成對應的 Vue / Svelte 元件、狀態或部署流程。
+- 能用畫面、測試資料、瀏覽器 console 或建置結果驗證自己做對了。
 ### 定義名稱對照表
 
 | 角色 | 文章中的名稱 | 功能 / 責任 |
@@ -1862,7 +2708,17 @@ const iconByType = {
 | 被控制元件 | Alert List / Alert | 依設定改變呈現 |
 | 雙向設定 | selected style / direction / close button | 父子之間同步的 UI 設定 |
 
-### 實作流程與程式碼例子
+
+### 實作任務情境
+
+把這篇當成一個小任務：你要在既有前端專案中完成 Day 24：新增 Alert Bar 更換樣式 對應的功能，並比較 Angular、Vue 3、Svelte 5 在寫法與心智模型上的差異。
+
+### 操作前檢查
+
+- 先確認你知道本篇是在 Vue 3、Svelte 5，還是部署 / 工具流程中操作。
+- 若有程式碼，先確認檔案應放在哪個 component、page、route 或 workflow 設定檔。
+- 若有 CLI 或 YAML，先在測試專案或分支操作，不要直接改正式部署設定。
+### 範例形式與實作
 
 完整流程：
 
@@ -1890,6 +2746,25 @@ type AlertSettings = {
   Close
 </button>
 ```
+
+
+### 如果結果和預期不同
+
+- 畫面沒有更新：先檢查狀態變數、props / events、模板語法與瀏覽器 console。
+- 元件沒有渲染：確認元件是否正確 import、註冊、掛載，或 route / page 是否指到正確檔案。
+- 建置或部署失敗：先看 terminal / GitHub Actions log 的第一個錯誤，不要只看最後一行。
+
+### 做完後檢查
+
+- 用瀏覽器實際操作一次本篇功能。
+- 對照 Angular 中類似概念，寫下 Vue / Svelte 哪裡更像、哪裡不同。
+- 確認沒有 console error，且重新整理頁面後仍能看到預期結果。
+
+### 小練習
+
+1. 把範例中的命名改成另一個真實業務場景。
+2. 故意改錯一個 props、event 或 binding 名稱，觀察錯誤訊息。
+3. 寫一句話比較 Angular 與本篇 Vue / Svelte 寫法的差異。
 
 ### 實務使用情境
 
@@ -1928,6 +2803,12 @@ type AlertSettings = {
 
 關閉 UI 不只是把元素移除，還要知道「哪些被關閉」與「如何恢復」。這是狀態集合管理問題。
 
+
+### 學完這篇你應該會做到什麼
+
+- 能用 Angular 開發者熟悉的角度，說明 Day 25：重新開啟已關閉的 Alert 的核心觀念。
+- 能照著範例完成對應的 Vue / Svelte 元件、狀態或部署流程。
+- 能用畫面、測試資料、瀏覽器 console 或建置結果驗證自己做對了。
 ### 定義名稱對照表
 
 | 角色 | 文章中的名稱 | 功能 / 責任 |
@@ -1936,7 +2817,17 @@ type AlertSettings = {
 | 重開操作 | Open all / open type | 從關閉集合移除項目 |
 | 雙向綁定 | `defineModel`、`$bindable`、`model` | Alert Bar 與父層同步 |
 
-### 實作流程與程式碼例子
+
+### 實作任務情境
+
+把這篇當成一個小任務：你要在既有前端專案中完成 Day 25：重新開啟已關閉的 Alert 對應的功能，並比較 Angular、Vue 3、Svelte 5 在寫法與心智模型上的差異。
+
+### 操作前檢查
+
+- 先確認你知道本篇是在 Vue 3、Svelte 5，還是部署 / 工具流程中操作。
+- 若有程式碼，先確認檔案應放在哪個 component、page、route 或 workflow 設定檔。
+- 若有 CLI 或 YAML，先在測試專案或分支操作，不要直接改正式部署設定。
+### 範例形式與實作
 
 完整流程：
 
@@ -1962,6 +2853,25 @@ function reopen(type: string) {
   closedNotifications.value = closedNotifications.value.filter((x) => x !== type)
 }
 ```
+
+
+### 如果結果和預期不同
+
+- 畫面沒有更新：先檢查狀態變數、props / events、模板語法與瀏覽器 console。
+- 元件沒有渲染：確認元件是否正確 import、註冊、掛載，或 route / page 是否指到正確檔案。
+- 建置或部署失敗：先看 terminal / GitHub Actions log 的第一個錯誤，不要只看最後一行。
+
+### 做完後檢查
+
+- 用瀏覽器實際操作一次本篇功能。
+- 對照 Angular 中類似概念，寫下 Vue / Svelte 哪裡更像、哪裡不同。
+- 確認沒有 console error，且重新整理頁面後仍能看到預期結果。
+
+### 小練習
+
+1. 把範例中的命名改成另一個真實業務場景。
+2. 故意改錯一個 props、event 或 binding 名稱，觀察錯誤訊息。
+3. 寫一句話比較 Angular 與本篇 Vue / Svelte 寫法的差異。
 
 ### 實務使用情境
 
@@ -1999,6 +2909,12 @@ function reopen(type: string) {
 
 重構不是為了漂亮，而是當元件同時負責 UI 控制、狀態管理、資料操作時，要拆出可命名的責任。
 
+
+### 學完這篇你應該會做到什麼
+
+- 能用 Angular 開發者熟悉的角度，說明 Day 26：從 AlertBar 抽取邏輯和元件 的核心觀念。
+- 能照著範例完成對應的 Vue / Svelte 元件、狀態或部署流程。
+- 能用畫面、測試資料、瀏覽器 console 或建置結果驗證自己做對了。
 ### 定義名稱對照表
 
 | 角色 | 文章中的名稱 | 功能 / 責任 |
@@ -2007,7 +2923,17 @@ function reopen(type: string) {
 | 狀態管理 | Vue composable、Svelte store、Angular service | 封裝關閉 / 重開通知邏輯 |
 | 原元件 | `AlertBar` | 組合 dropdown 與操作按鈕 |
 
-### 實作流程與程式碼例子
+
+### 實作任務情境
+
+把這篇當成一個小任務：你要在既有前端專案中完成 Day 26：從 AlertBar 抽取邏輯和元件 對應的功能，並比較 Angular、Vue 3、Svelte 5 在寫法與心智模型上的差異。
+
+### 操作前檢查
+
+- 先確認你知道本篇是在 Vue 3、Svelte 5，還是部署 / 工具流程中操作。
+- 若有程式碼，先確認檔案應放在哪個 component、page、route 或 workflow 設定檔。
+- 若有 CLI 或 YAML，先在測試專案或分支操作，不要直接改正式部署設定。
+### 範例形式與實作
 
 完整流程：
 
@@ -2034,6 +2960,25 @@ export function useClosedNotifications() {
   return { closed, close, reopen, reopenAll }
 }
 ```
+
+
+### 如果結果和預期不同
+
+- 畫面沒有更新：先檢查狀態變數、props / events、模板語法與瀏覽器 console。
+- 元件沒有渲染：確認元件是否正確 import、註冊、掛載，或 route / page 是否指到正確檔案。
+- 建置或部署失敗：先看 terminal / GitHub Actions log 的第一個錯誤，不要只看最後一行。
+
+### 做完後檢查
+
+- 用瀏覽器實際操作一次本篇功能。
+- 對照 Angular 中類似概念，寫下 Vue / Svelte 哪裡更像、哪裡不同。
+- 確認沒有 console error，且重新整理頁面後仍能看到預期結果。
+
+### 小練習
+
+1. 把範例中的命名改成另一個真實業務場景。
+2. 故意改錯一個 props、event 或 binding 名稱，觀察錯誤訊息。
+3. 寫一句話比較 Angular 與本篇 Vue / Svelte 寫法的差異。
 
 ### 實務使用情境
 
@@ -2072,6 +3017,12 @@ export function useClosedNotifications() {
 
 真實應用通常不是單一畫面，而是列表頁與詳情頁的組合。路由與資料擷取會共同決定使用者如何瀏覽資料。
 
+
+### 學完這篇你應該會做到什麼
+
+- 能用 Angular 開發者熟悉的角度，說明 Day 27：建立簡單部落格頁面 的核心觀念。
+- 能照著範例完成對應的 Vue / Svelte 元件、狀態或部署流程。
+- 能用畫面、測試資料、瀏覽器 console 或建置結果驗證自己做對了。
 ### 定義名稱對照表
 
 | 角色 | 文章中的名稱 | 功能 / 責任 |
@@ -2081,7 +3032,17 @@ export function useClosedNotifications() {
 | 路由 | Home、Post detail | 列表頁與詳情頁 |
 | 資料封裝 | `usePost` composable / service / load | 擷取文章資料 |
 
-### 實作流程與程式碼例子
+
+### 實作任務情境
+
+把這篇當成一個小任務：你要在既有前端專案中完成 Day 27：建立簡單部落格頁面 對應的功能，並比較 Angular、Vue 3、Svelte 5 在寫法與心智模型上的差異。
+
+### 操作前檢查
+
+- 先確認你知道本篇是在 Vue 3、Svelte 5，還是部署 / 工具流程中操作。
+- 若有程式碼，先確認檔案應放在哪個 component、page、route 或 workflow 設定檔。
+- 若有 CLI 或 YAML，先在測試專案或分支操作，不要直接改正式部署設定。
+### 範例形式與實作
 
 完整流程：
 
@@ -2107,6 +3068,25 @@ export async function fetchPosts() {
   return response.json() as Promise<Post[]>
 }
 ```
+
+
+### 如果結果和預期不同
+
+- 畫面沒有更新：先檢查狀態變數、props / events、模板語法與瀏覽器 console。
+- 元件沒有渲染：確認元件是否正確 import、註冊、掛載，或 route / page 是否指到正確檔案。
+- 建置或部署失敗：先看 terminal / GitHub Actions log 的第一個錯誤，不要只看最後一行。
+
+### 做完後檢查
+
+- 用瀏覽器實際操作一次本篇功能。
+- 對照 Angular 中類似概念，寫下 Vue / Svelte 哪裡更像、哪裡不同。
+- 確認沒有 console error，且重新整理頁面後仍能看到預期結果。
+
+### 小練習
+
+1. 把範例中的命名改成另一個真實業務場景。
+2. 故意改錯一個 props、event 或 binding 名稱，觀察錯誤訊息。
+3. 寫一句話比較 Angular 與本篇 Vue / Svelte 寫法的差異。
 
 ### 實務使用情境
 
@@ -2145,6 +3125,12 @@ export async function fetchPosts() {
 
 前端常要處理關聯資料：文章有作者、訂單有客戶、留言有使用者。這需要根據一筆資料的外鍵再取得另一筆資料。
 
+
+### 學完這篇你應該會做到什麼
+
+- 能用 Angular 開發者熟悉的角度，說明 Day 28：取得貼文作者 的核心觀念。
+- 能照著範例完成對應的 Vue / Svelte 元件、狀態或部署流程。
+- 能用畫面、測試資料、瀏覽器 console 或建置結果驗證自己做對了。
 ### 定義名稱對照表
 
 | 角色 | 文章中的名稱 | 功能 / 責任 |
@@ -2153,7 +3139,17 @@ export async function fetchPosts() {
 | 關聯資料 | `User` | 提供作者名稱 |
 | 載入函式 | `useUser` / service / load | 根據 userId 取得使用者 |
 
-### 實作流程與程式碼例子
+
+### 實作任務情境
+
+把這篇當成一個小任務：你要在既有前端專案中完成 Day 28：取得貼文作者 對應的功能，並比較 Angular、Vue 3、Svelte 5 在寫法與心智模型上的差異。
+
+### 操作前檢查
+
+- 先確認你知道本篇是在 Vue 3、Svelte 5，還是部署 / 工具流程中操作。
+- 若有程式碼，先確認檔案應放在哪個 component、page、route 或 workflow 設定檔。
+- 若有 CLI 或 YAML，先在測試專案或分支操作，不要直接改正式部署設定。
+### 範例形式與實作
 
 完整流程：
 
@@ -2175,6 +3171,25 @@ export async function fetchUser(userId: number, signal?: AbortSignal) {
   return response.json() as Promise<User>
 }
 ```
+
+
+### 如果結果和預期不同
+
+- 畫面沒有更新：先檢查狀態變數、props / events、模板語法與瀏覽器 console。
+- 元件沒有渲染：確認元件是否正確 import、註冊、掛載，或 route / page 是否指到正確檔案。
+- 建置或部署失敗：先看 terminal / GitHub Actions log 的第一個錯誤，不要只看最後一行。
+
+### 做完後檢查
+
+- 用瀏覽器實際操作一次本篇功能。
+- 對照 Angular 中類似概念，寫下 Vue / Svelte 哪裡更像、哪裡不同。
+- 確認沒有 console error，且重新整理頁面後仍能看到預期結果。
+
+### 小練習
+
+1. 把範例中的命名改成另一個真實業務場景。
+2. 故意改錯一個 props、event 或 binding 名稱，觀察錯誤訊息。
+3. 寫一句話比較 Angular 與本篇 Vue / Svelte 寫法的差異。
 
 ### 實務使用情境
 
@@ -2213,6 +3228,12 @@ export async function fetchUser(userId: number, signal?: AbortSignal) {
 
 非同步資料不是只有成功。好的 UI 要明確呈現載入中、失敗、空資料與成功狀態，否則使用者不知道系統發生什麼事。
 
+
+### 學完這篇你應該會做到什麼
+
+- 能用 Angular 開發者熟悉的角度，說明 Day 29：新增 Loader 與 Error 狀態 的核心觀念。
+- 能照著範例完成對應的 Vue / Svelte 元件、狀態或部署流程。
+- 能用畫面、測試資料、瀏覽器 console 或建置結果驗證自己做對了。
 ### 定義名稱對照表
 
 | 角色 | 文章中的名稱 | 功能 / 責任 |
@@ -2221,7 +3242,17 @@ export async function fetchUser(userId: number, signal?: AbortSignal) {
 | 錯誤狀態 | `error` | 保存失敗資訊 |
 | 成功資料 | `posts` / `post` / `user` | 請求成功後的結果 |
 
-### 實作流程與程式碼例子
+
+### 實作任務情境
+
+把這篇當成一個小任務：你要在既有前端專案中完成 Day 29：新增 Loader 與 Error 狀態 對應的功能，並比較 Angular、Vue 3、Svelte 5 在寫法與心智模型上的差異。
+
+### 操作前檢查
+
+- 先確認你知道本篇是在 Vue 3、Svelte 5，還是部署 / 工具流程中操作。
+- 若有程式碼，先確認檔案應放在哪個 component、page、route 或 workflow 設定檔。
+- 若有 CLI 或 YAML，先在測試專案或分支操作，不要直接改正式部署設定。
+### 範例形式與實作
 
 完整流程：
 
@@ -2248,6 +3279,25 @@ const { data: posts, isFetching, error } =
   <PostCard v-else v-for="post in posts" :key="post.id" :post="post" />
 </template>
 ```
+
+
+### 如果結果和預期不同
+
+- 畫面沒有更新：先檢查狀態變數、props / events、模板語法與瀏覽器 console。
+- 元件沒有渲染：確認元件是否正確 import、註冊、掛載，或 route / page 是否指到正確檔案。
+- 建置或部署失敗：先看 terminal / GitHub Actions log 的第一個錯誤，不要只看最後一行。
+
+### 做完後檢查
+
+- 用瀏覽器實際操作一次本篇功能。
+- 對照 Angular 中類似概念，寫下 Vue / Svelte 哪裡更像、哪裡不同。
+- 確認沒有 console error，且重新整理頁面後仍能看到預期結果。
+
+### 小練習
+
+1. 把範例中的命名改成另一個真實業務場景。
+2. 故意改錯一個 props、event 或 binding 名稱，觀察錯誤訊息。
+3. 寫一句話比較 Angular 與本篇 Vue / Svelte 寫法的差異。
 
 ### 實務使用情境
 
@@ -2285,6 +3335,12 @@ const { data: posts, isFetching, error } =
 
 學框架最怕只記 API，不知道自己在解什麼問題。系列結束時回顧專案，可以把零散技巧收斂成可轉移能力。
 
+
+### 學完這篇你應該會做到什麼
+
+- 能用 Angular 開發者熟悉的角度，說明 Day 30：比賽結束與總結 的核心觀念。
+- 能照著範例完成對應的 Vue / Svelte 元件、狀態或部署流程。
+- 能用畫面、測試資料、瀏覽器 console 或建置結果驗證自己做對了。
 ### 定義名稱對照表
 
 | 角色 | 文章中的名稱 | 功能 / 責任 |
@@ -2295,7 +3351,17 @@ const { data: posts, isFetching, error } =
 | 示範 4 | Alert | 動態元件、雙向綁定、狀態重構 |
 | 示範 5 | Blog | 路由、關聯資料、loading / error |
 
-### 實作流程與程式碼例子
+
+### 實作任務情境
+
+把這篇當成一個小任務：你要在既有前端專案中完成 Day 30：比賽結束與總結 對應的功能，並比較 Angular、Vue 3、Svelte 5 在寫法與心智模型上的差異。
+
+### 操作前檢查
+
+- 先確認你知道本篇是在 Vue 3、Svelte 5，還是部署 / 工具流程中操作。
+- 若有程式碼，先確認檔案應放在哪個 component、page、route 或 workflow 設定檔。
+- 若有 CLI 或 YAML，先在測試專案或分支操作，不要直接改正式部署設定。
+### 範例形式與實作
 
 完整流程：
 
@@ -2315,6 +3381,25 @@ type FrameworkConceptMap = {
   childOutput: ['Vue emit', 'Svelte callback/bindable', 'Angular output/model']
 }
 ```
+
+
+### 如果結果和預期不同
+
+- 畫面沒有更新：先檢查狀態變數、props / events、模板語法與瀏覽器 console。
+- 元件沒有渲染：確認元件是否正確 import、註冊、掛載，或 route / page 是否指到正確檔案。
+- 建置或部署失敗：先看 terminal / GitHub Actions log 的第一個錯誤，不要只看最後一行。
+
+### 做完後檢查
+
+- 用瀏覽器實際操作一次本篇功能。
+- 對照 Angular 中類似概念，寫下 Vue / Svelte 哪裡更像、哪裡不同。
+- 確認沒有 console error，且重新整理頁面後仍能看到預期結果。
+
+### 小練習
+
+1. 把範例中的命名改成另一個真實業務場景。
+2. 故意改錯一個 props、event 或 binding 名稱，觀察錯誤訊息。
+3. 寫一句話比較 Angular 與本篇 Vue / Svelte 寫法的差異。
 
 ### 實務使用情境
 
