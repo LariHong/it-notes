@@ -20,6 +20,98 @@
 - 原文中的 `ViewBag`、`ViewData`、`TempData` 可作為理解資料傳遞工具，但新專案應優先使用強型別 ViewModel。
 - 原文用 `PagedList.Mvc`、`Newtonsoft.Json`、連線字串加密等作法，現在要依專案版本調整；ASP.NET Core 常見替代是 `X.PagedList.Mvc.Core`、內建 `System.Text.Json`、User Secrets / Key Vault / 環境變數。
 
+## 新手先看：這份筆記不是只讀，要邊做邊驗證
+
+如果你剛開始學 ASP.NET MVC，最容易卡住的不是「MVC 是什麼」，而是：
+
+- 程式碼到底要放在哪個檔案。
+- 執行哪個指令才會看到網頁。
+- 出錯時該看瀏覽器、終端機、Visual Studio Error List，還是資料庫。
+- Controller、ViewModel、View、DbContext 之間到底怎麼串起來。
+
+所以從這一版開始，這份筆記會把原本偏大綱的內容補成「可操作教材」。讀每個 Day 時，請用下面的方式檢查自己是不是真的懂：
+
+1. 我知道這段 code 要放在哪個檔案。
+2. 我知道執行哪個指令或按哪個按鈕可以測試。
+3. 我知道成功時畫面或輸出應該長什麼樣。
+4. 我知道失敗時第一個要查哪裡。
+5. 我能用自己的話說明這段 code 在 MVC 裡扮演哪個角色。
+
+## 從 0 建立共用練習專案
+
+後面的 Day 1 到 Day 30 可以都用同一個練習專案 `ShopMvc` 累積。這樣你不是每天看一段孤立範例，而是真的慢慢做出一個小型商品與購物車網站。
+
+### 操作前檢查
+
+請先確認本機可以執行以下指令：
+
+```powershell
+# 範例用途：確認本機已安裝 .NET SDK。
+# 預期結果：顯示版本號，例如 10.0.xxx、9.0.xxx 或團隊指定版本。
+dotnet --version
+```
+
+如果出現 `dotnet` 不是可辨識的命令，代表 SDK 還沒安裝或環境變數沒有設定好。請先安裝 .NET SDK，再重新開啟終端機。
+
+### 建立專案
+
+```powershell
+# 範例用途：建立一個 ASP.NET Core MVC 專案。
+# 主要輸入：
+# - ShopMvc：專案資料夾與專案名稱。
+# 預期結果：
+# - 產生 Controllers、Models、Views、Program.cs 等 MVC 專案檔案。
+dotnet new mvc -n ShopMvc
+
+# 進入專案資料夾，後續指令都在這裡執行。
+cd ShopMvc
+
+# 啟動本機網站。
+# 預期結果：
+# - 終端機顯示 Now listening on: http://localhost:xxxx
+# - 瀏覽器開啟該網址可以看到預設首頁。
+dotnet run
+```
+
+### 新手檔案位置地圖
+
+| 你要做的事 | 建議檔案 / 資料夾 | 說明 |
+| --- | --- | --- |
+| 接收網址請求 | `Controllers/*Controller.cs` | 例如商品頁用 `ProductsController` |
+| 定義資料庫資料 | `Models/*.cs` | 例如 `Product`、`Order`、`OrderItem` |
+| 定義畫面需要的資料 | `ViewModels/*.cs` | 例如 `ProductCardViewModel`、`CartViewModel` |
+| 寫 HTML / Razor 畫面 | `Views/{ControllerName}/*.cshtml` | 例如 `Views/Products/Index.cshtml` |
+| 共用版面 | `Views/Shared/_Layout.cshtml` | 導覽列、頁尾、CSS / JS |
+| 註冊服務與中介軟體 | `Program.cs` | 例如註冊 DbContext、Service |
+| 放連線字串或非機密設定 | `appsettings.json` | 正式密碼不要放這裡 commit |
+
+### 建議先建立的資料夾
+
+ASP.NET Core MVC 範本不一定會幫你建立 `ViewModels`、`Services`，可以自己新增：
+
+```powershell
+# 範例用途：建立練習專案會用到的資料夾。
+# 預期結果：專案根目錄出現 ViewModels、Services、Data。
+mkdir ViewModels
+mkdir Services
+mkdir Data
+```
+
+### 第一個成功檢查點
+
+做完上面步驟後，你應該看到：
+
+- 專案可以 `dotnet run` 成功啟動。
+- 瀏覽器打開終端機顯示的 localhost 網址，會看到 ASP.NET Core 預設首頁。
+- 專案根目錄有 `Controllers`、`Models`、`Views`、`Program.cs`。
+
+如果結果和預期不同：
+
+- `dotnet new mvc` 失敗：先檢查 `dotnet --version`。
+- `dotnet run` 失敗：看終端機紅字，通常會指出哪個檔案哪一行有錯。
+- 瀏覽器打不開：確認終端機是否還在執行，並複製正確的 `Now listening on` 網址。
+- HTTPS 憑證警告：本機開發可先使用 HTTP URL，或依 .NET dev-certs 指示信任開發憑證。
+
 ## 這份筆記怎麼讀
 
 如果你是 junior developer，建議把這 30 天拆成四段：
@@ -40,6 +132,150 @@
 - `View` 是上菜畫面，負責把結果呈現給使用者。
 
 實務上更精確地說，MVC 是一種關注點分離方式。Controller 不應該塞滿商業邏輯，View 不應該查資料庫，Model / Service / Repository 應該承擔可測試、可重用的規則與資料處理。
+
+## 先看懂一個 request 的完整旅程
+
+很多新手看到 MVC 會覺得 Controller、View、Model 都懂一點，但串不起來。以下用「打開商品列表頁」當例子：
+
+1. 使用者在瀏覽器輸入 `/Products`。
+2. ASP.NET Core middleware pipeline 先處理 HTTPS、靜態檔案、Routing、Authentication、Authorization 等共通流程。
+3. Routing 找到 `ProductsController.Index()`。
+4. DI 容器建立 `ProductsController`，並把它需要的 service 或 DbContext 注入進去。
+5. `Index()` 呼叫資料來源，例如先用假資料，之後改成 EF Core 查資料庫。
+6. Controller 把資料轉成 `ProductCardViewModel`。
+7. Controller 執行 `return View(model)`。
+8. MVC 依照慣例去找 `Views/Products/Index.cshtml`。
+9. Razor View 使用 `@model` 接住資料，產生 HTML。
+10. 瀏覽器收到 HTML，使用者看到商品列表。
+
+用檔案對照就是：
+
+```text
+瀏覽器 /Products
+  -> Controllers/ProductsController.cs 的 Index()
+  -> ViewModels/ProductCardViewModel.cs
+  -> Views/Products/Index.cshtml
+  -> 瀏覽器畫面
+```
+
+如果你看到 `return View(model)` 卻不知道它會去哪裡找畫面，先記這個慣例：
+
+```text
+Controller 名稱：ProductsController
+Action 名稱：Index
+預設 View 位置：Views/Products/Index.cshtml
+```
+
+## 這份筆記的作品累積路線
+
+| 階段 | 你會新增的主要檔案 | 成功時你應該看到什麼 |
+| --- | --- | --- |
+| Day 1-3 | `ProductsController.cs`、第一個 action | `/Products/Detail/10` 能回文字或頁面 |
+| Day 4-6 | `ProductListItemViewModel.cs`、表單 request model、Create View | 商品列表能顯示資料，新增表單能送出 |
+| Day 7-9 | Bootstrap 樣式、Tag Helper、Data Annotations | 表單有樣式，錯誤輸入會顯示驗證訊息 |
+| Day 10-12 | `AppDbContext.cs`、`Product.cs`、migration、授權設定 | 商品資料能從資料庫讀取，後台頁面需要權限 |
+| Day 13-20 | 商品、購物車、訂單相關 model / controller / view | 可以從商品列表一路做到建立訂單 |
+| Day 21-23 | App Service / Azure SQL / Secret 設定 | 網站能部署，正式密碼不在 Git 裡 |
+| Day 24-29 | Partial View、Route、JSON、分頁 | 畫面可重用，URL 清楚，大量資料可分頁 |
+| Day 30 | README、作品整理 | 能向別人說明專案怎麼跑、怎麼設計 |
+
+## 每個 Day 都要做的自我檢查
+
+讀完每個 Day，不要只問「我看懂了嗎」，請改問：
+
+1. 我新增或修改了哪個檔案？
+2. 我能不能說出這個檔案屬於 MVC 的哪一層？
+3. 我執行了哪個 URL 或指令驗證？
+4. 成功時畫面、資料庫或終端機應該出現什麼？
+5. 如果失敗，第一個錯誤訊息在哪裡？
+
+如果這 5 題有 2 題答不出來，代表該章對你來說還停在「知道名詞」，還沒變成「會做」。
+
+## 看範例時要看 MVC 三件套，不要只看單一 code block
+
+很多教學會只貼一段 Controller 或一段 Model，對有經驗的人夠用，因為他腦中能自動補齊其他檔案。但新手通常會卡在「這段 code 跟畫面怎麼連起來」。所以本筆記後面看到範例時，請盡量用三件套理解：
+
+| 部分 | 常見檔案 | 你要看懂的事 |
+| --- | --- | --- |
+| Model / ViewModel | `Models/*.cs`、`ViewModels/*.cs` | 資料長什麼樣，哪些欄位要給畫面或資料庫 |
+| Controller | `Controllers/*Controller.cs` | 哪個 URL 進來、呼叫什麼資料、最後回哪個 View |
+| View | `Views/{Controller}/{Action}.cshtml` | 畫面怎麼接住 `@model`，怎麼顯示或送出資料 |
+
+一個完整的 MVC 範例，至少要回答這些問題：
+
+1. 使用者打哪個 URL 或按哪個按鈕？
+2. 進入哪個 Controller action？
+3. action 使用哪個 Model / ViewModel？
+4. `return View(model)` 會找到哪個 `.cshtml`？
+5. View 顯示什麼，或 form 送回哪個 action？
+6. 成功或失敗時，使用者會看到什麼結果？
+
+### 最小三件套範例：商品列表
+
+新增 `ViewModels/ProductCardViewModel.cs`：
+
+```csharp
+// ViewModel：商品列表畫面需要的資料形狀。
+// 這不是資料庫 Entity，而是 View 要顯示的最小資料。
+public sealed record ProductCardViewModel(
+    int Id,
+    string Name,
+    decimal Price);
+```
+
+新增 `Controllers/ProductsController.cs`：
+
+```csharp
+public class ProductsController : Controller
+{
+    [HttpGet]
+    public IActionResult Index()
+    {
+        // Controller：準備 View 需要的資料。
+        // 真實專案會從資料庫查詢；這裡先用假資料讓 MVC 流程跑起來。
+        var model = new List<ProductCardViewModel>
+        {
+            new(1, "機械鍵盤", 2800m),
+            new(2, "無線滑鼠", 990m)
+        };
+
+        // MVC 慣例：會尋找 Views/Products/Index.cshtml。
+        return View(model);
+    }
+}
+```
+
+新增 `Views/Products/Index.cshtml`：
+
+```cshtml
+@model IReadOnlyList<ProductCardViewModel>
+
+<h1>商品列表</h1>
+
+@foreach (var product in Model)
+{
+    <article>
+        <h2>@product.Name</h2>
+        <p>NT$ @product.Price</p>
+        <a asp-controller="Products"
+           asp-action="Detail"
+           asp-route-id="@product.Id">查看商品</a>
+    </article>
+}
+```
+
+這三段合起來才是一個完整功能：
+
+```text
+瀏覽器開 /Products
+  -> ProductsController.Index()
+  -> 建立 List<ProductCardViewModel>
+  -> return View(model)
+  -> Views/Products/Index.cshtml 用 @model 接住
+  -> 顯示商品列表
+```
+
+如果只看 Controller，你不知道畫面怎麼顯示；只看 View，你不知道資料從哪來；只看 ViewModel，你不知道它什麼時候被用到。MVC 的學習重點就是把三者一起看。
 
 ## 30 天來源清單
 
@@ -212,6 +448,83 @@ MVC 的核心是把「收到請求、處理資料、呈現畫面」分工，讓�
 ### 小練習
 
 新增 `About.cshtml`，並在導覽列加上「關於本站」連結。
+
+### 2026 補充：先看懂 Program.cs 和 Middleware
+
+原文建立的是 ASP.NET MVC5 專案；如果你現在建立 ASP.NET Core MVC，專案根目錄會有一個很重要的 `Program.cs`。它不是 Controller，也不是 View，而是整個網站啟動時的設定地圖。
+
+`Program.cs` 主要做兩件事：
+
+1. 註冊服務：例如 MVC、DbContext、自己寫的 Service。這是 DI 會用到的清單。
+2. 設定 middleware pipeline：每個 HTTP request 進 Controller 前會經過哪些處理。
+
+先用預設 MVC 專案常見的 `Program.cs` 理解：
+
+```csharp
+var builder = WebApplication.CreateBuilder(args);
+
+// 服務註冊區：
+// AddControllersWithViews 會註冊 Controller、Razor View 等 MVC 需要的服務。
+builder.Services.AddControllersWithViews();
+
+var app = builder.Build();
+
+// Middleware pipeline：
+// request 會由上往下經過這些處理。
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Home/Error");
+    app.UseHsts();
+}
+
+// 把 HTTP 導向 HTTPS。
+app.UseHttpsRedirection();
+
+// 讓 wwwroot 裡的 CSS、JS、圖片可以被瀏覽器讀取。
+app.UseStaticFiles();
+
+// 啟用路由，讓 ASP.NET Core 知道 request 要對應到哪個 endpoint。
+app.UseRouting();
+
+// 啟用授權檢查；如果之後有登入功能，通常會搭配 UseAuthentication。
+app.UseAuthorization();
+
+// 設定 MVC 預設路由。
+// /Products/Index/1 會對應到 ProductsController.Index(id: 1)。
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.Run();
+```
+
+新手先記三個重點：
+
+- `builder.Services...` 是「註冊服務」，Controller 之後能透過 DI 拿到這些服務。
+- `app.Use...` 是「middleware」，request 會照順序經過它們。
+- `app.MapControllerRoute(...)` 是「把 URL 交給 MVC Controller」的重要入口。
+
+如果之後加入登入驗證，常見順序會變成：
+
+```csharp
+app.UseRouting();
+
+// 先辨識使用者是誰。
+app.UseAuthentication();
+
+// 再判斷這個使用者能不能做這件事。
+app.UseAuthorization();
+
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
+```
+
+注意事項：
+
+- middleware 順序很重要，`UseAuthentication()` 通常要在 `UseAuthorization()` 前面。
+- `UseStaticFiles()` 如果沒設定，Bootstrap、CSS、圖片可能載入失敗。
+- 如果出現路由找不到頁面，除了 Controller / View，也要回頭檢查 `MapControllerRoute`。
 
 ### 一句話總結
 
@@ -442,13 +755,31 @@ public IActionResult Index()
 4. 檢查 `ModelState.IsValid`。
 5. 成功後 redirect，避免重新整理重複送出。
 
+這一章一定要用 MVC 三件套看，因為表單不是只有 Controller。完整流程是：
+
+```text
+GET /Products/Create
+  -> ProductsController.Create() 顯示空表單
+  -> Views/Products/Create.cshtml
+  -> 使用者輸入商品名稱與價格
+  -> POST /Products/Create
+  -> ProductsController.Create(CreateProductRequest request)
+  -> 驗證成功後 redirect
+```
+
+新增 `ViewModels/CreateProductRequest.cs`：
+
 ```csharp
 public sealed class CreateProductRequest
 {
     public string Name { get; set; } = "";
     public decimal Price { get; set; }
 }
+```
 
+在 `Controllers/ProductsController.cs` 加入 GET 與 POST action：
+
+```csharp
 [HttpGet]
 public IActionResult Create() => View(new CreateProductRequest());
 
@@ -467,6 +798,47 @@ public IActionResult Create(CreateProductRequest request)
     return RedirectToAction("Index");
 }
 ```
+
+新增 `Views/Products/Create.cshtml`：
+
+```cshtml
+@model CreateProductRequest
+
+<h1>新增商品</h1>
+
+<form asp-controller="Products" asp-action="Create" method="post">
+    @Html.AntiForgeryToken()
+
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label">商品名稱</label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Price" class="form-label">價格</label>
+        <input asp-for="Price" class="form-control" />
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
+
+    <button class="btn btn-primary" type="submit">儲存</button>
+</form>
+```
+
+範例對應概念說明：
+
+- `CreateProductRequest` 是 ViewModel / request model，代表表單送回後端的資料形狀。
+- GET `Create()` 負責顯示空表單，讓 View 有一個初始 model。
+- POST `Create(CreateProductRequest request)` 負責接收表單資料。
+- `asp-for="Name"` 會產生對應 `Name` 屬性的 HTML `name`，因此 model binding 才能把輸入值放進 `request.Name`。
+- `RedirectToAction("Index")` 代表新增成功後回到商品列表，避免重新整理重複送出表單。
+
+做完後檢查：
+
+- 開 `/Products/Create` 能看到新增商品表單。
+- 表單送出後會進入 POST action。
+- 成功後瀏覽器應跳回 `/Products` 或商品列表頁。
+- 如果表單欄位綁不到值，先檢查 input 的 `asp-for` 是否和 request model 屬性一致。
 
 注意事項：
 - 修改資料的表單要用 POST。
@@ -698,14 +1070,37 @@ public sealed class CreateProductRequest
 4. 在 DI 註冊 DbContext 與連線字串。
 5. 使用 migration 建立資料庫。
 
+先安裝套件：
+
+```powershell
+# 範例用途：安裝 EF Core SQL Server provider。
+# 預期結果：.csproj 會新增 Microsoft.EntityFrameworkCore.SqlServer 套件參考。
+dotnet add package Microsoft.EntityFrameworkCore.SqlServer
+
+# 範例用途：安裝 EF Core migration 指令工具需要的設計期套件。
+# 預期結果：專案可以執行 dotnet ef migrations add。
+dotnet add package Microsoft.EntityFrameworkCore.Design
+
+# 範例用途：安裝 dotnet ef 全域工具；如果已安裝可略過。
+# 預期結果：dotnet ef --version 能顯示版本。
+dotnet tool install --global dotnet-ef
+```
+
+新增檔案 `Models/Product.cs`：
+
 ```csharp
 public sealed class Product
 {
     public int Id { get; set; }
     public string Name { get; set; } = "";
+    public string? Description { get; set; }
     public decimal Price { get; set; }
 }
+```
 
+新增檔案 `Data/AppDbContext.cs`：
+
+```csharp
 public sealed class AppDbContext : DbContext
 {
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
@@ -714,6 +1109,196 @@ public sealed class AppDbContext : DbContext
     public DbSet<Product> Products => Set<Product>();
 }
 ```
+
+在 `Program.cs` 註冊 DbContext：
+
+```csharp
+// 範例用途：讓 ASP.NET Core DI 容器知道如何建立 AppDbContext。
+// 主要輸入：
+// - DefaultConnection：從 appsettings.json 的 ConnectionStrings 區段讀取。
+// 副作用：
+// - Controller 或 Service 之後可以透過建構子注入 AppDbContext。
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+```
+
+在 `appsettings.json` 加上連線字串。本機練習可以先用 LocalDB：
+
+```json
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=ShopMvc;Trusted_Connection=True;MultipleActiveResultSets=true"
+  }
+}
+```
+
+建立 migration 並更新資料庫：
+
+```powershell
+# 範例用途：把目前 C# Entity 結構轉成 migration。
+# 預期結果：專案出現 Migrations 資料夾與 migration 檔案。
+dotnet ef migrations add InitialCreate
+
+# 範例用途：把 migration 套用到資料庫。
+# 預期結果：LocalDB 建立 ShopMvc 資料庫與 Products 資料表。
+dotnet ef database update
+```
+
+做完後檢查：
+
+- 專案根目錄出現 `Migrations` 資料夾。
+- `dotnet ef database update` 沒有紅字錯誤。
+- 用 SQL Server Object Explorer 或資料庫工具可以看到 `ShopMvc` 資料庫。
+- 資料庫中有 `Products` 與 `__EFMigrationsHistory` 資料表。
+
+如果結果和預期不同：
+
+- `dotnet ef` 找不到：確認是否安裝 `dotnet-ef`，並重新開啟終端機。
+- 找不到 `AppDbContext`：確認 `Data/AppDbContext.cs` namespace 與 Program.cs using 是否正確。
+- SQL Server 連不上：先確認 LocalDB 是否安裝，或改用 SQLite 當練習資料庫。
+
+### 把 EF 接進 MVC：DbContext 放在 Service，Controller 透過 DI 使用
+
+只建立 `Product` 和 `AppDbContext` 還不算完成 MVC 功能。現代 ASP.NET Core MVC 通常會再加一層 Service，讓 Controller 不直接塞滿查詢細節。新手一定要把「Entity -> DbContext -> Service -> Controller -> View」整套看完。
+
+完整流程：
+
+```text
+瀏覽器開 /Products
+  -> middleware pipeline
+  -> routing 找到 ProductsController.Index()
+  -> DI 建立 ProductsController，注入 IProductService
+  -> DI 建立 ProductService，注入 AppDbContext
+  -> ProductService 用 AppDbContext.Products 查資料庫
+  -> ProductService 轉成 ProductCardViewModel
+  -> ProductsController return View(model)
+  -> Views/Products/Index.cshtml 顯示商品
+```
+
+新增 `ViewModels/ProductCardViewModel.cs`：
+
+```csharp
+// ViewModel：商品列表畫面要顯示的資料。
+// 它不是資料庫 Entity；它只保留 View 需要的欄位。
+public sealed record ProductCardViewModel(int Id, string Name, decimal Price);
+```
+
+新增 `Services/IProductService.cs`：
+
+```csharp
+// Service 合約：Controller 依賴抽象，不依賴資料庫查詢細節。
+public interface IProductService
+{
+    Task<IReadOnlyList<ProductCardViewModel>> GetCardsAsync();
+}
+```
+
+新增 `Services/ProductService.cs`：
+
+```csharp
+public sealed class ProductService : IProductService
+{
+    private readonly AppDbContext _db;
+
+    // DI 會把 AppDbContext 注入進來。
+    // ProductService 負責查資料庫與轉成 ViewModel。
+    public ProductService(AppDbContext db)
+    {
+        _db = db;
+    }
+
+    public async Task<IReadOnlyList<ProductCardViewModel>> GetCardsAsync()
+    {
+        // 範例用途：從 Products 資料表讀取商品，投影成列表頁 ViewModel。
+        // 回傳結果：Controller 會拿到商品卡片清單。
+        return await _db.Products
+            .OrderBy(p => p.Id)
+            .Select(p => new ProductCardViewModel(p.Id, p.Name, p.Price))
+            .ToListAsync();
+    }
+}
+```
+
+在 `Program.cs` 註冊 Service：
+
+```csharp
+// 範例用途：告訴 DI 容器，當有人要求 IProductService 時，要建立 ProductService。
+// 生命週期：Scoped 代表同一個 HTTP request 內共用同一份 service。
+builder.Services.AddScoped<IProductService, ProductService>();
+```
+
+修改 `Controllers/ProductsController.cs`：
+
+```csharp
+public class ProductsController : Controller
+{
+    private readonly IProductService _productService;
+
+    // Controller 透過 DI 取得 IProductService。
+    // 好處：Controller 不需要知道商品資料是從 EF、API、cache 還是假資料來。
+    public ProductsController(IProductService productService)
+    {
+        _productService = productService;
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Index()
+    {
+        // 範例用途：請 Service 準備商品列表頁資料。
+        // 回傳結果：View 會得到 IReadOnlyList<ProductCardViewModel>。
+        var model = await _productService.GetCardsAsync();
+
+        return View(model);
+    }
+}
+```
+
+對應的 `Views/Products/Index.cshtml`：
+
+```cshtml
+@model IReadOnlyList<ProductCardViewModel>
+
+<h1>商品列表</h1>
+
+@if (Model.Count == 0)
+{
+    <p>目前資料庫沒有商品。你可以先建立 seed data，或做 Day 11 的新增功能。</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>商品名稱</th>
+                <th>價格</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in Model)
+            {
+                <tr>
+                    <td>@product.Name</td>
+                    <td>NT$ @product.Price</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+```
+
+這裡的重點不是 `ToListAsync()` 本身，而是三層責任：
+
+- `Product`：資料庫資料長相。
+- `ProductService.GetCardsAsync()`：查詢資料並轉成 ViewModel。
+- `ProductsController.Index()`：接收 request、呼叫 service、選擇 View。
+- `Index.cshtml`：只負責顯示 ViewModel，不直接碰 DbContext。
+
+做完後檢查：
+
+- `/Products` 可以開啟，不會出現 DI 找不到 `IProductService` 或 `AppDbContext` 的錯誤。
+- 資料庫沒資料時，畫面顯示「目前資料庫沒有商品」。
+- 資料庫有商品時，畫面顯示商品名稱與價格。
+- 如果出現 `Unable to resolve service for type 'IProductService'`，第一個檢查點是 `Program.cs` 是否有註冊 `AddScoped<IProductService, ProductService>()`。
 
 注意事項：
 - Entity 是資料庫模型，不一定適合直接當 ViewModel。
@@ -726,7 +1311,7 @@ public sealed class AppDbContext : DbContext
 
 問題：生命週期混亂、測試困難、連線管理不穩。
 
-修正方向：使用 DI 注入 DbContext 或 Service。
+修正方向：在 `Program.cs` 註冊 DbContext 與 Service，Controller 透過建構子注入 Service，Service 再透過建構子注入 DbContext。
 
 ### 小練習
 
@@ -763,24 +1348,140 @@ EF 的價值是用物件模型操作資料庫，但仍要理解查詢、連線�
 4. 建立刪除確認頁 `Delete`.
 5. 每個 POST 都驗證輸入與資料是否存在。
 
-```csharp
-[HttpPost]
-[ValidateAntiForgeryToken]
-public async Task<IActionResult> Edit(int id, EditProductRequest request)
-{
-    // 參數說明：id 來自路由，request 來自表單。
-    // 副作用：找到商品後更新資料庫。
-    if (!ModelState.IsValid) return View(request);
+以下用「編輯商品」示範完整範圍，而不是只貼單一 action。
 
-    var product = await _db.Products.FindAsync(id);
-    if (product is null) return NotFound();
+新增 `ViewModels/EditProductRequest.cs`：
+
+```csharp
+public sealed class EditProductRequest
+{
+    public int Id { get; set; }
+
+    [Required(ErrorMessage = "商品名稱必填")]
+    public string Name { get; set; } = "";
+
+    [Range(1, 999999, ErrorMessage = "價格必須大於 0")]
+    public decimal Price { get; set; }
+}
+```
+
+在 `IProductService` 增加編輯需要的方法：
+
+```csharp
+public interface IProductService
+{
+    Task<EditProductRequest?> GetEditAsync(int id);
+    Task<bool> UpdateAsync(EditProductRequest request);
+}
+```
+
+在 `ProductService` 實作：
+
+```csharp
+public async Task<EditProductRequest?> GetEditAsync(int id)
+{
+    // 範例用途：把資料庫商品轉成編輯表單需要的 request model。
+    return await _db.Products
+        .Where(p => p.Id == id)
+        .Select(p => new EditProductRequest
+        {
+            Id = p.Id,
+            Name = p.Name,
+            Price = p.Price
+        })
+        .SingleOrDefaultAsync();
+}
+
+public async Task<bool> UpdateAsync(EditProductRequest request)
+{
+    // 參數說明：request 來自編輯表單 POST。
+    // 回傳結果：true 代表更新成功，false 代表商品不存在。
+    var product = await _db.Products.FindAsync(request.Id);
+    if (product is null)
+    {
+        return false;
+    }
 
     product.Name = request.Name;
     product.Price = request.Price;
     await _db.SaveChangesAsync();
 
+    return true;
+}
+```
+
+在 `ProductsController` 加入 GET / POST：
+
+```csharp
+[HttpGet]
+public async Task<IActionResult> Edit(int id)
+{
+    // GET /Products/Edit/1
+    // 用途：顯示編輯表單。
+    var model = await _productService.GetEditAsync(id);
+    return model is null ? NotFound() : View(model);
+}
+
+[HttpPost]
+[ValidateAntiForgeryToken]
+public async Task<IActionResult> Edit(EditProductRequest request)
+{
+    // POST /Products/Edit
+    // 用途：接收編輯表單並更新商品。
+    if (!ModelState.IsValid)
+    {
+        return View(request);
+    }
+
+    var updated = await _productService.UpdateAsync(request);
+    if (!updated)
+    {
+        return NotFound();
+    }
+
     return RedirectToAction(nameof(Index));
 }
+```
+
+新增 `Views/Products/Edit.cshtml`：
+
+```cshtml
+@model EditProductRequest
+
+<h1>編輯商品</h1>
+
+<form asp-controller="Products" asp-action="Edit" method="post">
+    @Html.AntiForgeryToken()
+    <input asp-for="Id" type="hidden" />
+
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label">商品名稱</label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Price" class="form-label">價格</label>
+        <input asp-for="Price" class="form-control" />
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
+
+    <button class="btn btn-primary" type="submit">儲存</button>
+</form>
+```
+
+完整流程：
+
+```text
+GET /Products/Edit/1
+  -> ProductsController.Edit(id)
+  -> IProductService.GetEditAsync(id)
+  -> Views/Products/Edit.cshtml 顯示表單
+  -> 使用者修改欄位後送出
+  -> POST /Products/Edit
+  -> ProductsController.Edit(EditProductRequest request)
+  -> IProductService.UpdateAsync(request)
+  -> 成功後 RedirectToAction(Index)
 ```
 
 注意事項：
@@ -859,6 +1560,437 @@ public class AdminProductsController : Controller
 ### 一句話總結
 
 權限檢查必須放在伺服器端，UI 隱藏只是體驗，不是安全。
+
+---
+
+## 購物網站主線補強：Day 13-20 到底怎麼串起來
+
+原系列 Day 13-20 是購物中心實作，但如果只寫「建立商品、購物車、訂單」，新手很容易不知道每一步之間如何連接。這裡先放一條可累積的主線，後面 Day 13-20 再分別理解各自概念。
+
+### 目標流程
+
+使用者最後要能完成這條路：
+
+```text
+商品列表
+  -> 商品詳細
+  -> 加入購物車
+  -> 查看購物車
+  -> 修改數量或移除商品
+  -> 結帳
+  -> 建立訂單
+  -> 查看我的訂單
+```
+
+### 需要的檔案地圖
+
+| 功能 | 建議檔案 |
+| --- | --- |
+| 商品資料 | `Models/Product.cs` |
+| 購物車項目 | `Models/CartItem.cs` 或先用 `Services/InMemoryCartService.cs` |
+| 訂單 | `Models/Order.cs`、`Models/OrderItem.cs` |
+| 商品列表資料 | `ViewModels/ProductCardViewModel.cs` |
+| 購物車畫面資料 | `ViewModels/CartViewModel.cs`、`ViewModels/CartItemViewModel.cs` |
+| 商品商業流程 / 查詢 | `Services/IProductService.cs`、`Services/ProductService.cs` |
+| 商品頁 Controller | `Controllers/ProductsController.cs` |
+| 購物車 Controller | `Controllers/CartController.cs` |
+| 訂單 Controller | `Controllers/OrdersController.cs` |
+| 商品列表 View | `Views/Products/Index.cshtml` |
+| 商品詳細 View | `Views/Products/Detail.cshtml` |
+| 購物車 View | `Views/Cart/Index.cshtml` |
+| 訂單結果 View | `Views/Orders/Details.cshtml` |
+
+### 第一步：建立商品列表頁
+
+新增 `ViewModels/ProductCardViewModel.cs`：
+
+```csharp
+// 範例用途：商品列表卡片需要的畫面資料。
+// 參數說明：
+// - Id：商品識別碼，點詳細頁或加入購物車時會用到。
+// - Name：顯示給使用者看的商品名稱。
+// - Price：顯示價格；真正結帳時仍要由後端重新查詢。
+// 回傳結果 / 副作用：record 本身沒有副作用，只是傳資料給 View。
+public sealed record ProductCardViewModel(int Id, string Name, decimal Price);
+```
+
+新增 `ViewModels/ProductDetailViewModel.cs`：
+
+```csharp
+// ViewModel：商品詳細頁需要的資料形狀。
+public sealed record ProductDetailViewModel(
+    int Id,
+    string Name,
+    decimal Price,
+    string? Description);
+```
+
+新增 `Services/IProductService.cs`：
+
+```csharp
+// Service 合約：商品頁需要的查詢功能。
+// Controller 只知道它需要商品資料，不需要知道資料從 EF 還是 API 來。
+public interface IProductService
+{
+    Task<IReadOnlyList<ProductCardViewModel>> GetCardsAsync();
+    Task<ProductDetailViewModel?> GetDetailAsync(int id);
+}
+```
+
+新增 `Services/ProductService.cs`：
+
+```csharp
+public sealed class ProductService : IProductService
+{
+    private readonly AppDbContext _db;
+
+    // DI 會把 AppDbContext 注入進來。
+    // ProductService 負責把資料庫 Entity 轉成畫面需要的 ViewModel。
+    public ProductService(AppDbContext db)
+    {
+        _db = db;
+    }
+
+    public async Task<IReadOnlyList<ProductCardViewModel>> GetCardsAsync()
+    {
+        return await _db.Products
+            .OrderBy(p => p.Id)
+            .Select(p => new ProductCardViewModel(p.Id, p.Name, p.Price))
+            .ToListAsync();
+    }
+
+    public async Task<ProductDetailViewModel?> GetDetailAsync(int id)
+    {
+        return await _db.Products
+            .Where(p => p.Id == id)
+            .Select(p => new ProductDetailViewModel(p.Id, p.Name, p.Price, p.Description))
+            .SingleOrDefaultAsync();
+    }
+}
+```
+
+在 `Program.cs` 註冊商品服務：
+
+```csharp
+// 範例用途：讓 Controller 可以透過建構子取得 IProductService。
+// 如果忘記註冊，執行 /Products 會出現 Unable to resolve service。
+builder.Services.AddScoped<IProductService, ProductService>();
+```
+
+新增 `Controllers/ProductsController.cs`：
+
+```csharp
+public class ProductsController : Controller
+{
+    private readonly IProductService _productService;
+
+    // 參數說明：IProductService 由 Program.cs 註冊後，透過 DI 注入。
+    public ProductsController(IProductService productService)
+    {
+        _productService = productService;
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Index()
+    {
+        // 範例用途：請 Service 查詢商品列表頁需要的資料。
+        // 回傳結果：Views/Products/Index.cshtml 會收到商品卡片清單。
+        var model = await _productService.GetCardsAsync();
+
+        return View(model);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Detail(int id)
+    {
+        // 參數說明：id 來自 URL，例如 /Products/Detail/1。
+        // 回傳結果：找到商品就顯示詳細頁；找不到就回 404。
+        var model = await _productService.GetDetailAsync(id);
+
+        return model is null ? NotFound() : View(model);
+    }
+}
+```
+
+新增 `Views/Products/Index.cshtml`：
+
+```cshtml
+@model IReadOnlyList<ProductCardViewModel>
+
+<h1>商品列表</h1>
+
+@if (Model.Count == 0)
+{
+    <p>目前沒有商品。</p>
+}
+else
+{
+    <div class="row">
+        @foreach (var product in Model)
+        {
+            <div class="col-md-4">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h2 class="h5">@product.Name</h2>
+                        <p>NT$ @product.Price</p>
+                        <a class="btn btn-primary"
+                           asp-controller="Products"
+                           asp-action="Detail"
+                           asp-route-id="@product.Id">查看商品</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+```
+
+做完後檢查：
+
+- 執行 `dotnet run`。
+- 瀏覽器開 `/Products`。
+- 如果資料庫還沒有商品，應看到「目前沒有商品。」。
+- 如果你有 seed data，應看到商品卡片與「查看商品」按鈕。
+
+### 第二步：商品詳細頁與加入購物車按鈕
+
+上一段的 `ProductsController.Detail(int id)` 已經透過 `IProductService.GetDetailAsync(id)` 準備好商品詳細資料。接著補上對應的 View，讓使用者可以看到商品並送出加入購物車表單。
+
+新增 `Views/Products/Detail.cshtml`：
+
+```cshtml
+@model ProductDetailViewModel
+
+<h1>@Model.Name</h1>
+<p>NT$ @Model.Price</p>
+<p>@Model.Description</p>
+
+<form asp-controller="Cart" asp-action="Add" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="ProductId" value="@Model.Id" />
+
+    <label for="quantity">數量</label>
+    <input id="quantity" name="Quantity" type="number" value="1" min="1" class="form-control" />
+
+    <button class="btn btn-primary mt-2" type="submit">加入購物車</button>
+</form>
+```
+
+新手容易卡住的地方：
+
+- hidden input 的 `ProductId` 是讓後端知道使用者要加入哪個商品。
+- 表單沒有傳價格，因為價格不能相信前端，後端結帳時要重新查資料庫。
+- `asp-controller="Cart"` 代表表單會送到 `CartController`。
+
+### 第三步：先用簡化版購物車服務
+
+正式購物車可能存在 Session、Cookie、資料庫或 Redis。新手練習可以先用簡化版服務理解流程，但要知道它不是 production-ready。
+
+新增 `Services/InMemoryCartService.cs`：
+
+```csharp
+public sealed record CartLine(int ProductId, int Quantity);
+
+public sealed class InMemoryCartService
+{
+    private readonly List<CartLine> _items = new();
+
+    // 範例用途：把商品加入購物車。
+    // 參數說明：
+    // - productId：從商品詳細頁 hidden input 傳來。
+    // - quantity：使用者輸入的購買數量，必須大於 0。
+    // 副作用：記憶體中的購物車項目會新增或累加。
+    public void Add(int productId, int quantity)
+    {
+        if (quantity <= 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(quantity), "數量必須大於 0");
+        }
+
+        var existing = _items.FirstOrDefault(x => x.ProductId == productId);
+        if (existing is null)
+        {
+            _items.Add(new CartLine(productId, quantity));
+            return;
+        }
+
+        _items.Remove(existing);
+        _items.Add(existing with { Quantity = existing.Quantity + quantity });
+    }
+
+    public IReadOnlyList<CartLine> GetItems() => _items;
+}
+```
+
+在 `Program.cs` 註冊：
+
+```csharp
+// 練習用途：暫時用 singleton 保存購物車。
+// 注意：這會讓所有使用者共用同一個購物車，正式專案不能這樣做。
+builder.Services.AddSingleton<InMemoryCartService>();
+```
+
+新增 `Controllers/CartController.cs`：
+
+```csharp
+public sealed record AddToCartRequest(int ProductId, int Quantity);
+
+public class CartController : Controller
+{
+    private readonly InMemoryCartService _cart;
+
+    public CartController(InMemoryCartService cart)
+    {
+        _cart = cart;
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult Add(AddToCartRequest request)
+    {
+        // 參數說明：request 由商品詳細頁 form 欄位綁定而來。
+        // 副作用：購物車服務會新增或累加商品數量。
+        if (request.Quantity <= 0)
+        {
+            ModelState.AddModelError(nameof(request.Quantity), "數量必須大於 0");
+            return BadRequest(ModelState);
+        }
+
+        _cart.Add(request.ProductId, request.Quantity);
+        TempData["Message"] = "已加入購物車";
+
+        return RedirectToAction(nameof(Index));
+    }
+
+    [HttpGet]
+    public IActionResult Index()
+    {
+        var items = _cart.GetItems();
+        return View(items);
+    }
+}
+```
+
+新增 `Views/Cart/Index.cshtml`：
+
+```cshtml
+@model IReadOnlyList<CartLine>
+
+<h1>購物車</h1>
+
+@if (TempData["Message"] is string message)
+{
+    <div class="alert alert-success">@message</div>
+}
+
+@if (Model.Count == 0)
+{
+    <p>購物車目前是空的。</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>商品編號</th>
+                <th>數量</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.ProductId</td>
+                    <td>@item.Quantity</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+```
+
+這個 View 先只顯示商品編號與數量，是為了讓新手先確認「加入購物車流程真的有通」。下一步才會把 `ProductId` 拿去資料庫查商品名稱與價格，轉成更適合畫面的 `CartViewModel`。
+
+做完後檢查：
+
+- 在商品詳細頁輸入數量 1，按「加入購物車」。
+- 瀏覽器應跳到 `/Cart`。
+- 如果出現 400，先檢查數量是否小於 1。
+- 如果出現 404，先檢查是否有 `CartController` 與 `Index.cshtml`。
+
+### 第四步：結帳時建立訂單
+
+訂單不能只存商品 id 與數量，還要保存當下成交價格。否則商品改價後，歷史訂單金額會跟著變。
+
+新增 `Models/Order.cs`：
+
+```csharp
+public sealed class Order
+{
+    public int Id { get; set; }
+    public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.UtcNow;
+    public decimal TotalAmount { get; set; }
+    public List<OrderItem> Items { get; set; } = new();
+}
+```
+
+新增 `Models/OrderItem.cs`：
+
+```csharp
+public sealed class OrderItem
+{
+    public int Id { get; set; }
+    public int ProductId { get; set; }
+    public string ProductName { get; set; } = "";
+    public int Quantity { get; set; }
+    public decimal UnitPrice { get; set; }
+}
+```
+
+在 `AppDbContext` 加入：
+
+```csharp
+public DbSet<Order> Orders => Set<Order>();
+public DbSet<OrderItem> OrderItems => Set<OrderItem>();
+```
+
+建立 migration：
+
+```powershell
+dotnet ef migrations add AddOrders
+dotnet ef database update
+```
+
+結帳流程的核心規則：
+
+1. 從購物車取得商品 id 與數量。
+2. 從資料庫重新查商品名稱與價格。
+3. 建立 `OrderItem`，保存成交當下的 `ProductName`、`UnitPrice`、`Quantity`。
+4. 加總 `TotalAmount`。
+5. 儲存訂單。
+6. 清空購物車。
+
+如果結果和預期不同：
+
+- 訂單金額是 0：檢查購物車是否真的有 item。
+- 找不到商品：檢查商品是否被刪除，或購物車中的 ProductId 是否正確。
+- migration 失敗：檢查 `Order`、`OrderItem` 是否有 primary key `Id`。
+
+### 這段主線的延伸反例
+
+錯誤做法：購物車表單直接傳 `ProductName`、`Price`、`TotalAmount`，後端照單全收。
+
+問題：
+
+- 使用者可以用瀏覽器 DevTools 把價格改成 1 元。
+- 商品改名或改價時，訂單資料會不一致。
+- 後端失去最後把關能力。
+
+修正方向：
+
+- 前端只傳 `ProductId` 與 `Quantity`。
+- 商品名稱、價格、庫存都由後端查資料庫。
+- 訂單建立時保存成交快照。
 
 ---
 

@@ -1730,6 +1730,66 @@ LVM 心智模型：
 - `dnf update` 會更新套件，正式環境要先確認維護窗口。
 - 請把輸出整理成紀錄，不要只看過就算。
 
+### 完整範圍補強：建立可維護的練習主機
+
+第 15 堂不要只記幾個查詢指令。真正拿到一台新主機時，通常要同時確認「版本、帳號、套件、服務、防火牆、log、備份」這幾個面向，才知道後續練習或部署時問題會從哪裡來。
+
+#### 範例範圍地圖
+
+| 面向 | 會碰到的檔案 / 指令 | 目的 |
+| --- | --- | --- |
+| 主機資訊 | `/etc/os-release`、`uname -r`、`hostnamectl` | 確認發行版、kernel、主機名稱 |
+| 使用者與權限 | `useradd`、`usermod -aG wheel`、`id` | 建立練習帳號並確認 sudo 權限 |
+| 套件更新 | `dnf update`、`dnf install` | 讓系統套件維持可維護狀態 |
+| 服務管理 | `systemctl status sshd`、`systemctl enable --now` | 確認重要服務有啟動且可開機自動啟動 |
+| 防火牆 | `firewall-cmd --list-all` | 確認開放的服務與 port |
+| Log 與排查 | `journalctl -xe`、`journalctl -u sshd` | 從錯誤訊息找問題來源 |
+| 備份練習 | `tar`、`cron` 或 systemd timer | 建立可還原的練習資料 |
+
+#### Step-by-step 實作：從檢查到留下紀錄
+
+```bash
+# 1. 確認這台主機是什麼系統
+cat /etc/os-release
+uname -r
+hostnamectl
+
+# 2. 建立練習帳號，並加入 wheel 群組
+sudo useradd student
+sudo passwd student
+sudo usermod -aG wheel student
+id student
+
+# 3. 更新套件並檢查常用服務
+sudo dnf update -y
+systemctl status sshd --no-pager
+systemctl status firewalld --no-pager
+
+# 4. 檢查防火牆目前開放內容
+sudo firewall-cmd --list-all
+
+# 5. 建立一份練習資料並打包備份
+mkdir -p ~/linux-practice
+echo "hello rocky" > ~/linux-practice/readme.txt
+tar -czf ~/linux-practice-backup.tar.gz -C ~ linux-practice
+ls -lh ~/linux-practice-backup.tar.gz
+```
+
+#### 端到端流程
+
+1. 先用版本與主機名稱確認你操作的是正確機器。
+2. 建立非 root 的日常操作帳號，避免每一步都直接用 root。
+3. 更新套件，讓後續安裝與服務管理建立在穩定基礎上。
+4. 檢查 SSH 與 firewalld，確認遠端登入和網路規則可理解。
+5. 建立一份小資料並備份，練習「資料在哪裡、怎麼保存、怎麼還原」。
+
+#### 做完後檢查
+
+- `id student` 看得到 `wheel` 群組。
+- `systemctl status sshd` 顯示服務正在執行。
+- `firewall-cmd --list-all` 能列出目前 zone 的服務與 port。
+- `~/linux-practice-backup.tar.gz` 存在，而且大小不是 0。
+
 ### Step-by-step 實作：新主機基線 checklist
 
 ```bash

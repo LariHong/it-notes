@@ -321,6 +321,275 @@ export class ShoppingCartComponent {}
 ```
 
 
+### 完整範圍補強：同一個 Shopping Cart 功能怎麼跨框架看
+
+這份筆記原本有很多單日元件範例，但前端框架學習不能只看單一 component。正常實作會有「入口檔、父元件、子元件、狀態、事件、樣式、驗證方式」一起配合。下面用購物車的最小功能建立完整範圍，後面 Day 1-11 都可以回到這個地圖對照。
+
+### 範例範圍地圖
+
+| 部分 | Vue 3 | Svelte 5 | Angular |
+| --- | --- | --- | --- |
+| 專案入口 | `src/main.ts` | `src/main.ts` 或 SvelteKit route | `src/main.ts`、`app.config.ts` |
+| 根元件 | `src/App.vue` | `src/App.svelte` | `app.component.ts` |
+| 子元件 | `src/components/ShoppingCart.vue` | `src/lib/ShoppingCart.svelte` | `shopping-cart.component.ts` |
+| 狀態 | `ref` / `computed` | `$state` / `$derived` | `signal` / `computed` |
+| 事件 | `@click`、`emit` | `onclick`、callback prop | `(click)`、`output` |
+| 樣式 | component scoped style 或 CSS | component style | component styles |
+| 驗證 | 瀏覽器畫面、console、測試資料 | 瀏覽器畫面、console、測試資料 | 瀏覽器畫面、Angular dev server |
+
+### 最小資料模型
+
+三個框架都先用同一種資料形狀，這樣比較才公平：
+
+```ts
+type CartItem = {
+  id: number
+  name: string
+  price: number
+  quantity: number
+}
+```
+
+### Vue 3：父元件持有狀態，子元件呈現與觸發事件
+
+`src/App.vue`：
+
+```vue
+<script setup lang="ts">
+import { computed, ref } from 'vue'
+import ShoppingCart from './components/ShoppingCart.vue'
+
+type CartItem = {
+  id: number
+  name: string
+  price: number
+  quantity: number
+}
+
+// 範例用途：父元件保存購物車狀態。
+// 副作用：increaseQuantity 會改變 items，畫面會因 ref 自動更新。
+const items = ref<CartItem[]>([
+  { id: 1, name: 'Coffee', price: 120, quantity: 1 },
+  { id: 2, name: 'Cake', price: 90, quantity: 2 }
+])
+
+const total = computed(() =>
+  items.value.reduce((sum, item) => sum + item.price * item.quantity, 0)
+)
+
+function increaseQuantity(id: number) {
+  const item = items.value.find(x => x.id === id)
+  if (item) item.quantity++
+}
+</script>
+
+<template>
+  <ShoppingCart
+    :items="items"
+    :total="total"
+    @increase="increaseQuantity"
+  />
+</template>
+```
+
+`src/components/ShoppingCart.vue`：
+
+```vue
+<script setup lang="ts">
+type CartItem = {
+  id: number
+  name: string
+  price: number
+  quantity: number
+}
+
+defineProps<{
+  items: CartItem[]
+  total: number
+}>()
+
+const emit = defineEmits<{
+  increase: [id: number]
+}>()
+</script>
+
+<template>
+  <section>
+    <h1>Shopping Cart</h1>
+    <article v-for="item in items" :key="item.id">
+      <span>{{ item.name }} x {{ item.quantity }}</span>
+      <button @click="emit('increase', item.id)">+</button>
+    </article>
+    <strong>Total: {{ total }}</strong>
+  </section>
+</template>
+```
+
+### Svelte 5：父元件用 `$state`，子元件用 callback prop
+
+`src/App.svelte`：
+
+```svelte
+<script lang="ts">
+  import ShoppingCart from './lib/ShoppingCart.svelte'
+
+  type CartItem = {
+    id: number
+    name: string
+    price: number
+    quantity: number
+  }
+
+  let items = $state<CartItem[]>([
+    { id: 1, name: 'Coffee', price: 120, quantity: 1 },
+    { id: 2, name: 'Cake', price: 90, quantity: 2 }
+  ])
+
+  let total = $derived(
+    items.reduce((sum, item) => sum + item.price * item.quantity, 0)
+  )
+
+  function increaseQuantity(id: number) {
+    const item = items.find(x => x.id === id)
+    if (item) item.quantity += 1
+  }
+</script>
+
+<ShoppingCart {items} {total} onIncrease={increaseQuantity} />
+```
+
+`src/lib/ShoppingCart.svelte`：
+
+```svelte
+<script lang="ts">
+  type CartItem = {
+    id: number
+    name: string
+    price: number
+    quantity: number
+  }
+
+  let {
+    items,
+    total,
+    onIncrease
+  }: {
+    items: CartItem[]
+    total: number
+    onIncrease: (id: number) => void
+  } = $props()
+</script>
+
+<section>
+  <h1>Shopping Cart</h1>
+  {#each items as item (item.id)}
+    <article>
+      <span>{item.name} x {item.quantity}</span>
+      <button onclick={() => onIncrease(item.id)}>+</button>
+    </article>
+  {/each}
+  <strong>Total: {total}</strong>
+</section>
+```
+
+### Angular：父元件用 signal，子元件用 input / output
+
+`shopping-cart.component.ts`：
+
+```ts
+import { Component, input, output } from '@angular/core'
+
+type CartItem = {
+  id: number
+  name: string
+  price: number
+  quantity: number
+}
+
+@Component({
+  selector: 'app-shopping-cart',
+  standalone: true,
+  template: `
+    <section>
+      <h1>Shopping Cart</h1>
+      @for (item of items(); track item.id) {
+        <article>
+          <span>{{ item.name }} x {{ item.quantity }}</span>
+          <button (click)="increase.emit(item.id)">+</button>
+        </article>
+      }
+      <strong>Total: {{ total() }}</strong>
+    </section>
+  `
+})
+export class ShoppingCartComponent {
+  items = input.required<CartItem[]>()
+  total = input.required<number>()
+  increase = output<number>()
+}
+```
+
+`app.component.ts`：
+
+```ts
+import { Component, computed, signal } from '@angular/core'
+import { ShoppingCartComponent } from './shopping-cart.component'
+
+type CartItem = {
+  id: number
+  name: string
+  price: number
+  quantity: number
+}
+
+@Component({
+  selector: 'app-root',
+  standalone: true,
+  imports: [ShoppingCartComponent],
+  template: `
+    <app-shopping-cart
+      [items]="items()"
+      [total]="total()"
+      (increase)="increaseQuantity($event)"
+    />
+  `
+})
+export class AppComponent {
+  items = signal<CartItem[]>([
+    { id: 1, name: 'Coffee', price: 120, quantity: 1 },
+    { id: 2, name: 'Cake', price: 90, quantity: 2 }
+  ])
+
+  total = computed(() =>
+    this.items().reduce((sum, item) => sum + item.price * item.quantity, 0)
+  )
+
+  increaseQuantity(id: number) {
+    this.items.update(items =>
+      items.map(item =>
+        item.id === id ? { ...item, quantity: item.quantity + 1 } : item
+      )
+    )
+  }
+}
+```
+
+### 端到端流程
+
+1. 父元件建立 `items` 狀態與 `total` 衍生狀態。
+2. 父元件把 `items` 和 `total` 傳給 `ShoppingCart` 子元件。
+3. 子元件顯示清單與總金額。
+4. 使用者按 `+`。
+5. 子元件透過 emit / callback / output 通知父元件。
+6. 父元件修改狀態，框架重新渲染畫面。
+
+### 做完後檢查
+
+- 畫面顯示 `Coffee`、`Cake` 與總金額。
+- 按下 `+` 後，對應商品數量增加。
+- 總金額會跟著增加。
+- 若畫面不更新，先檢查狀態是否用該框架的響應式 API 建立，而不是普通變數。
+
 ### 如果結果和預期不同
 
 - 畫面沒有更新：先檢查狀態變數、props / events、模板語法與瀏覽器 console。

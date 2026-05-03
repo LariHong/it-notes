@@ -550,6 +550,73 @@ docker stop <container-id>
 
 本篇範例以 Docker 原生命令、Dockerfile、Compose YAML 或 C# / ASP.NET Core 專案整合為主。讀的時候不要只複製命令，要同時記下：這一步建立了什麼資源、是否會修改本機 Docker 狀態、執行後要用哪個命令驗證。
 
+### 完整範圍補強：從 ASP.NET Core 專案到可連線的 Container
+
+Day 6 的重點不是只背 `docker run`，而是理解「程式碼、Dockerfile、image、container、port、log」如何串成一條完整流程。下面用一個最小 API 示範，讓新手知道每一段放在哪裡、下一步怎麼驗證。
+
+#### 範例範圍地圖
+
+| 部分 | 檔案 / 指令 | 責任 |
+| --- | --- | --- |
+| 應用程式 | `Program.cs` | 提供 `/health` endpoint，確認服務真的活著 |
+| 建置規則 | `Dockerfile` | 說明如何 restore、publish、啟動 .NET 應用 |
+| Image | `docker build -t notes-api:dev .` | 封裝可重複啟動的應用版本 |
+| Container | `docker run --name notes-api -p 8080:8080 notes-api:dev` | 實際執行 image |
+| 驗證 | `curl`、瀏覽器、`docker logs` | 確認外部能連到 container 內的服務 |
+
+`Program.cs`：
+
+```csharp
+var builder = WebApplication.CreateBuilder(args);
+var app = builder.Build();
+
+app.MapGet("/health", () => Results.Ok(new
+{
+    Status = "OK",
+    Service = "notes-api",
+    Time = DateTimeOffset.UtcNow
+}));
+
+app.Run();
+```
+
+`Dockerfile`：
+
+```dockerfile
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
+WORKDIR /src
+
+COPY *.csproj ./
+RUN dotnet restore
+
+COPY . ./
+RUN dotnet publish -c Release -o /app/publish
+
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
+WORKDIR /app
+COPY --from=build /app/publish ./
+ENV ASPNETCORE_URLS=http://+:8080
+EXPOSE 8080
+ENTRYPOINT ["dotnet", "NotesApi.dll"]
+```
+
+執行與驗證：
+
+```bash
+docker build -t notes-api:dev .
+docker run --rm --name notes-api -p 8080:8080 notes-api:dev
+curl http://localhost:8080/health
+docker logs notes-api
+```
+
+#### 端到端流程
+
+1. `Program.cs` 定義 `/health`，讓你有一個可觀察的測試點。
+2. `Dockerfile` 把原始碼建成 image，而不是在 container 裡手動改檔案。
+3. `docker build` 產生 image。
+4. `docker run -p 8080:8080` 把 host 的 8080 對到 container 的 8080。
+5. `curl` 或瀏覽器呼叫 `/health`，再用 `docker logs` 確認服務啟動過程。
+
 ### 如果結果和預期不同
 
 - Container 沒起來：先看 `docker ps -a` 和 `docker logs <container>`。
