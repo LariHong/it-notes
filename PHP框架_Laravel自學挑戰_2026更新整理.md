@@ -163,6 +163,12 @@ Laravel 可以先想成一個分工清楚的 Web 開發工作台：
 - Laravel 不是取代 PHP，而是把 PHP Web 開發整理成框架慣例。
 
 
+### 真實工作流程例子
+
+工作任務：你加入一個既有 Laravel 團隊，主管請你先把專案在本機跑起來，確認後續可以接功能。
+
+你要先判斷這不是寫 controller 的任務，而是環境啟動任務；會動到 Composer、`.env`、Artisan、npm/Vite。輸入是 `.env` 設定、套件版本與本機指令；輸出是可開啟的 Laravel 首頁與可運作的 Vite dev server。交付前要確認 `php artisan serve`、`npm run dev` 都能跑，並能說明如果缺 app key 或 Composer 時要怎麼排查。
+
 ### 主線專案銜接
 
 這一天要接回 resume-builder 主線，而不是只停在單一語法。完成「專案啟動」後，讀者應該能在同一個專案裡看到明確進度。
@@ -256,6 +262,12 @@ Laravel 的第一步不是背語法，而是建立「框架幫我整理專案邊
 - ORM 可降低手寫 SQL 的重複，但仍要理解 SQL。
 - Laravel 內建 CSRF、validation、escaping 等安全工具。
 
+
+### 真實工作流程例子
+
+工作任務：PM 問你「這個履歷功能為什麼不能像純 PHP 一樣一頁寫完」，你需要用工程角度說明 Laravel 分層。
+
+你要先判斷需求會經過 route、controller、model、view，而不是把 SQL、HTML、驗證全部塞在同一個檔案。輸入是使用者開啟 `/home` 的 request；輸出是 controller 傳資料給 Blade 後產生畫面。交付前要用 `php artisan route:list` 確認入口，並檢查 route 裡沒有塞大量商業邏輯。
 
 ### 主線專案銜接
 
@@ -372,6 +384,12 @@ Laravel 和純 PHP 最大差異是它先幫你畫出專案分工線。
 - `database/migrations` 放資料庫結構版本。
 
 
+### 真實工作流程例子
+
+工作任務：你接手一個 Laravel 專案，code review 前要先向同事說明 `app/`、`routes/`、`resources/`、`database/` 各放什麼。
+
+你要先判斷這是專案導覽與維護任務，不是新增功能。輸入是現有資料夾結構與 request 流程；輸出是你能指出新增履歷功能時會改哪些檔案。交付前要能從 `/resumes` 追到 route、controller、view，並確認沒有把畫面檔放到 controller 或把資料庫邏輯放到 Blade。
+
 ### 主線專案銜接
 
 這一天要接回 resume-builder 主線，而不是只停在單一語法。完成「專案結構」後，讀者應該能在同一個專案裡看到明確進度。
@@ -465,6 +483,12 @@ Laravel 專案不只有 app code；設定、公開入口、上傳檔案、快取
 - `public/index.php` 是 Web server 入口。
 - `storage/logs/laravel.log` 是排錯第一站。
 
+
+### 真實工作流程例子
+
+工作任務：QA 回報專案路徑越來越多，不知道設定、bootstrap、public 入口各自作用，你需要整理 Laravel request 啟動流程。
+
+你要先判斷這是框架啟動流程理解，不是任意改核心檔。輸入是瀏覽器 request、`public/index.php` 和設定檔；輸出是 route 能收到 request 並回應畫面。交付前要確認你沒有直接改 vendor 或 framework 核心，並能說明 `.env`、config cache、public entry 的關係。
 
 ### 主線專案銜接
 
@@ -561,6 +585,12 @@ Route 是使用者進入系統的門。門口亂了，後面的功能也會變�
 - Route name 讓 redirect 與 link 不依賴硬編 URL。
 - Route model binding 可以自動查資料與處理 404。
 
+
+### 真實工作流程例子
+
+工作任務：PM 要新增「履歷列表」頁，網址是 `/resumes`，進頁後要顯示列表畫面。
+
+你要先判斷入口放 `routes/web.php`，流程放 `ResumeController@index`，畫面放 Blade。輸入是 GET `/resumes` request；輸出是 controller 回傳 `resumes.index` view。交付前要跑 `php artisan route:list --path=resumes`，開瀏覽器確認頁面，並檢查 route 沒有直接查資料庫或 echo HTML。
 
 ### 主線專案銜接
 
@@ -670,6 +700,12 @@ Route 管入口，Controller 管流程，這條線先畫清楚。
 - `@yield` 是 layout 預留的插槽。
 
 
+### 真實工作流程例子
+
+工作任務：設計師提供履歷列表的 HTML，希望你改成 Laravel Blade 頁面並能顯示 controller 傳來的資料。
+
+你要先判斷 HTML 應放在 `resources/views`，動態資料由 controller 傳入。輸入是 `$resumes` 或標題文字；輸出是 Blade 渲染出的列表。交付前要測空列表與有資料兩種狀態，並確認使用 `{{ }}` 避免直接輸出未轉義內容。
+
 ### 主線專案銜接
 
 這一天要接回 resume-builder 主線，而不是只停在單一語法。完成「共用版型」後，讀者應該能在同一個專案裡看到明確進度。
@@ -775,6 +811,12 @@ Blade layout 讓共用畫面只寫一次。
 - props 讓 component 接收資料。
 
 
+### 真實工作流程例子
+
+工作任務：多個頁面都有相同 header、navbar、主要內容區，code review 要求你不要每頁複製同一份 HTML。
+
+你要先判斷共用版型放 `resources/views/layouts/app.blade.php`，各頁用 section 或 component 填內容。輸入是不同頁面的內容區；輸出是共用 layout 包住每個頁面。交付前要確認列表頁和新增頁都套到同一個 navbar，且修改 layout 不會漏掉某個頁面。
+
 ### 主線專案銜接
 
 這一天要接回 resume-builder 主線，而不是只停在單一語法。完成「可重用 UI」後，讀者應該能在同一個專案裡看到明確進度。
@@ -869,6 +911,12 @@ Blade component 能減少重複，但資料來源仍要清楚。
 - `@error` 顯示驗證錯誤。
 - `@forelse` 同時處理清單與空資料。
 
+
+### 真實工作流程例子
+
+工作任務：履歷列表要根據有無資料顯示不同畫面，並且逐筆顯示履歷卡片。
+
+你要先判斷這是 Blade 條件與迴圈任務，不應在 controller 組 HTML 字串。輸入是 controller 傳入的 collection；輸出是 `@forelse` 顯示列表或 empty state。交付前要測 0 筆、1 筆、多筆資料，並確認連結 URL 由 route helper 產生。
 
 ### 主線專案銜接
 
@@ -966,6 +1014,12 @@ Blade 的 `{{ }}` 不是單純 echo，它預設幫你做 HTML escaping。
 - 檢查 `successful()` 或 `failed()`。
 - API URL 與 token 放 config。
 
+
+### 真實工作流程例子
+
+工作任務：履歷頁需要讀取 GitHub profile 或外部資料，PM 要先看到 GET API 串接結果。
+
+你要先判斷外部 request 不應直接散在 Blade，應由 controller 或 service 使用 Laravel HTTP client。輸入是 API URL、query、header 或 token；輸出是整理後的資料或錯誤訊息。交付前要測 200、404、timeout，並確認 token 不會被印到畫面或 log。
 
 ### 主線專案銜接
 
@@ -1073,6 +1127,12 @@ POST 常用在建立資料、送表單、呼叫 webhook 或外部服務操作。
 - 不要記錄敏感 body。
 
 
+### 真實工作流程例子
+
+工作任務：表單送出後要把資料送到外部服務或內部 endpoint，QA 要求失敗時不能只白畫面。
+
+你要先判斷 POST request 需要 validation、CSRF、錯誤處理與 redirect。輸入是表單欄位或 request body；輸出是外部 API response、資料建立結果或錯誤提示。交付前要測正常送出、欄位缺漏、外部服務失敗，並確認表單有 `@csrf`。
+
 ### 主線專案銜接
 
 這一天要接回 resume-builder 主線，而不是只停在單一語法。完成「外部 POST API」後，讀者應該能在同一個專案裡看到明確進度。
@@ -1177,6 +1237,12 @@ ORM 讓資料表和 PHP class 有對應關係，減少重複 SQL，但你仍然�
 - Relationship 表達資料關係。
 
 
+### 真實工作流程例子
+
+工作任務：履歷資料要從資料庫讀取，不能再用假陣列，列表頁要顯示目前使用者的履歷。
+
+你要先判斷資料存取應由 Eloquent model 處理，controller 只協調查詢和 view。輸入是 `resumes` 資料表資料與目前登入者；輸出是 `Resume` collection 給 Blade。交付前要用 Tinker 或測試資料確認查詢結果，並避免在 Blade 裡直接寫複雜查詢。
+
 ### 主線專案銜接
 
 這一天要接回 resume-builder 主線，而不是只停在單一語法。完成「資料模型」後，讀者應該能在同一個專案裡看到明確進度。
@@ -1278,6 +1344,12 @@ Eloquent 的重點是用 Model 管資料，但輸入邊界仍要守好。
 - `php artisan migrate` 執行。
 - `php artisan migrate:rollback` 回復上一批。
 
+
+### 真實工作流程例子
+
+工作任務：PM 要新增履歷欄位，包含標題、摘要、技能，資料表目前不存在這些欄位。
+
+你要先判斷這是 migration 任務，而不是直接手動改正式資料庫。輸入是欄位需求與資料型別；輸出是 migration 檔與更新後的資料表結構。交付前要跑 `php artisan migrate`，確認欄位存在，並思考 rollback 對既有資料的影響。
 
 ### 主線專案銜接
 
@@ -1384,6 +1456,12 @@ Migration 讓資料庫結構變成可追蹤、可重播的程式碼。
 - method 可由 `wire:click`、`wire:submit` 呼叫。
 - 敏感資料不要放 public property。
 
+
+### 真實工作流程例子
+
+工作任務：PM 希望建立履歷時輸入欄位能即時互動，但團隊暫時不想導入大型前端 SPA。
+
+你要先判斷 Livewire 適合處理 Laravel 內的互動表單，資料狀態留在 component class。輸入是使用者在表單中的即時輸入；輸出是 Livewire component 更新畫面。交付前要測輸入同步、validation 顯示，以及 Network 是否有 Livewire request。
 
 ### 主線專案銜接
 
@@ -1495,6 +1573,12 @@ Livewire 適合 Laravel 後台互動，但資料暴露邊界要小心。
 - 錯誤訊息用 `@error` 顯示。
 
 
+### 真實工作流程例子
+
+工作任務：建立履歷表單需要即時驗證標題必填、摘要長度，使用者不要送出後才全部重填。
+
+你要先判斷表單狀態放 Livewire component，驗證規則放 component 或 Form object。輸入是使用者逐欄輸入；輸出是欄位錯誤訊息與可送出狀態。交付前要測空值、過長文字、修正後錯誤是否消失。
+
 ### 主線專案銜接
 
 這一天要接回 resume-builder 主線，而不是只停在單一語法。完成「Livewire 表單狀態」後，讀者應該能在同一個專案裡看到明確進度。
@@ -1593,6 +1677,12 @@ Livewire form 的核心是狀態、驗證、錯誤訊息三者一致。
 - 成功後 redirect 或顯示 flash message。
 
 
+### 真實工作流程例子
+
+工作任務：Livewire 表單現在會動了，PM 要送出後真的建立履歷並回到列表頁。
+
+你要先判斷 submit 流程要做 validation、建立資料、授權使用者關聯、redirect 或 flash message。輸入是 Livewire 表單 state；輸出是 `resumes` 資料表新資料與列表頁提示。交付前要查資料庫、確認 user_id 正確，並測未登入或驗證失敗情境。
+
 ### 主線專案銜接
 
 這一天要接回 resume-builder 主線，而不是只停在單一語法。完成「Livewire 儲存流程」後，讀者應該能在同一個專案裡看到明確進度。
@@ -1687,6 +1777,12 @@ Livewire 表單保存資料時，登入者與驗證是兩條底線。
 - 先做最小可用，再擴充。
 
 
+### 真實工作流程例子
+
+工作任務：功能開始進入 MVP，主管要求你先整理 user story、資料表和路由，不要邊寫邊猜。
+
+你要先判斷這是需求切分與架構規劃任務。輸入是使用者要建立、查看、編輯、刪除履歷的流程；輸出是 routes、model、migration、controller、view 的實作地圖。交付前要確認每個 user story 都能對應到 URL、資料表欄位和權限檢查。
+
 ### 主線專案銜接
 
 這一天要接回 resume-builder 主線，而不是只停在單一語法。完成「產品設計」後，讀者應該能在同一個專案裡看到明確進度。
@@ -1778,6 +1874,12 @@ Resume 是私人資料，沒有登入就無法判斷資料屬於誰。
 - 密碼要 hash，不可明文保存。
 - 登入表單也需要 CSRF。
 
+
+### 真實工作流程例子
+
+工作任務：履歷是私人資料，PM 要求使用者必須註冊登入後才能建立履歷。
+
+你要先判斷登入功能不應手刻密碼流程，應使用 Laravel Breeze 或官方 auth scaffolding。輸入是使用者註冊 / 登入表單；輸出是可用的 `/login`、`/register` 與 session。交付前要測註冊、登入、錯誤密碼，以及確認密碼不會明文存放。
 
 ### 主線專案銜接
 
@@ -1871,6 +1973,12 @@ npm run dev
 - 測試未登入行為很重要。
 
 
+### 真實工作流程例子
+
+工作任務：QA 發現未登入也能直接開 `/resumes`，這是權限漏洞。
+
+你要先判斷這是 middleware 保護路由的任務，不只是把按鈕藏起來。輸入是未登入 request；輸出是被導到 login。交付前要測未登入直接輸入 URL、登入後可進入、登出後不能回上一頁看到私人資料。
+
 ### 主線專案銜接
 
 這一天要接回 resume-builder 主線，而不是只停在單一語法。完成「保護路由」後，讀者應該能在同一個專案裡看到明確進度。
@@ -1955,6 +2063,12 @@ Route::middleware('auth')->group(function () {
 - CSRF 仍然需要。
 - 登出後應 redirect 到公開頁或 login。
 
+
+### 真實工作流程例子
+
+工作任務：登入後 navbar 要顯示使用者名稱與登出按鈕，未登入則顯示登入 / 註冊。
+
+你要先判斷這是 layout 和 auth state 顯示任務，登出必須用 POST route。輸入是目前 session user；輸出是不同 navbar 狀態與 logout request。交付前要測登入、登出、CSRF，以及登出後受保護頁面不能再進入。
 
 ### 主線專案銜接
 
@@ -2046,6 +2160,12 @@ CRUD 的 C 是所有資料流的起點，表單設計會影響 validation、資�
 - old input 保留資料。
 - 使用登入者建立關聯。
 
+
+### 真實工作流程例子
+
+工作任務：使用者要能建立自己的履歷，表單送出後資料必須進資料庫。
+
+你要先判斷 create 顯示表單、store 處理 POST，資料建立要綁定目前登入者。輸入是表單欄位；輸出是新 `Resume` row 和 redirect。交付前要測成功建立、欄位驗證失敗、使用者無法偽造 `user_id`。
 
 ### 主線專案銜接
 
@@ -2144,6 +2264,12 @@ Hidden input 不安全，它只是畫面上看不到。
 - 空清單要有 empty state。
 - link 用 named route。
 
+
+### 真實工作流程例子
+
+工作任務：登入者需要看到自己的履歷列表，但不能看到別人的資料。
+
+你要先判斷 index 查詢必須從 `$request->user()->resumes()` 出發，而不是 `Resume::all()`。輸入是目前登入者；輸出是只屬於該使用者的 collection。交付前要準備兩個使用者資料測試隔離，並確認空列表有提示。
 
 ### 主線專案銜接
 
@@ -2246,6 +2372,12 @@ public function index(Request $request): View
 - 沒權限回 403。
 
 
+### 真實工作流程例子
+
+工作任務：使用者點列表上的履歷，要進入詳細頁，但不能透過猜 id 看別人的履歷。
+
+你要先判斷 show 需要 route model binding 搭配 policy 或 scoped query。輸入是 URL 裡的 resume id 與目前使用者；輸出是詳細頁或 403 / 404。交付前要測自己的 id、別人的 id、不存在的 id。
+
 ### 主線專案銜接
 
 這一天要接回 resume-builder 主線，而不是只停在單一語法。完成「Show + Policy」後，讀者應該能在同一個專案裡看到明確進度。
@@ -2344,6 +2476,12 @@ public function view(User $user, Resume $resume): bool
 - action 指向 update route。
 
 
+### 真實工作流程例子
+
+工作任務：使用者要編輯既有履歷，進表單時必須看到原本資料。
+
+你要先判斷 edit 負責顯示預填表單，權限仍要先檢查。輸入是 resume id 與資料庫現有資料；輸出是帶預設值的 edit view。交付前要測欄位預填、無權限進入、返回列表不會改到資料。
+
 ### 主線專案銜接
 
 這一天要接回 resume-builder 主線，而不是只停在單一語法。完成「Edit form」後，讀者應該能在同一個專案裡看到明確進度。
@@ -2435,6 +2573,12 @@ HTML form 只支援 GET/POST，Laravel 用 method spoofing 模擬 PUT/DELETE。
 - 更新後 redirect show。
 - 複雜專案要注意 optimistic locking。
 
+
+### 真實工作流程例子
+
+工作任務：編輯表單送出後，要更新資料並回到詳細頁顯示新內容。
+
+你要先判斷 update 負責 validation、authorization、只更新 validated data。輸入是 PUT / PATCH request；輸出是更新後的資料庫 row 與 redirect。交付前要測成功更新、驗證失敗保留輸入、不能更新別人的履歷。
 
 ### 主線專案銜接
 
@@ -2534,6 +2678,12 @@ Update 的安全核心是 authorize 後 validate，再 update。
 - 刪除前 UI 應確認。
 - 真實產品常用 soft delete。
 
+
+### 真實工作流程例子
+
+工作任務：使用者要能刪除不需要的履歷，但 QA 要求不能誤刪別人的資料。
+
+你要先判斷 destroy 必須通過 policy，並用 DELETE method。輸入是 resume id 與目前使用者；輸出是資料被刪除或拒絕操作。交付前要測刪自己的履歷、刪別人的履歷、刪除後列表不再顯示。
 
 ### 主線專案銜接
 
@@ -2636,6 +2786,12 @@ public function destroy(Resume $resume): RedirectResponse
 - 注意 Markdown escaping。
 
 
+### 真實工作流程例子
+
+工作任務：PM 要把履歷內容發布成 GitHub README，第一步先把履歷轉成 Markdown。
+
+你要先判斷格式轉換不應塞在 controller，應建立 formatter 或 service。輸入是 Resume model；輸出是 Markdown 字串。交付前要用不同欄位組合測格式，確認空欄位不會產生破碎 Markdown。
+
 ### 主線專案銜接
 
 這一天要接回 resume-builder 主線，而不是只停在單一語法。完成「Markdown 輸出」後，讀者應該能在同一個專案裡看到明確進度。
@@ -2735,6 +2891,12 @@ Token 權限太大會造成安全風險，權限太小會導致 API 失敗。
 - token 放 `.env` 或 secret manager。
 
 
+### 真實工作流程例子
+
+工作任務：要更新 GitHub README 前，主管要求 token 權限最小化，而且不能進 git。
+
+你要先判斷這是外部服務憑證與 scope 設定任務。輸入是 GitHub token、repo owner/name、scope；輸出是可呼叫 API 的授權設定。交付前要確認 `.env` 不被 commit、token scope 足夠但不過大，並測 401 / 403 錯誤訊息。
+
 ### 主線專案銜接
 
 這一天要接回 resume-builder 主線，而不是只停在單一語法。完成「GitHub Token」後，讀者應該能在同一個專案裡看到明確進度。
@@ -2825,6 +2987,12 @@ GitHub 更新檔案不是只送新內容，還需要目前檔案的 SHA 來避�
 - `content` 要 Base64 encode。
 - 409 conflict 要重新讀最新 SHA。
 
+
+### 真實工作流程例子
+
+工作任務：Markdown 已經產生，現在要真的 PUT 到 GitHub Contents API 更新 README。
+
+你要先判斷更新 README 需要先 GET 取得目前檔案 SHA，再 PUT base64 content。輸入是 repo、path、branch、token、Markdown；輸出是 GitHub commit。交付前要測成功更新、SHA 過期 409、token 無權限 403、網路 timeout。
 
 ### 主線專案銜接
 
@@ -2928,6 +3096,12 @@ GitHub Contents API 的更新流程是先讀 SHA，再 PUT 新內容。
 - 格式轉換：formatter。
 
 
+### 真實工作流程例子
+
+工作任務：功能可跑後，code review 說 controller 太胖、權限檢查分散、GitHub API 難測。
+
+你要先判斷這是重構任務，不是新增功能。輸入是既有 controller、policy、service；輸出是更薄的 controller 與可測的 service。交付前要跑原本手動流程或測試，確認重構前後行為一致。
+
 ### 主線專案銜接
 
 這一天要接回 resume-builder 主線，而不是只停在單一語法。完成「重構」後，讀者應該能在同一個專案裡看到明確進度。
@@ -3017,6 +3191,12 @@ Route::middleware('auth')->group(function () {
 - 外部 API 要抽 service。
 - 測試是下一階段必修。
 
+
+### 真實工作流程例子
+
+工作任務：你要把 Laravel 履歷專案交接給下一位工程師，對方需要能從零啟動、測試、知道下一步。
+
+你要先判斷這是收尾與交付文件任務。輸入是專案目前指令、環境需求、測試流程與已知限制；輸出是 README、檢查清單和可重跑的測試。交付前要用乾淨環境照 README 跑一次，並確認 `.env.example` 足夠但沒有秘密值。
 
 ### 主線專案銜接
 
