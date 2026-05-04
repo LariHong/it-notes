@@ -164,10 +164,30 @@ Laravel 可以先想成一個分工清楚的 Web 開發工作台：
 
 
 ### 真實工作流程例子
+- 工作任務：你剛加入 Laravel 專案，Tech Lead 要你先把 `resume-builder` 在本機完整跑起來，確認你可以開始接功能單。
+- 你先判斷：這不是寫功能，而是環境啟動與依賴確認；先不要動 controller、model 或資料庫設計。
+- 會動到：`composer.json`、`.env`、`APP_KEY`、`package.json`、Artisan 指令、Vite dev server。
+- 資料怎麼流：瀏覽器打到 `http://127.0.0.1:8000`，Laravel 從 `public/index.php` 進入，讀取 `.env` 與 config，最後回傳首頁；前端資產由 Vite dev server 提供。
 
-工作任務：你加入一個既有 Laravel 團隊，主管請你先把專案在本機跑起來，確認後續可以接功能。
+- 流程路線圖：
 
-你要先判斷這不是寫 controller 的任務，而是環境啟動任務；會動到 Composer、`.env`、Artisan、npm/Vite。輸入是 `.env` 設定、套件版本與本機指令；輸出是可開啟的 Laravel 首頁與可運作的 Vite dev server。交付前要確認 `php artisan serve`、`npm run dev` 都能跑，並能說明如果缺 app key 或 Composer 時要怎麼排查。
+```text
+Browser -> public/index.php -> Laravel boot -> .env/config -> route -> home response; Vite serves assets separately
+```
+
+- 工作中會寫 / 檢查的片段：
+
+```powershell
+composer create-project laravel/laravel resume-builder
+cd resume-builder
+php artisan key:generate
+php artisan serve
+npm install
+npm run dev
+```
+- 交付前驗證：`php artisan about` 看環境、`php artisan serve` 可開頁、`npm run dev` 無錯、重新整理首頁不出現 `No application encryption key`。
+- 常見卡點：只跑 PHP server 但沒跑 Vite，頁面樣式或資產壞掉；或 `.env` 缺 app key，導致 session / encryption 相關功能不能用。
+
 
 ### 主線專案銜接
 
@@ -264,10 +284,30 @@ Laravel 的第一步不是背語法，而是建立「框架幫我整理專案邊
 
 
 ### 真實工作流程例子
+- 工作任務：PM 問「新增履歷頁為什麼不能一個 PHP 檔寫完」，你要用專案維護角度說明 Laravel 分層。
+- 你先判斷：需求會經過 route、controller、view，之後才會接 model；不要把 URL、SQL、HTML、驗證塞在同一頁。
+- 會動到：`routes/web.php`、`app/Http/Controllers/PageController.php`、`resources/views/home.blade.php`。
+- 資料怎麼流：使用者 GET `/home`，route 找到 controller，controller 準備 `$title`，Blade 負責呈現。
 
-工作任務：PM 問你「這個履歷功能為什麼不能像純 PHP 一樣一頁寫完」，你需要用工程角度說明 Laravel 分層。
+- 流程路線圖：
 
-你要先判斷需求會經過 route、controller、model、view，而不是把 SQL、HTML、驗證全部塞在同一個檔案。輸入是使用者開啟 `/home` 的 request；輸出是 controller 傳資料給 Blade 後產生畫面。交付前要用 `php artisan route:list` 確認入口，並檢查 route 裡沒有塞大量商業邏輯。
+```text
+GET /home -> routes/web.php -> PageController@home -> resources/views/home.blade.php -> HTML response
+```
+
+- 工作中會寫 / 檢查的片段：
+
+```php
+Route::get('/home', [PageController::class, 'home'])->name('home');
+
+public function home()
+{
+    return view('home', ['title' => 'Resume Builder']);
+}
+```
+- 交付前驗證：`php artisan route:list` 看得到 `/home`，瀏覽器開頁有 title，route 檔沒有大量邏輯，Blade 沒有查資料庫。
+- 常見卡點：以為 Laravel 只是把純 PHP 放進不同資料夾，結果 controller 和 view 邊界仍然混亂。
+
 
 ### 主線專案銜接
 
@@ -385,10 +425,29 @@ Laravel 和純 PHP 最大差異是它先幫你畫出專案分工線。
 
 
 ### 真實工作流程例子
+- 工作任務：你接手既有 Laravel repo，主管請你先畫出「新增履歷列表」會碰到哪些資料夾，避免亂改檔。
+- 你先判斷：這是熟悉專案結構與 request flow 的任務；先建立導航地圖，再開始寫功能。
+- 會動到：`routes/` 找入口、`app/Http/Controllers/` 找流程、`resources/views/` 找畫面、`database/` 找資料結構。
+- 資料怎麼流：request 先進 route，再進 controller；controller 之後可能讀 model，最後把資料交給 Blade。
 
-工作任務：你接手一個 Laravel 專案，code review 前要先向同事說明 `app/`、`routes/`、`resources/`、`database/` 各放什麼。
+- 流程路線圖：
 
-你要先判斷這是專案導覽與維護任務，不是新增功能。輸入是現有資料夾結構與 request 流程；輸出是你能指出新增履歷功能時會改哪些檔案。交付前要能從 `/resumes` 追到 route、controller、view，並確認沒有把畫面檔放到 controller 或把資料庫邏輯放到 Blade。
+```text
+Ticket -> routes/ -> controllers/ -> models + migrations/ -> views/
+```
+
+- 工作中會寫 / 檢查的片段：
+
+```text
+routes/web.php
+app/Http/Controllers/ResumeController.php
+app/Models/Resume.php
+database/migrations/*create_resumes_table.php
+resources/views/resumes/index.blade.php
+```
+- 交付前驗證：能說明 `/resumes` 應該在哪裡註冊、哪個 controller 處理、哪個 view 呈現；用 `rg "resumes" routes app resources` 能追到流程。
+- 常見卡點：找不到功能就到處新增檔案，造成同一種責任散落多個位置。
+
 
 ### 主線專案銜接
 
@@ -485,10 +544,28 @@ Laravel 專案不只有 app code；設定、公開入口、上傳檔案、快取
 
 
 ### 真實工作流程例子
+- 工作任務：QA 說本機正常但部署後讀不到設定或圖片路徑錯誤，你要排查 Laravel 啟動與設定流程。
+- 你先判斷：這不是改業務邏輯，而是檢查 `.env`、config cache、public entry、storage link 與部署路徑。
+- 會動到：`.env`、`config/*.php`、`public/index.php`、`storage/`、`bootstrap/cache/`，必要時用 Artisan 指令清快取。
+- 資料怎麼流：web server 指向 `public/`，Laravel bootstraps app，讀取 config cache 或 `.env`，再進 route。
 
-工作任務：QA 回報專案路徑越來越多，不知道設定、bootstrap、public 入口各自作用，你需要整理 Laravel request 啟動流程。
+- 流程路線圖：
 
-你要先判斷這是框架啟動流程理解，不是任意改核心檔。輸入是瀏覽器 request、`public/index.php` 和設定檔；輸出是 route 能收到 request 並回應畫面。交付前要確認你沒有直接改 vendor 或 framework 核心，並能說明 `.env`、config cache、public entry 的關係。
+```text
+Web server -> public/index.php -> bootstrap/app.php -> config/*.php / .env -> route -> controller
+```
+
+- 工作中會寫 / 檢查的片段：
+
+```powershell
+php artisan config:clear
+php artisan cache:clear
+php artisan route:list
+php artisan storage:link
+```
+- 交付前驗證：執行 `php artisan config:clear`、`php artisan route:list`、檢查 `APP_URL`，確認 public asset 和 storage link 都可存取。
+- 常見卡點：改了 `.env` 卻忘記清 config cache，或把 web server root 指到專案根目錄而不是 `public/`。
+
 
 ### 主線專案銜接
 
@@ -587,10 +664,26 @@ Route 是使用者進入系統的門。門口亂了，後面的功能也會變�
 
 
 ### 真實工作流程例子
+- 工作任務：PM 要新增履歷列表頁 `/resumes`，使用者進頁後要看到自己的履歷列表入口。
+- 你先判斷：URL 入口放 route，流程放 `ResumeController@index`，畫面放 `resumes/index.blade.php`；不要在 route closure 裡越寫越多。
+- 會動到：`routes/web.php`、`app/Http/Controllers/ResumeController.php`、`resources/views/resumes/index.blade.php`。
+- 資料怎麼流：GET `/resumes` 進 route，route 呼叫 controller，controller 先回 view，之後再接 model 查資料。
 
-工作任務：PM 要新增「履歷列表」頁，網址是 `/resumes`，進頁後要顯示列表畫面。
+- 流程路線圖：
 
-你要先判斷入口放 `routes/web.php`，流程放 `ResumeController@index`，畫面放 Blade。輸入是 GET `/resumes` request；輸出是 controller 回傳 `resumes.index` view。交付前要跑 `php artisan route:list --path=resumes`，開瀏覽器確認頁面，並檢查 route 沒有直接查資料庫或 echo HTML。
+```text
+GET /resumes -> route name resumes.index -> ResumeController@index -> resumes/index.blade.php
+```
+
+- 工作中會寫 / 檢查的片段：
+
+```php
+Route::get('/resumes', [ResumeController::class, 'index'])
+    ->name('resumes.index');
+```
+- 交付前驗證：`php artisan route:list --path=resumes` 看得到 GET route，瀏覽器打 `/resumes` 有畫面，route 名稱可被 `route('resumes.index')` 使用。
+- 常見卡點：route 寫出畫面或查詢，短期方便但後續加入權限、分頁、測試時會卡住。
+
 
 ### 主線專案銜接
 
@@ -701,10 +794,31 @@ Route 管入口，Controller 管流程，這條線先畫清楚。
 
 
 ### 真實工作流程例子
+- 工作任務：設計師交付履歷列表 HTML，你要改成 Blade，並讓 controller 傳入資料後能顯示。
+- 你先判斷：靜態 HTML 要拆進 Blade；動態資料從 controller 傳進 view；輸出文字用 `{{ }}` 保護 escaping。
+- 會動到：`ResumeController@index`、`resources/views/resumes/index.blade.php`、可能還有共用 layout。
+- 資料怎麼流：controller 準備 `$resumes` 或 `$pageTitle`，`view('resumes.index', compact(...))` 傳給 Blade，Blade 只負責呈現。
 
-工作任務：設計師提供履歷列表的 HTML，希望你改成 Laravel Blade 頁面並能顯示 controller 傳來的資料。
+- 流程路線圖：
 
-你要先判斷 HTML 應放在 `resources/views`，動態資料由 controller 傳入。輸入是 `$resumes` 或標題文字；輸出是 Blade 渲染出的列表。交付前要測空列表與有資料兩種狀態，並確認使用 `{{ }}` 避免直接輸出未轉義內容。
+```text
+Controller prepares data -> view(..., data) -> Blade {{ }} output -> escaped HTML in browser
+```
+
+- 工作中會寫 / 檢查的片段：
+
+```php
+public function index()
+{
+    return view('resumes.index', [
+        'pageTitle' => 'My resumes',
+        'resumes' => collect(),
+    ]);
+}
+```
+- 交付前驗證：測有資料與無資料，檢查特殊字元不會變 HTML 注入，確認 Blade 沒有直接呼叫 DB。
+- 常見卡點：為了快直接用 `{!! !!}` 輸出使用者內容，造成 XSS 風險。
+
 
 ### 主線專案銜接
 
@@ -812,10 +926,30 @@ Blade layout 讓共用畫面只寫一次。
 
 
 ### 真實工作流程例子
+- 工作任務：code review 指出每個頁面都複製 header、navbar、container，要求整理成共用 layout 或 component。
+- 你先判斷：共用外框放 layout，重複小 UI 放 Blade component；頁面只填自己的內容區。
+- 會動到：`resources/views/layouts/app.blade.php`、`resources/views/components/*.blade.php`、各頁 `@extends` / `<x-*>`。
+- 資料怎麼流：layout 提供 HTML 骨架，頁面透過 section 或 slot 填內容，component 透過 props / attributes 接收小資料。
 
-工作任務：多個頁面都有相同 header、navbar、主要內容區，code review 要求你不要每頁複製同一份 HTML。
+- 流程路線圖：
 
-你要先判斷共用版型放 `resources/views/layouts/app.blade.php`，各頁用 section 或 component 填內容。輸入是不同頁面的內容區；輸出是共用 layout 包住每個頁面。交付前要確認列表頁和新增頁都套到同一個 navbar，且修改 layout 不會漏掉某個頁面。
+```text
+layout shell -> page section / slot -> reusable component -> consistent UI across pages
+```
+
+- 工作中會寫 / 檢查的片段：
+
+```blade
+{{-- resources/views/resumes/index.blade.php --}}
+@extends('layouts.app')
+
+@section('content')
+    <x-resume-card :resume="$resume" />
+@endsection
+```
+- 交付前驗證：修改 navbar 一次，列表頁、建立頁、詳細頁都同步；檢查 active link 或登入狀態沒有被 layout 寫死。
+- 常見卡點：把業務資料查詢塞進 layout，導致每頁都背負不必要查詢。
+
 
 ### 主線專案銜接
 
@@ -913,10 +1047,29 @@ Blade component 能減少重複，但資料來源仍要清楚。
 
 
 ### 真實工作流程例子
+- 工作任務：履歷列表要能處理空資料、逐筆資料、驗證錯誤提示，QA 不接受空白畫面。
+- 你先判斷：這是 Blade 條件與迴圈呈現；controller 傳 collection，view 用 `@forelse` 和 `@error` 管 UI 狀態。
+- 會動到：`resources/views/resumes/index.blade.php`、表單 partial、可能的 flash message 區塊。
+- 資料怎麼流：controller 傳 `$resumes`，Blade 逐筆 render；若 collection 為空，顯示 empty state 與新增按鈕。
 
-工作任務：履歷列表要根據有無資料顯示不同畫面，並且逐筆顯示履歷卡片。
+- 流程路線圖：
 
-你要先判斷這是 Blade 條件與迴圈任務，不應在 controller 組 HTML 字串。輸入是 controller 傳入的 collection；輸出是 `@forelse` 顯示列表或 empty state。交付前要測 0 筆、1 筆、多筆資料，並確認連結 URL 由 route helper 產生。
+```text
+Controller collection -> Blade @forelse -> route helper links -> @error field feedback
+```
+
+- 工作中會寫 / 檢查的片段：
+
+```blade
+@forelse ($resumes as $resume)
+    <a href="{{ route('resumes.show', $resume) }}">{{ $resume->title }}</a>
+@empty
+    <p>No resumes yet.</p>
+@endforelse
+```
+- 交付前驗證：測 0 筆、1 筆、多筆，測 validation error 是否出現在對應欄位，連結使用 route helper 產生。
+- 常見卡點：在 controller 組 HTML 字串，導致畫面狀態無法被模板清楚管理。
+
 
 ### 主線專案銜接
 
@@ -1016,10 +1169,34 @@ Blade 的 `{{ }}` 不是單純 echo，它預設幫你做 HTML escaping。
 
 
 ### 真實工作流程例子
+- 工作任務：履歷頁需要讀取 GitHub profile 或 repository 資料，PM 要先看到外部 GET API 結果。
+- 你先判斷：外部 API 呼叫要集中在 controller 的流程或 service，不要直接放 Blade；需要處理 timeout 與錯誤碼。
+- 會動到：`app/Services/GitHubProfileService.php` 或 controller、`config/services.php`、`.env`、顯示結果的 Blade。
+- 資料怎麼流：使用者開頁，controller 呼叫 service，service 用 `Http::timeout()->get()`，成功後 mapping 給 view，失敗給錯誤訊息。
 
-工作任務：履歷頁需要讀取 GitHub profile 或外部資料，PM 要先看到 GET API 串接結果。
+- 流程路線圖：
 
-你要先判斷外部 request 不應直接散在 Blade，應由 controller 或 service 使用 Laravel HTTP client。輸入是 API URL、query、header 或 token；輸出是整理後的資料或錯誤訊息。交付前要測 200、404、timeout，並確認 token 不會被印到畫面或 log。
+```text
+Controller -> GitHubProfileService -> Http::timeout()->get() -> mapped result -> Blade success/error UI
+```
+
+- 工作中會寫 / 檢查的片段：
+
+```php
+public function getProfile(string $user): array
+{
+    $response = Http::timeout(5)->get("https://api.github.com/users/{$user}");
+
+    if ($response->failed()) {
+        throw new RuntimeException('GitHub profile fetch failed');
+    }
+
+    return $response->json();
+}
+```
+- 交付前驗證：mock 或實測 200、404、timeout；確認 token 不會顯示在畫面或 log；確認 API 失敗時頁面仍可讀。
+- 常見卡點：把 `Http::get()` 寫在 Blade，導致畫面渲染和外部網路耦合，錯誤也難測。
+
 
 ### 主線專案銜接
 
@@ -1128,10 +1305,32 @@ POST 常用在建立資料、送表單、呼叫 webhook 或外部服務操作。
 
 
 ### 真實工作流程例子
+- 工作任務：使用者送出履歷資料後，要 POST 給內部 endpoint 或外部服務，失敗時要回表單顯示原因。
+- 你先判斷：POST 流程需要 CSRF、validation、HTTP client 錯誤處理、redirect with input；不是單純呼叫 API。
+- 會動到：Blade form、route POST、controller `store` 或 service、request validation、錯誤訊息顯示。
+- 資料怎麼流：表單 POST 到 Laravel，controller 驗證後呼叫 service，service 收到外部 response，再決定 redirect success 或回表單。
 
-工作任務：表單送出後要把資料送到外部服務或內部 endpoint，QA 要求失敗時不能只白畫面。
+- 流程路線圖：
 
-你要先判斷 POST request 需要 validation、CSRF、錯誤處理與 redirect。輸入是表單欄位或 request body；輸出是外部 API response、資料建立結果或錯誤提示。交付前要測正常送出、欄位缺漏、外部服務失敗，並確認表單有 `@csrf`。
+```text
+Blade form POST -> route -> controller validation -> service POST -> redirect success or back with errors
+```
+
+- 工作中會寫 / 檢查的片段：
+
+```php
+public function store(Request $request)
+{
+    $data = $request->validate([
+        'title' => ['required', 'string', 'max:120'],
+    ]);
+
+    return redirect()->route('resumes.index');
+}
+```
+- 交付前驗證：測正常送出、缺欄位、外部 API 500 / timeout；確認表單有 `@csrf`，失敗時 `old()` 能保留輸入。
+- 常見卡點：只測成功情境，外部服務失敗時使用者看到白頁或資料重複送出。
+
 
 ### 主線專案銜接
 
@@ -1238,10 +1437,31 @@ ORM 讓資料表和 PHP class 有對應關係，減少重複 SQL，但你仍然�
 
 
 ### 真實工作流程例子
+- 工作任務：履歷列表不能再用假陣列，必須從資料庫讀取目前使用者的履歷。
+- 你先判斷：資料存取交給 Eloquent model 和 relationship，controller 只負責取得資料並傳 view。
+- 會動到：`app/Models/Resume.php`、`app/Models/User.php` relationship、`ResumeController@index`、可能的 factory / seeder。
+- 資料怎麼流：登入使用者呼叫 `$request->user()->resumes()`，Eloquent 產生 SQL，回傳 collection 給 Blade。
 
-工作任務：履歷資料要從資料庫讀取，不能再用假陣列，列表頁要顯示目前使用者的履歷。
+- 流程路線圖：
 
-你要先判斷資料存取應由 Eloquent model 處理，controller 只協調查詢和 view。輸入是 `resumes` 資料表資料與目前登入者；輸出是 `Resume` collection 給 Blade。交付前要用 Tinker 或測試資料確認查詢結果，並避免在 Blade 裡直接寫複雜查詢。
+```text
+User relationship -> Eloquent query -> SQL where user_id -> collection -> Blade list
+```
+
+- 工作中會寫 / 檢查的片段：
+
+```php
+// app/Models/User.php
+public function resumes()
+{
+    return $this->hasMany(Resume::class);
+}
+
+$resumes = $request->user()->resumes()->latest()->get();
+```
+- 交付前驗證：用 Tinker 或 seed 建兩個使用者資料，確認列表不會用 `Resume::all()` 顯示全部。
+- 常見卡點：只懂 Eloquent 語法但不懂背後 SQL，造成 N+1 或權限範圍查詢錯誤。
+
 
 ### 主線專案銜接
 
@@ -1346,10 +1566,31 @@ Eloquent 的重點是用 Model 管資料，但輸入邊界仍要守好。
 
 
 ### 真實工作流程例子
+- 工作任務：PM 要新增履歷資料表與欄位，團隊需要每個環境都能一致建立資料結構。
+- 你先判斷：這是 migration，不是手動進資料庫改欄位；欄位型別、nullable、index 都要先決定。
+- 會動到：`database/migrations/*create_resumes_table.php`、`app/Models/Resume.php`、`.env` DB 設定。
+- 資料怎麼流：migration 定義 schema，`php artisan migrate` 套用到 DB，Eloquent model 之後才能讀寫這張表。
 
-工作任務：PM 要新增履歷欄位，包含標題、摘要、技能，資料表目前不存在這些欄位。
+- 流程路線圖：
 
-你要先判斷這是 migration 任務，而不是直接手動改正式資料庫。輸入是欄位需求與資料型別；輸出是 migration 檔與更新後的資料表結構。交付前要跑 `php artisan migrate`，確認欄位存在，並思考 rollback 對既有資料的影響。
+```text
+Field requirement -> migration schema -> php artisan migrate -> DB table -> Eloquent read/write
+```
+
+- 工作中會寫 / 檢查的片段：
+
+```php
+Schema::create('resumes', function (Blueprint $table) {
+    $table->id();
+    $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+    $table->string('title');
+    $table->text('summary')->nullable();
+    $table->timestamps();
+});
+```
+- 交付前驗證：跑 `php artisan migrate:fresh --seed` 在本機驗證，檢查欄位型別，確認 rollback 不會破壞正式資料。
+- 常見卡點：直接改資料庫但沒寫 migration，導致同事或 CI 環境跑不起來。
+
 
 ### 主線專案銜接
 
@@ -1458,10 +1699,25 @@ Migration 讓資料庫結構變成可追蹤、可重播的程式碼。
 
 
 ### 真實工作流程例子
+- 工作任務：PM 希望履歷建立表單有即時互動，但團隊暫時不想做 Vue / React SPA。
+- 你先判斷：Livewire 適合處理 Laravel 內部的互動表單；狀態放 component class，畫面放 Livewire blade。
+- 會動到：`app/Livewire/*`、`resources/views/livewire/*.blade.php`、頁面中掛載 `<livewire:... />`。
+- 資料怎麼流：使用者輸入欄位，Livewire 透過 AJAX request 同步 public properties，component 更新後重新 render 片段。
 
-工作任務：PM 希望建立履歷時輸入欄位能即時互動，但團隊暫時不想導入大型前端 SPA。
+- 流程路線圖：
 
-你要先判斷 Livewire 適合處理 Laravel 內的互動表單，資料狀態留在 component class。輸入是使用者在表單中的即時輸入；輸出是 Livewire component 更新畫面。交付前要測輸入同步、validation 顯示，以及 Network 是否有 Livewire request。
+```text
+Blade mounts Livewire -> user interaction -> Livewire request -> component state update -> partial re-render
+```
+
+- 工作中會寫 / 檢查的片段：
+
+```powershell
+php artisan make:livewire ResumeForm
+```
+- 交付前驗證：檢查輸入同步、Network 有 Livewire request、刷新頁面後狀態是否符合預期，並注意不要把機密值放 public property。
+- 常見卡點：把 Livewire 當一般前端框架，忘記每次互動其實會回 Laravel server。
+
 
 ### 主線專案銜接
 
@@ -1574,10 +1830,30 @@ Livewire 適合 Laravel 後台互動，但資料暴露邊界要小心。
 
 
 ### 真實工作流程例子
+- 工作任務：建立履歷表單需要即時驗證標題必填、摘要長度，使用者修正後錯誤要消失。
+- 你先判斷：欄位狀態放 Livewire component，驗證規則放 component 或 Form object；錯誤顯示放 blade。
+- 會動到：Livewire component public properties、`rules()` 或 attributes、`resources/views/livewire/resume-form.blade.php`。
+- 資料怎麼流：使用者輸入 title / summary，Livewire 更新 property，觸發 validate 或 submit validation，錯誤袋回到 view。
 
-工作任務：建立履歷表單需要即時驗證標題必填、摘要長度，使用者不要送出後才全部重填。
+- 流程路線圖：
 
-你要先判斷表單狀態放 Livewire component，驗證規則放 component 或 Form object。輸入是使用者逐欄輸入；輸出是欄位錯誤訊息與可送出狀態。交付前要測空值、過長文字、修正後錯誤是否消失。
+```text
+Input wire:model -> public property -> validate / validateOnly -> error bag -> Blade @error
+```
+
+- 工作中會寫 / 檢查的片段：
+
+```php
+public string $title = '';
+
+protected function rules(): array
+{
+    return ['title' => ['required', 'string', 'max:120']];
+}
+```
+- 交付前驗證：測空 title、過長 summary、修正後錯誤消失；測快速輸入不會造成 UI 卡頓。
+- 常見卡點：只在前端顯示限制，submit 時沒有 server-side validation，資料仍可能進 DB。
+
 
 ### 主線專案銜接
 
@@ -1678,10 +1954,31 @@ Livewire form 的核心是狀態、驗證、錯誤訊息三者一致。
 
 
 ### 真實工作流程例子
+- 工作任務：Livewire 表單驗證完成後，要真的建立履歷資料並回到列表頁。
+- 你先判斷：submit method 要驗證、用目前登入者建立資料、flash 成功訊息、redirect；不要信任前端傳來的 `user_id`。
+- 會動到：Livewire component `save()`、`Resume` model、user relationship、redirect route、flash message。
+- 資料怎麼流：表單 state 經 validation 變成 `$validated`，透過 `auth()->user()->resumes()->create($validated)` 寫入 DB。
 
-工作任務：Livewire 表單現在會動了，PM 要送出後真的建立履歷並回到列表頁。
+- 流程路線圖：
 
-你要先判斷 submit 流程要做 validation、建立資料、授權使用者關聯、redirect 或 flash message。輸入是 Livewire 表單 state；輸出是 `resumes` 資料表新資料與列表頁提示。交付前要查資料庫、確認 user_id 正確，並測未登入或驗證失敗情境。
+```text
+Livewire submit -> validate -> auth user relationship create -> DB row -> flash -> redirect list
+```
+
+- 工作中會寫 / 檢查的片段：
+
+```php
+public function save()
+{
+    $data = $this->validate();
+    auth()->user()->resumes()->create($data);
+
+    return redirect()->route('resumes.index');
+}
+```
+- 交付前驗證：查 DB 確認 row 建立且 user_id 正確；測未登入、驗證失敗、重複 submit；列表頁能看到新資料。
+- 常見卡點：用 `Resume::create($this->all())` 類似做法吃進不該被 mass assign 的欄位。
+
 
 ### 主線專案銜接
 
@@ -1778,10 +2075,31 @@ Livewire 表單保存資料時，登入者與驗證是兩條底線。
 
 
 ### 真實工作流程例子
+- 工作任務：功能開始進 MVP，主管要求你先整理 user story、資料表、路由和權限，不要邊寫邊猜。
+- 你先判斷：這是需求切分與架構規劃；先定義「誰可以對履歷做什麼」，再落到 route / controller / model。
+- 會動到：README 或規格筆記、`routes/web.php` 草稿、`resumes` schema、CRUD controller 規劃、policy 規劃。
+- 資料怎麼流：使用者登入後建立履歷，履歷屬於 user，後續 show / edit / delete 都以 user ownership 驗證。
 
-工作任務：功能開始進入 MVP，主管要求你先整理 user story、資料表和路由，不要邊寫邊猜。
+- 流程路線圖：
 
-你要先判斷這是需求切分與架構規劃任務。輸入是使用者要建立、查看、編輯、刪除履歷的流程；輸出是 routes、model、migration、controller、view 的實作地圖。交付前要確認每個 user story 都能對應到 URL、資料表欄位和權限檢查。
+```text
+User story -> route map -> model / migration -> controller actions -> policy rules -> views
+```
+
+- 工作中會寫 / 檢查的片段：
+
+```text
+GET /resumes               -> index
+GET /resumes/create        -> create
+POST /resumes              -> store
+GET /resumes/{resume}      -> show
+GET /resumes/{resume}/edit -> edit
+PUT /resumes/{resume}      -> update
+DELETE /resumes/{resume}   -> destroy
+```
+- 交付前驗證：每個 user story 都能對應一個 URL、資料表欄位、權限規則和成功 / 失敗情境。
+- 常見卡點：先寫畫面再補資料模型，最後發現欄位和權限需求對不上。
+
 
 ### 主線專案銜接
 
@@ -1876,10 +2194,29 @@ Resume 是私人資料，沒有登入就無法判斷資料屬於誰。
 
 
 ### 真實工作流程例子
+- 工作任務：履歷是私人資料，PM 要求使用者必須註冊登入後才能使用功能。
+- 你先判斷：登入註冊不應手刻密碼流程，優先用 Laravel Breeze / 官方 auth scaffolding。
+- 會動到：Breeze 安裝指令、auth routes、`resources/views/auth/*`、`users` table、session 設定。
+- 資料怎麼流：使用者送出註冊 / 登入表單，Laravel 驗證後建立 session，後續 request 可透過 `$request->user()` 取得登入者。
 
-工作任務：履歷是私人資料，PM 要求使用者必須註冊登入後才能建立履歷。
+- 流程路線圖：
 
-你要先判斷登入功能不應手刻密碼流程，應使用 Laravel Breeze 或官方 auth scaffolding。輸入是使用者註冊 / 登入表單；輸出是可用的 `/login`、`/register` 與 session。交付前要測註冊、登入、錯誤密碼，以及確認密碼不會明文存放。
+```text
+Breeze install -> auth routes/views -> users table -> session -> $request->user()
+```
+
+- 工作中會寫 / 檢查的片段：
+
+```powershell
+composer require laravel/breeze --dev
+php artisan breeze:install blade
+php artisan migrate
+npm install
+npm run dev
+```
+- 交付前驗證：測註冊、登入、錯誤密碼、remember me、密碼 hash；確認沒有明文密碼或自製不安全 session。
+- 常見卡點：只做登入畫面但沒接 Laravel auth guard，後續 middleware 和 user relationship 都用不起來。
+
 
 ### 主線專案銜接
 
@@ -1974,10 +2311,27 @@ npm run dev
 
 
 ### 真實工作流程例子
+- 工作任務：QA 發現未登入也能直接打 `/resumes` 進頁面，這是私人資料漏洞。
+- 你先判斷：這是 route middleware 保護，不是只把 navbar 的連結藏起來。
+- 會動到：`routes/web.php` 的 `middleware('auth')`、controller 內必要的 user 查詢、可能的 redirect 設定。
+- 資料怎麼流：未登入 request 進入 auth middleware，被 redirect 到 login；登入後 request 才會進 controller。
 
-工作任務：QA 發現未登入也能直接開 `/resumes`，這是權限漏洞。
+- 流程路線圖：
 
-你要先判斷這是 middleware 保護路由的任務，不只是把按鈕藏起來。輸入是未登入 request；輸出是被導到 login。交付前要測未登入直接輸入 URL、登入後可進入、登出後不能回上一頁看到私人資料。
+```text
+Guest request -> auth middleware -> login redirect; authenticated request -> controller -> resumes page
+```
+
+- 工作中會寫 / 檢查的片段：
+
+```php
+Route::middleware('auth')->group(function () {
+    Route::resource('resumes', ResumeController::class);
+});
+```
+- 交付前驗證：未登入直接輸入 `/resumes` 會到 login；登入後可進入；登出後按上一頁不應看到私人資料。
+- 常見卡點：只在 Blade 用 `@auth` 隱藏按鈕，但 URL 仍可直接存取。
+
 
 ### 主線專案銜接
 
@@ -2065,10 +2419,30 @@ Route::middleware('auth')->group(function () {
 
 
 ### 真實工作流程例子
+- 工作任務：登入者要在 navbar 看到名字和登出按鈕，未登入者只看到登入 / 註冊。
+- 你先判斷：這是 layout 讀 auth state 的任務；登出必須走 POST route 並帶 CSRF。
+- 會動到：`resources/views/layouts/app.blade.php`、logout form、auth routes、可能的 navbar component。
+- 資料怎麼流：Blade 透過 `@auth` / `@guest` 判斷 session user；logout form POST 到 Laravel，session 被清掉後 redirect。
 
-工作任務：登入後 navbar 要顯示使用者名稱與登出按鈕，未登入則顯示登入 / 註冊。
+- 流程路線圖：
 
-你要先判斷這是 layout 和 auth state 顯示任務，登出必須用 POST route。輸入是目前 session user；輸出是不同 navbar 狀態與 logout request。交付前要測登入、登出、CSRF，以及登出後受保護頁面不能再進入。
+```text
+Session user -> Blade @auth/@guest -> navbar state -> logout POST -> session invalidated
+```
+
+- 工作中會寫 / 檢查的片段：
+
+```blade
+@auth
+    <form method="POST" action="{{ route('logout') }}">
+        @csrf
+        <button type="submit">Logout</button>
+    </form>
+@endauth
+```
+- 交付前驗證：測登入前後 navbar、登出後受保護頁不能進、logout 不能用 GET 被任意觸發。
+- 常見卡點：用 `<a href="/logout">` 做登出，破壞 HTTP method 與 CSRF 保護。
+
 
 ### 主線專案銜接
 
@@ -2162,10 +2536,31 @@ CRUD 的 C 是所有資料流的起點，表單設計會影響 validation、資�
 
 
 ### 真實工作流程例子
+- 工作任務：使用者要能新增自己的履歷，送出表單後資料必須進 DB 並回列表。
+- 你先判斷：`create` 顯示表單，`store` 處理 POST；資料建立要從目前登入者 relationship 出發。
+- 會動到：`ResumeController@create/store`、`resources/views/resumes/create.blade.php`、FormRequest 或 inline validation、`Resume` fillable。
+- 資料怎麼流：表單 POST -> validation -> `$request->user()->resumes()->create($validated)` -> redirect `resumes.index`。
 
-工作任務：使用者要能建立自己的履歷，表單送出後資料必須進資料庫。
+- 流程路線圖：
 
-你要先判斷 create 顯示表單、store 處理 POST，資料建立要綁定目前登入者。輸入是表單欄位；輸出是新 `Resume` row 和 redirect。交付前要測成功建立、欄位驗證失敗、使用者無法偽造 `user_id`。
+```text
+GET create -> form view -> POST store -> validate -> user()->resumes()->create -> redirect index
+```
+
+- 工作中會寫 / 檢查的片段：
+
+```php
+public function store(Request $request)
+{
+    $data = $request->validate(['title' => ['required', 'max:120']]);
+    $request->user()->resumes()->create($data);
+
+    return redirect()->route('resumes.index');
+}
+```
+- 交付前驗證：成功建立、缺必填欄位、舊輸入保留、資料 row 的 user_id 正確、偽造 user_id 不會生效。
+- 常見卡點：直接用 `$request->all()` 建立資料，把未預期欄位寫進 DB。
+
 
 ### 主線專案銜接
 
@@ -2266,10 +2661,29 @@ Hidden input 不安全，它只是畫面上看不到。
 
 
 ### 真實工作流程例子
+- 工作任務：登入者只能看到自己的履歷列表，不能看到別人的履歷。
+- 你先判斷：index 查詢範圍要綁定目前 user；不是先查全部再在 Blade 隱藏。
+- 會動到：`ResumeController@index`、`User::resumes()` relationship、`resumes/index.blade.php`、測試資料。
+- 資料怎麼流：request user -> `resumes()` relationship -> query 加上 user_id 條件 -> collection 傳給 view。
 
-工作任務：登入者需要看到自己的履歷列表，但不能看到別人的資料。
+- 流程路線圖：
 
-你要先判斷 index 查詢必須從 `$request->user()->resumes()` 出發，而不是 `Resume::all()`。輸入是目前登入者；輸出是只屬於該使用者的 collection。交付前要準備兩個使用者資料測試隔離，並確認空列表有提示。
+```text
+Authenticated user -> scoped relationship query -> own resumes only -> index Blade
+```
+
+- 工作中會寫 / 檢查的片段：
+
+```php
+public function index(Request $request)
+{
+    $resumes = $request->user()->resumes()->latest()->get();
+    return view('resumes.index', compact('resumes'));
+}
+```
+- 交付前驗證：建立 A/B 兩個使用者與履歷；A 登入看不到 B 的資料；空列表有提示和新增按鈕。
+- 常見卡點：使用 `Resume::all()` 或 `Resume::latest()->get()`，資料一多就變成權限事故。
+
 
 ### 主線專案銜接
 
@@ -2373,10 +2787,30 @@ public function index(Request $request): View
 
 
 ### 真實工作流程例子
+- 工作任務：使用者從列表點進單筆履歷，但不能透過猜 id 看別人的履歷。
+- 你先判斷：show 需要 route model binding 搭配 policy，或使用 scoped query 只查自己的資料。
+- 會動到：`ResumeController@show`、`ResumePolicy@view`、`routes/web.php`、`resumes/show.blade.php`。
+- 資料怎麼流：URL 帶 resume id，Laravel binding 找 model，controller 授權目前 user，通過後傳給 view。
 
-工作任務：使用者點列表上的履歷，要進入詳細頁，但不能透過猜 id 看別人的履歷。
+- 流程路線圖：
 
-你要先判斷 show 需要 route model binding 搭配 policy 或 scoped query。輸入是 URL 裡的 resume id 與目前使用者；輸出是詳細頁或 403 / 404。交付前要測自己的 id、別人的 id、不存在的 id。
+```text
+URL resume id -> route model binding -> authorize view -> show Blade or 403/404
+```
+
+- 工作中會寫 / 檢查的片段：
+
+```php
+public function show(Resume $resume)
+{
+    $this->authorize('view', $resume);
+
+    return view('resumes.show', compact('resume'));
+}
+```
+- 交付前驗證：測自己的 id 顯示、別人的 id 回 403 / 404、不存在 id 回 404；列表連結用 route helper。
+- 常見卡點：以為 hidden button 就能保護資料，實際上使用者可以直接改 URL。
+
 
 ### 主線專案銜接
 
@@ -2477,10 +2911,28 @@ public function view(User $user, Resume $resume): bool
 
 
 ### 真實工作流程例子
+- 工作任務：使用者要編輯既有履歷，進入表單時要看到原本資料，而且不能編輯別人的履歷。
+- 你先判斷：edit 只負責顯示預填表單；真正寫入在 update；兩者都要授權。
+- 會動到：`ResumeController@edit`、`ResumePolicy@update`、`resumes/edit.blade.php`、共用 form partial。
+- 資料怎麼流：URL resume id -> 授權 -> view 收到 `$resume` -> input value 使用現有資料或 `old()`。
 
-工作任務：使用者要編輯既有履歷，進表單時必須看到原本資料。
+- 流程路線圖：
 
-你要先判斷 edit 負責顯示預填表單，權限仍要先檢查。輸入是 resume id 與資料庫現有資料；輸出是帶預設值的 edit view。交付前要測欄位預填、無權限進入、返回列表不會改到資料。
+```text
+URL resume id -> authorize update -> edit Blade -> old() fallback to model value
+```
+
+- 工作中會寫 / 檢查的片段：
+
+```blade
+<input
+    name="title"
+    value="{{ old('title', $resume->title) }}"
+>
+```
+- 交付前驗證：欄位預填正確、驗證失敗後保留使用者剛輸入的值、別人的 edit URL 不能進。
+- 常見卡點：create 和 edit 表單複製兩份，之後欄位改一邊漏一邊。
+
 
 ### 主線專案銜接
 
@@ -2575,10 +3027,32 @@ HTML form 只支援 GET/POST，Laravel 用 method spoofing 模擬 PUT/DELETE。
 
 
 ### 真實工作流程例子
+- 工作任務：編輯表單送出後，要更新履歷並回到詳細頁；失敗時要回表單顯示錯誤。
+- 你先判斷：update 是 PUT / PATCH 流程，必須 validation、authorization，只更新 validated data。
+- 會動到：`ResumeController@update`、update route、edit form method spoofing、validation rules、policy。
+- 資料怎麼流：form submit -> `_method=PUT/PATCH` -> controller 授權 -> `$resume->update($validated)` -> redirect show。
 
-工作任務：編輯表單送出後，要更新資料並回到詳細頁顯示新內容。
+- 流程路線圖：
 
-你要先判斷 update 負責 validation、authorization、只更新 validated data。輸入是 PUT / PATCH request；輸出是更新後的資料庫 row 與 redirect。交付前要測成功更新、驗證失敗保留輸入、不能更新別人的履歷。
+```text
+PUT/PATCH request -> authorize update -> validate -> update validated data -> redirect show
+```
+
+- 工作中會寫 / 檢查的片段：
+
+```php
+public function update(Request $request, Resume $resume)
+{
+    $this->authorize('update', $resume);
+    $data = $request->validate(['title' => ['required', 'max:120']]);
+    $resume->update($data);
+
+    return redirect()->route('resumes.show', $resume);
+}
+```
+- 交付前驗證：成功更新、驗證失敗保留輸入、不能更新別人履歷、未包含在 validated 的欄位不會被改。
+- 常見卡點：直接 `$resume->update($request->all())`，造成 mass assignment 或權限欄位被覆蓋。
+
 
 ### 主線專案銜接
 
@@ -2680,10 +3154,31 @@ Update 的安全核心是 authorize 後 validate，再 update。
 
 
 ### 真實工作流程例子
+- 工作任務：使用者可以刪除履歷，但刪除是高風險操作，QA 要求權限和流程都要明確。
+- 你先判斷：destroy 必須使用 DELETE method、通過 policy，刪除後 redirect 並顯示結果。
+- 會動到：`ResumeController@destroy`、delete form、`ResumePolicy@delete`、列表頁或詳細頁的刪除按鈕。
+- 資料怎麼流：使用者送出 DELETE -> middleware / policy 檢查 -> `$resume->delete()` -> redirect list。
 
-工作任務：使用者要能刪除不需要的履歷，但 QA 要求不能誤刪別人的資料。
+- 流程路線圖：
 
-你要先判斷 destroy 必須通過 policy，並用 DELETE method。輸入是 resume id 與目前使用者；輸出是資料被刪除或拒絕操作。交付前要測刪自己的履歷、刪別人的履歷、刪除後列表不再顯示。
+```text
+DELETE form -> route -> authorize delete -> model delete -> redirect list
+```
+
+- 工作中會寫 / 檢查的片段：
+
+```php
+public function destroy(Resume $resume)
+{
+    $this->authorize('delete', $resume);
+    $resume->delete();
+
+    return redirect()->route('resumes.index');
+}
+```
+- 交付前驗證：刪自己的履歷成功、刪別人的履歷失敗、刪除後資料不在列表、重送同 URL 不會造成不可控錯誤。
+- 常見卡點：用 GET link 做刪除，可能被爬蟲、預載或誤點觸發。
+
 
 ### 主線專案銜接
 
@@ -2787,10 +3282,28 @@ public function destroy(Resume $resume): RedirectResponse
 
 
 ### 真實工作流程例子
+- 工作任務：PM 要把履歷內容發布成 GitHub README，第一步是把內部資料轉成穩定 Markdown。
+- 你先判斷：格式轉換是 domain/support service，不應塞在 controller 或 Blade；要能被測試。
+- 會動到：`app/Support/ResumeMarkdownFormatter.php`、`Resume` model、可能的 formatter test、發布 controller。
+- 資料怎麼流：controller 取得 Resume -> formatter 讀取欄位 -> 產生 Markdown 字串 -> 下一步交給 GitHub service。
 
-工作任務：PM 要把履歷內容發布成 GitHub README，第一步先把履歷轉成 Markdown。
+- 流程路線圖：
 
-你要先判斷格式轉換不應塞在 controller，應建立 formatter 或 service。輸入是 Resume model；輸出是 Markdown 字串。交付前要用不同欄位組合測格式，確認空欄位不會產生破碎 Markdown。
+```text
+Resume model -> formatter -> Markdown string -> GitHub service or preview -> README content
+```
+
+- 工作中會寫 / 檢查的片段：
+
+```php
+public function format(Resume $resume): string
+{
+    return "# {$resume->title}\n\n{$resume->summary}";
+}
+```
+- 交付前驗證：測完整欄位、空摘要、技能多筆、特殊字元；確認輸出 Markdown 可貼到 README 預覽。
+- 常見卡點：直接拿 Blade HTML 去更新 README，導致格式和 GitHub Markdown 不相容。
+
 
 ### 主線專案銜接
 
@@ -2892,10 +3405,29 @@ Token 權限太大會造成安全風險，權限太小會導致 API 失敗。
 
 
 ### 真實工作流程例子
+- 工作任務：要更新 GitHub README，資安要求 token 權限最小化，而且不能被 commit。
+- 你先判斷：這是外部服務憑證設定與權限範圍任務，不是把 token 寫死進 service。
+- 會動到：GitHub token 設定、`.env`、`.env.example` placeholder、`config/services.php`、部署平台 secret。
+- 資料怎麼流：service 從 config 讀 token，HTTP client 放入 Authorization header，GitHub 根據 scope 決定是否允許更新內容。
 
-工作任務：要更新 GitHub README 前，主管要求 token 權限最小化，而且不能進 git。
+- 流程路線圖：
 
-你要先判斷這是外部服務憑證與 scope 設定任務。輸入是 GitHub token、repo owner/name、scope；輸出是可呼叫 API 的授權設定。交付前要確認 `.env` 不被 commit、token scope 足夠但不過大，並測 401 / 403 錯誤訊息。
+```text
+.env token -> config/services.php -> service config -> Authorization header -> GitHub scope check
+```
+
+- 工作中會寫 / 檢查的片段：
+
+```php
+// config/services.php
+'github' => [
+    'token' => env('GITHUB_TOKEN'),
+    'repo' => env('GITHUB_REPOSITORY'),
+],
+```
+- 交付前驗證：`git diff` 確認沒有秘密值；測 token 缺失、權限不足 403、token 錯誤 401；文件寫清楚必要 scope。
+- 常見卡點：以為放 `.env` 就一定安全，但如果 `.env` 被 commit 或 log 出來一樣會外洩。
+
 
 ### 主線專案銜接
 
@@ -2989,10 +3521,31 @@ GitHub 更新檔案不是只送新內容，還需要目前檔案的 SHA 來避�
 
 
 ### 真實工作流程例子
+- 工作任務：Markdown 已產生，現在要用 GitHub Contents API 更新 README，且不能覆蓋別人剛推的內容。
+- 你先判斷：PUT 前要先 GET 目前檔案取得 SHA；更新內容要 base64；錯誤碼要轉成可理解訊息。
+- 會動到：`GitHubReadmeService`、GitHub API config、publish controller、錯誤處理與測試。
+- 資料怎麼流：service GET README -> 取得 `sha` -> base64 encode Markdown -> PUT content/message/sha -> GitHub 產生 commit。
 
-工作任務：Markdown 已經產生，現在要真的 PUT 到 GitHub Contents API 更新 README。
+- 流程路線圖：
 
-你要先判斷更新 README 需要先 GET 取得目前檔案 SHA，再 PUT base64 content。輸入是 repo、path、branch、token、Markdown；輸出是 GitHub commit。交付前要測成功更新、SHA 過期 409、token 無權限 403、網路 timeout。
+```text
+GET README metadata -> sha -> base64 Markdown -> PUT contents API -> GitHub commit
+```
+
+- 工作中會寫 / 檢查的片段：
+
+```php
+$current = $this->client->get($url)->json();
+
+$this->client->put($url, [
+    'message' => 'Update README',
+    'content' => base64_encode($markdown),
+    'sha' => $current['sha'],
+]);
+```
+- 交付前驗證：測成功更新、SHA 過期 409、token 無權限 403、repo 不存在 404、timeout；確認不重複發布相同內容。
+- 常見卡點：直接 PUT 新內容但沒帶 SHA，或忽略 409，造成使用者不知道為什麼更新失敗。
+
 
 ### 主線專案銜接
 
@@ -3097,10 +3650,29 @@ GitHub Contents API 的更新流程是先讀 SHA，再 PUT 新內容。
 
 
 ### 真實工作流程例子
+- 工作任務：功能可跑後，reviewer 說 controller 太胖、權限檢查分散、GitHub API 難測，要求重構。
+- 你先判斷：這是保持行為不變的重構任務；先列出既有流程，再移動責任到 policy、service、formatter。
+- 會動到：`ResumeController`、`ResumePolicy`、`GitHubReadmeService`、formatter、feature tests。
+- 資料怎麼流：request 還是進 controller，但 controller 只做授權、驗證、呼叫 service；外部 API 和格式轉換各自獨立。
 
-工作任務：功能可跑後，code review 說 controller 太胖、權限檢查分散、GitHub API 難測。
+- 流程路線圖：
 
-你要先判斷這是重構任務，不是新增功能。輸入是既有 controller、policy、service；輸出是更薄的 controller 與可測的 service。交付前要跑原本手動流程或測試，確認重構前後行為一致。
+```text
+Request -> thin controller -> middleware/policy/service/formatter -> same response behavior
+```
+
+- 工作中會寫 / 檢查的片段：
+
+```php
+Route::middleware('auth')->group(function () {
+    Route::resource('resumes', ResumeController::class);
+    Route::post('/resumes/{resume}/publish', PublishResumeController::class)
+        ->name('resumes.publish');
+});
+```
+- 交付前驗證：跑原本 CRUD 和 publish 流程；至少測一個成功和一個權限失敗；確認重構前後 route response 一致。
+- 常見卡點：重構時順手改功能，結果 bug 很難判斷是搬動責任造成還是新需求造成。
+
 
 ### 主線專案銜接
 
@@ -3193,10 +3765,30 @@ Route::middleware('auth')->group(function () {
 
 
 ### 真實工作流程例子
+- 工作任務：你要把 Laravel 履歷專案交接給下一位工程師，對方需要能從零啟動、測試、部署前檢查。
+- 你先判斷：這是交付品質任務，不是心得文；README、`.env.example`、測試指令、已知限制都要可操作。
+- 會動到：`README.md`、`.env.example`、測試清單、部署注意事項、後續 issue / TODO。
+- 資料怎麼流：新工程師照 README 安裝依賴、設定環境、migrate、跑測試、啟動 dev server，最後能操作 resume CRUD。
 
-工作任務：你要把 Laravel 履歷專案交接給下一位工程師，對方需要能從零啟動、測試、知道下一步。
+- 流程路線圖：
 
-你要先判斷這是收尾與交付文件任務。輸入是專案目前指令、環境需求、測試流程與已知限制；輸出是 README、檢查清單和可重跑的測試。交付前要用乾淨環境照 README 跑一次，並確認 `.env.example` 足夠但沒有秘密值。
+```text
+Fresh clone -> install deps -> env setup -> migrate/seed -> test -> serve -> manual CRUD/publish check
+```
+
+- 工作中會寫 / 檢查的片段：
+
+```powershell
+composer install
+npm install
+cp .env.example .env
+php artisan key:generate
+php artisan migrate --seed
+php artisan test
+```
+- 交付前驗證：用乾淨 clone 或至少清空 vendor/node_modules 後照 README 跑；確認沒有秘密值、測試可跑、常見錯誤有排查方向。
+- 常見卡點：只寫「npm install / php artisan serve」，卻沒說 DB、app key、migration、GitHub token 或測試方式。
+
 
 ### 主線專案銜接
 
