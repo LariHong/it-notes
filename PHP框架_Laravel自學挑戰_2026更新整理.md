@@ -56,6 +56,89 @@ Laravel 可以先想成一個分工清楚的 Web 開發工作台：
 | 29 | 登入狀態檢查與程式碼優化 |
 | 30 | 完賽心得與下一步 |
 
+## 主線專案：Resume Builder 實戰累積地圖
+
+這份 Laravel 筆記和 CSharp MVC 筆記最大的學習差異，應該補在「同一個專案每天往前長一點」。所以後續閱讀時，不要把每一天當成孤立語法；請把它們都接到同一個 `resume-builder` 專案。
+
+### 專案最終會長成什麼
+
+使用者可以註冊、登入、建立自己的履歷、查看履歷列表、編輯、刪除，最後把履歷轉成 Markdown 並更新到 GitHub README。這條主線會讓 Laravel 的 route、controller、Blade、Eloquent、migration、Livewire、auth、policy、service、外部 API 全部接在一起。
+
+### 需要的檔案地圖
+
+| 類型 | 位置 | 負責的事情 |
+| --- | --- | --- |
+| Route | `routes/web.php` | 定義 resume builder 的 URL 入口 |
+| Controller | `app/Http/Controllers/ResumeController.php` | 處理 CRUD request |
+| Publish Controller | `app/Http/Controllers/PublishResumeController.php` | 觸發 GitHub README 發布 |
+| Model | `app/Models/Resume.php` | 對應 `resumes` 資料表 |
+| Migration | `database/migrations/*create_resumes_table.php` | 建立履歷資料表 |
+| Policy | `app/Policies/ResumePolicy.php` | 限制只能操作自己的履歷 |
+| Formatter | `app/Support/ResumeMarkdownFormatter.php` | 把履歷資料轉成 Markdown |
+| API Service | `app/Services/GitHubReadmeService.php` | 封裝 GitHub Contents API |
+| Blade Layout | `resources/views/layouts/app.blade.php` | 共用版型與 navbar |
+| Resume Views | `resources/views/resumes/*.blade.php` | list/create/show/edit 畫面 |
+| Livewire Component | `app/Livewire/ResumeForm.php` | 互動式表單練習 |
+| Tests | `tests/Feature/ResumeTest.php` | 驗證 CRUD 與權限 |
+
+### 30 天交付物地圖
+
+| Day | 當天交付物 | 做完後應該看得到 |
+| --- | --- | --- |
+| 1 | 建立 Laravel 專案 | Laravel 首頁可開啟 |
+| 2 | 建立第一個 route/controller/view | `/home` 顯示頁面 |
+| 3 | 找到主要目錄並建立 Resume model | `app/Models/Resume.php` 出現 |
+| 4 | 建立 GitHub API 設定入口 | `config('services.github.api_url')` 可讀 |
+| 5 | 建立 resume resource route | `php artisan route:list` 有 resumes |
+| 6 | 建立共用 layout | 履歷頁套用共用 navbar |
+| 7 | 抽出 resume card component | 列表頁重用卡片 UI |
+| 8 | 建立安全 Blade form | 表單有 CSRF、old input、error |
+| 9 | 建立 GitHub GET service | 可查 GitHub user JSON |
+| 10 | 建立通知 POST 範例 | POST 失敗會被捕捉 |
+| 11 | 建立 Resume Eloquent model | 可用 model 建立資料 |
+| 12 | 建立 resumes migration | 資料庫有 `resumes` 表 |
+| 13 | 建立 Livewire counter | 點擊後畫面更新 |
+| 14 | 建立 Livewire 表單狀態 | 輸入可綁定並驗證 |
+| 15 | Livewire 表單寫入資料庫 | 儲存後回列表 |
+| 16 | 完成 MVP 與資料模型設計 | 有 user story 與資料表規劃 |
+| 17 | 安裝 Breeze | `/login`、`/register` 可用 |
+| 18 | 用 auth middleware 保護 resumes | 未登入會導到 login |
+| 19 | Navbar 顯示登入/登出 | 登入者可 POST logout |
+| 20 | 完成 create/store | 可新增自己的履歷 |
+| 21 | 完成 index | 只看得到自己的履歷列表 |
+| 22 | 完成 show + policy | 不能看別人的履歷 |
+| 23 | 完成 edit form | 欄位有預填資料 |
+| 24 | 完成 update | 可修改並回到 show |
+| 25 | 完成 destroy | 可刪除自己的履歷 |
+| 26 | 完成 Markdown formatter | 履歷可輸出 Markdown |
+| 27 | 完成 token 設定 | token 不進 git，權限最小化 |
+| 28 | 完成 GitHub PUT service | 可用 SHA 更新 README |
+| 29 | 重構 middleware/policy/service | Controller 變薄 |
+| 30 | 補 README、測試與收尾 | 專案可被重新啟動與檢查 |
+
+### 主線端到端流程
+
+1. 使用者進入首頁，透過 Breeze 註冊帳號。
+2. 登入後進入 `/resumes`，此 route 受到 `auth` middleware 保護。
+3. 使用者點「新增履歷」，進入 create form。
+4. 表單送出到 `ResumeController@store`，controller 驗證資料。
+5. 系統透過 `$request->user()->resumes()->create($data)` 建立履歷，避免使用者偽造 `user_id`。
+6. 使用者回到列表，只看到自己的履歷。
+7. 使用者點進 show/edit/delete，每個單筆操作都經過 `ResumePolicy`。
+8. 使用者點「發布到 GitHub」，controller 呼叫 formatter 產生 Markdown。
+9. `GitHubReadmeService` 先 GET README 取得 SHA，再 PUT 新內容。
+10. 成功後 GitHub repository 產生一個 commit，系統顯示發布成功。
+
+### 主線做完後檢查
+
+- `php artisan route:list --name=resumes` 看得到 CRUD routes。
+- 未登入開 `/resumes` 會被導到 login。
+- A 使用者不能看、改、刪 B 使用者的履歷。
+- 建立、編輯、刪除都只使用 validated data。
+- GitHub token 只存在 `.env` 或正式環境 secret。
+- GitHub PUT 流程有處理 401、403、409、timeout。
+- `php artisan test` 至少涵蓋 resume CRUD 與權限。
+
 ---
 
 ## Day 1：PHP 框架 Laravel 自學之旅開始
@@ -79,6 +162,26 @@ Laravel 可以先想成一個分工清楚的 Web 開發工作台：
 - `.env` 放環境設定，不該 commit 真實密碼。
 - Laravel 不是取代 PHP，而是把 PHP Web 開發整理成框架慣例。
 
+
+### 主線專案銜接
+
+這一天要接回 resume-builder 主線，而不是只停在單一語法。完成「專案啟動」後，讀者應該能在同一個專案裡看到明確進度。
+
+| 主線部分 | 這一天要補上的東西 | 完成後的可見結果 |
+| --- | --- | --- |
+| 專案啟動 | 建立 resume-builder Laravel 專案 | 首頁可開啟，Artisan 與 Vite 可啟動 |
+
+當天接到主線專案的流程：
+
+1. 建立專案並確認 PHP、Composer、Node 都能運作。
+2. 啟動 php artisan serve，確認 Laravel 首頁。
+3. 啟動 npm run dev，確認前端資產流程。
+
+### 當天做完後檢查
+
+- php artisan serve 可開啟本機站台。
+- .env 已存在且有 app key。
+- npm run dev 沒有報錯。
 ### 範例範圍地圖
 
 | 部分 | 位置 / 指令 | 負責的事情 |
@@ -153,6 +256,26 @@ Laravel 的第一步不是背語法，而是建立「框架幫我整理專案邊
 - ORM 可降低手寫 SQL 的重複，但仍要理解 SQL。
 - Laravel 內建 CSRF、validation、escaping 等安全工具。
 
+
+### 主線專案銜接
+
+這一天要接回 resume-builder 主線，而不是只停在單一語法。完成「入口流程」後，讀者應該能在同一個專案裡看到明確進度。
+
+| 主線部分 | 這一天要補上的東西 | 完成後的可見結果 |
+| --- | --- | --- |
+| 入口流程 | 建立第一組 route、controller、view | /home 可透過 controller 顯示 Blade |
+
+當天接到主線專案的流程：
+
+1. 在 routes/web.php 建立 /home。
+2. 讓 route 指向 PageController@home。
+3. Controller 傳資料給 Blade，而不是直接 echo HTML。
+
+### 當天做完後檢查
+
+- php artisan route:list 看得到 /home。
+- Blade 能顯示 controller 傳入的 title。
+- route 沒有塞大量商業邏輯。
 ### 範例範圍地圖
 
 | 部分 | 位置 | 負責的事情 |
@@ -248,6 +371,26 @@ Laravel 和純 PHP 最大差異是它先幫你畫出專案分工線。
 - `resources/views` 放 Blade。
 - `database/migrations` 放資料庫結構版本。
 
+
+### 主線專案銜接
+
+這一天要接回 resume-builder 主線，而不是只停在單一語法。完成「專案結構」後，讀者應該能在同一個專案裡看到明確進度。
+
+| 主線部分 | 這一天要補上的東西 | 完成後的可見結果 |
+| --- | --- | --- |
+| 專案結構 | 建立 Resume model 與基本資料夾認知 | 知道履歷功能會分散在哪些 Laravel 目錄 |
+
+當天接到主線專案的流程：
+
+1. 建立 Resume model。
+2. 找到 migration、view、controller 的放置位置。
+3. 把後續履歷 CRUD 檔案位置先對上。
+
+### 當天做完後檢查
+
+- app/Models/Resume.php 存在。
+- 知道 resources/views/resumes 是履歷畫面位置。
+- 知道 migration 會進 database/migrations。
 ### 範例範圍地圖
 
 | 需求 | 位置 |
@@ -322,6 +465,26 @@ Laravel 專案不只有 app code；設定、公開入口、上傳檔案、快取
 - `public/index.php` 是 Web server 入口。
 - `storage/logs/laravel.log` 是排錯第一站。
 
+
+### 主線專案銜接
+
+這一天要接回 resume-builder 主線，而不是只停在單一語法。完成「環境設定」後，讀者應該能在同一個專案裡看到明確進度。
+
+| 主線部分 | 這一天要補上的東西 | 完成後的可見結果 |
+| --- | --- | --- |
+| 環境設定 | 建立 GitHub API 設定入口 | GitHub API URL 能從 config 讀取 |
+
+當天接到主線專案的流程：
+
+1. 在 .env 放外部服務設定。
+2. 在 config/services.php 統一整理。
+3. 程式只讀 config，不散落讀 env。
+
+### 當天做完後檢查
+
+- services.github.api_url 可讀。
+- 真實 token 沒有寫進程式碼。
+- 改設定後知道要清 config cache。
 ### 範例範圍地圖
 
 | 部分 | 位置 | 負責的事情 |
@@ -398,6 +561,26 @@ Route 是使用者進入系統的門。門口亂了，後面的功能也會變�
 - Route name 讓 redirect 與 link 不依賴硬編 URL。
 - Route model binding 可以自動查資料與處理 404。
 
+
+### 主線專案銜接
+
+這一天要接回 resume-builder 主線，而不是只停在單一語法。完成「CRUD 入口」後，讀者應該能在同一個專案裡看到明確進度。
+
+| 主線部分 | 這一天要補上的東西 | 完成後的可見結果 |
+| --- | --- | --- |
+| CRUD 入口 | 建立 resume resource route 與 controller | resumes routes 出現在 route list |
+
+當天接到主線專案的流程：
+
+1. 建立 ResumeController。
+2. 註冊 resource route。
+3. 先完成 index 與 show 的入口。
+
+### 當天做完後檢查
+
+- php artisan route:list --name=resumes 有結果。
+- route 使用 named route。
+- controller method 保持薄。
 ### 範例範圍地圖
 
 | 部分 | 位置 | 負責的事情 |
@@ -486,6 +669,26 @@ Route 管入口，Controller 管流程，這條線先畫清楚。
 - `@section` 填入 layout 的區塊。
 - `@yield` 是 layout 預留的插槽。
 
+
+### 主線專案銜接
+
+這一天要接回 resume-builder 主線，而不是只停在單一語法。完成「共用版型」後，讀者應該能在同一個專案裡看到明確進度。
+
+| 主線部分 | 這一天要補上的東西 | 完成後的可見結果 |
+| --- | --- | --- |
+| 共用版型 | 建立 layouts/app.blade.php | 履歷頁共用同一個 navbar 與 layout |
+
+當天接到主線專案的流程：
+
+1. 建立共用 layout。
+2. 在履歷頁用 @extends 套版。
+3. 把共用 navbar 放在 layout。
+
+### 當天做完後檢查
+
+- 改 navbar 只需改一個檔案。
+- 子頁面有 content section。
+- 沒有每頁複製完整 HTML。
 ### 範例範圍地圖
 
 | View | 位置 | 負責的事情 |
@@ -571,6 +774,26 @@ Blade layout 讓共用畫面只寫一次。
 - `$slot` 放 component 包住的內容。
 - props 讓 component 接收資料。
 
+
+### 主線專案銜接
+
+這一天要接回 resume-builder 主線，而不是只停在單一語法。完成「可重用 UI」後，讀者應該能在同一個專案裡看到明確進度。
+
+| 主線部分 | 這一天要補上的東西 | 完成後的可見結果 |
+| --- | --- | --- |
+| 可重用 UI | 建立 resume card Blade component | 列表頁用 component 顯示每份履歷 |
+
+當天接到主線專案的流程：
+
+1. 建立 resume-card component。
+2. 由 index view 傳入 resume。
+3. Component 只顯示資料，不查資料。
+
+### 當天做完後檢查
+
+- 列表頁有 resume card component。
+- component 沒有 Eloquent 查詢。
+- 連結使用 named route。
 ### 範例範圍地圖
 
 | 部分 | 位置 | 負責的事情 |
@@ -646,6 +869,26 @@ Blade component 能減少重複，但資料來源仍要清楚。
 - `@error` 顯示驗證錯誤。
 - `@forelse` 同時處理清單與空資料。
 
+
+### 主線專案銜接
+
+這一天要接回 resume-builder 主線，而不是只停在單一語法。完成「表單基礎」後，讀者應該能在同一個專案裡看到明確進度。
+
+| 主線部分 | 這一天要補上的東西 | 完成後的可見結果 |
+| --- | --- | --- |
+| 表單基礎 | 建立安全的 create form | 表單有 CSRF、old input、error message |
+
+當天接到主線專案的流程：
+
+1. 建立 resumes/create.blade.php。
+2. 加上 CSRF 與 old input。
+3. 顯示驗證錯誤。
+
+### 當天做完後檢查
+
+- 缺 title 會顯示錯誤。
+- 驗證失敗後輸入值保留。
+- 沒有用未 escape HTML 顯示使用者輸入。
 ### 範例範圍地圖
 
 | 部分 | 位置 | 負責的事情 |
@@ -723,6 +966,26 @@ Blade 的 `{{ }}` 不是單純 echo，它預設幫你做 HTML escaping。
 - 檢查 `successful()` 或 `failed()`。
 - API URL 與 token 放 config。
 
+
+### 主線專案銜接
+
+這一天要接回 resume-builder 主線，而不是只停在單一語法。完成「外部 GET API」後，讀者應該能在同一個專案裡看到明確進度。
+
+| 主線部分 | 這一天要補上的東西 | 完成後的可見結果 |
+| --- | --- | --- |
+| 外部 GET API | 建立 GitHub GET service | 可查 GitHub 使用者公開資料 |
+
+當天接到主線專案的流程：
+
+1. 建立 GitHubProfileService。
+2. 用 Laravel HTTP client 發 GET。
+3. 設定 timeout 並處理 failed response。
+
+### 當天做完後檢查
+
+- API 失敗不會讓頁面無提示爆掉。
+- service 可獨立測試。
+- controller 不直接塞 API 細節。
 ### 範例範圍地圖
 
 | 部分 | 位置 | 負責的事情 |
@@ -809,6 +1072,26 @@ POST 常用在建立資料、送表單、呼叫 webhook 或外部服務操作。
 - `throw()` 可把失敗 response 轉例外。
 - 不要記錄敏感 body。
 
+
+### 主線專案銜接
+
+這一天要接回 resume-builder 主線，而不是只停在單一語法。完成「外部 POST API」後，讀者應該能在同一個專案裡看到明確進度。
+
+| 主線部分 | 這一天要補上的東西 | 完成後的可見結果 |
+| --- | --- | --- |
+| 外部 POST API | 建立通知 POST service 範例 | POST body 經 validation/mapping 後送出 |
+
+當天接到主線專案的流程：
+
+1. 先驗證內部表單資料。
+2. Mapping 成外部 API 要的 JSON。
+3. 發送 POST 並處理 401/422/timeout。
+
+### 當天做完後檢查
+
+- 沒有把 request 全部轉發。
+- token 從 config 讀取。
+- 失敗時有可理解錯誤。
 ### 範例範圍地圖
 
 | 部分 | 位置 | 負責的事情 |
@@ -893,6 +1176,26 @@ ORM 讓資料表和 PHP class 有對應關係，減少重複 SQL，但你仍然�
 - Query builder 可串接條件。
 - Relationship 表達資料關係。
 
+
+### 主線專案銜接
+
+這一天要接回 resume-builder 主線，而不是只停在單一語法。完成「資料模型」後，讀者應該能在同一個專案裡看到明確進度。
+
+| 主線部分 | 這一天要補上的東西 | 完成後的可見結果 |
+| --- | --- | --- |
+| 資料模型 | 設定 Resume Eloquent model | 可用 model 建立與查詢履歷 |
+
+當天接到主線專案的流程：
+
+1. 設定 fillable。
+2. 定義 User 與 Resume 關聯。
+3. 從登入者關聯建立資料。
+
+### 當天做完後檢查
+
+- 沒有 create request all。
+- user_id 不是使用者表單傳入。
+- tinker 可查到建立的資料。
 ### 範例範圍地圖
 
 | 部分 | 位置 | 負責的事情 |
@@ -975,6 +1278,26 @@ Eloquent 的重點是用 Model 管資料，但輸入邊界仍要守好。
 - `php artisan migrate` 執行。
 - `php artisan migrate:rollback` 回復上一批。
 
+
+### 主線專案銜接
+
+這一天要接回 resume-builder 主線，而不是只停在單一語法。完成「資料庫版本」後，讀者應該能在同一個專案裡看到明確進度。
+
+| 主線部分 | 這一天要補上的東西 | 完成後的可見結果 |
+| --- | --- | --- |
+| 資料庫版本 | 建立 resumes migration | 資料庫有 resumes 表 |
+
+當天接到主線專案的流程：
+
+1. 定義 resumes 欄位。
+2. 加上 user_id foreign key。
+3. 執行 migrate 並確認資料表。
+
+### 當天做完後檢查
+
+- php artisan migrate 成功。
+- rollback 能回復。
+- 沒有手動改 DB 卻不寫 migration。
 ### 範例範圍地圖
 
 | 部分 | 位置 | 負責的事情 |
@@ -1061,6 +1384,26 @@ Migration 讓資料庫結構變成可追蹤、可重播的程式碼。
 - method 可由 `wire:click`、`wire:submit` 呼叫。
 - 敏感資料不要放 public property。
 
+
+### 主線專案銜接
+
+這一天要接回 resume-builder 主線，而不是只停在單一語法。完成「互動元件起點」後，讀者應該能在同一個專案裡看到明確進度。
+
+| 主線部分 | 這一天要補上的東西 | 完成後的可見結果 |
+| --- | --- | --- |
+| 互動元件起點 | 建立 Livewire counter | 點擊按鈕會觸發 PHP method 更新畫面 |
+
+當天接到主線專案的流程：
+
+1. 安裝或確認 Livewire。
+2. 建立 Counter component。
+3. 用 wire click 驗證互動。
+
+### 當天做完後檢查
+
+- Livewire scripts/styles 正常。
+- public property 不含敏感資料。
+- 互動失敗時知道查 browser console/network。
 ### 範例範圍地圖
 
 | 部分 | 位置 | 負責的事情 |
@@ -1151,6 +1494,26 @@ Livewire 適合 Laravel 後台互動，但資料暴露邊界要小心。
 - `.blur` 或 `.debounce` 可減少 request。
 - 錯誤訊息用 `@error` 顯示。
 
+
+### 主線專案銜接
+
+這一天要接回 resume-builder 主線，而不是只停在單一語法。完成「Livewire 表單狀態」後，讀者應該能在同一個專案裡看到明確進度。
+
+| 主線部分 | 這一天要補上的東西 | 完成後的可見結果 |
+| --- | --- | --- |
+| Livewire 表單狀態 | 建立 ResumeForm 狀態與 rules | 輸入欄位可綁定並顯示驗證錯誤 |
+
+當天接到主線專案的流程：
+
+1. 建立 ResumeForm component。
+2. 用 public properties 綁定欄位。
+3. 定義 validation rules。
+
+### 當天做完後檢查
+
+- wire:model.blur 可同步資料。
+- 錯誤訊息能對應欄位。
+- 不只靠前端 maxlength。
 ### 範例範圍地圖
 
 | 部分 | 位置 | 負責的事情 |
@@ -1229,6 +1592,26 @@ Livewire form 的核心是狀態、驗證、錯誤訊息三者一致。
 - 使用登入者關聯建立資料。
 - 成功後 redirect 或顯示 flash message。
 
+
+### 主線專案銜接
+
+這一天要接回 resume-builder 主線，而不是只停在單一語法。完成「Livewire 儲存流程」後，讀者應該能在同一個專案裡看到明確進度。
+
+| 主線部分 | 這一天要補上的東西 | 完成後的可見結果 |
+| --- | --- | --- |
+| Livewire 儲存流程 | 在 save 寫入 resumes | 表單送出後建立履歷並回列表 |
+
+當天接到主線專案的流程：
+
+1. wire submit 呼叫 save。
+2. save 裡先 validate。
+3. 用登入者關聯建立 resume。
+
+### 當天做完後檢查
+
+- 未登入不會呼叫到 user resumes。
+- Mass assignment 沒有錯。
+- 成功後 redirect 正確。
 ### 範例範圍地圖
 
 | 部分 | 位置 | 負責的事情 |
@@ -1303,6 +1686,26 @@ Livewire 表單保存資料時，登入者與驗證是兩條底線。
 - resume 可以有 skill、experience、education。
 - 先做最小可用，再擴充。
 
+
+### 主線專案銜接
+
+這一天要接回 resume-builder 主線，而不是只停在單一語法。完成「產品設計」後，讀者應該能在同一個專案裡看到明確進度。
+
+| 主線部分 | 這一天要補上的東西 | 完成後的可見結果 |
+| --- | --- | --- |
+| 產品設計 | 定義 Resume Builder MVP | 有 user story、資料表與頁面流程 |
+
+當天接到主線專案的流程：
+
+1. 列出登入、CRUD、發布 GitHub README。
+2. 畫出 User 與 Resume 關聯。
+3. 決定先做主表，後續再拆 skills/experiences。
+
+### 當天做完後檢查
+
+- MVP 與 later 功能分清楚。
+- 每個頁面能對應一個 route。
+- 資料模型不過度設計。
 ### 範例範圍地圖
 
 | 部分 | 資料表 / 頁面 | 負責的事情 |
@@ -1375,6 +1778,26 @@ Resume 是私人資料，沒有登入就無法判斷資料屬於誰。
 - 密碼要 hash，不可明文保存。
 - 登入表單也需要 CSRF。
 
+
+### 主線專案銜接
+
+這一天要接回 resume-builder 主線，而不是只停在單一語法。完成「認證起點」後，讀者應該能在同一個專案裡看到明確進度。
+
+| 主線部分 | 這一天要補上的東西 | 完成後的可見結果 |
+| --- | --- | --- |
+| 認證起點 | 安裝 Breeze | /login、/register 可用 |
+
+當天接到主線專案的流程：
+
+1. 安裝 Breeze。
+2. 跑 migration 與 Vite。
+3. 建立測試帳號登入。
+
+### 當天做完後檢查
+
+- users table 存在。
+- 密碼不是明文保存。
+- 登入頁樣式正常。
 ### 範例範圍地圖
 
 | 部分 | 指令 / 位置 | 負責的事情 |
@@ -1447,6 +1870,26 @@ npm run dev
 - 登入者 ID 應決定資料擁有者。
 - 測試未登入行為很重要。
 
+
+### 主線專案銜接
+
+這一天要接回 resume-builder 主線，而不是只停在單一語法。完成「保護路由」後，讀者應該能在同一個專案裡看到明確進度。
+
+| 主線部分 | 這一天要補上的東西 | 完成後的可見結果 |
+| --- | --- | --- |
+| 保護路由 | 用 auth middleware 保護 resumes | 未登入會被導向 login |
+
+當天接到主線專案的流程：
+
+1. 把 resume routes 包進 auth middleware。
+2. 未登入測試 /resumes。
+3. 登入後再測試 CRUD 入口。
+
+### 當天做完後檢查
+
+- 未登入不能進入履歷列表。
+- 不是只靠 navbar 隱藏連結。
+- route cache 不會保留舊設定。
 ### 範例範圍地圖
 
 | 部分 | 位置 | 負責的事情 |
@@ -1512,6 +1955,26 @@ Route::middleware('auth')->group(function () {
 - CSRF 仍然需要。
 - 登出後應 redirect 到公開頁或 login。
 
+
+### 主線專案銜接
+
+這一天要接回 resume-builder 主線，而不是只停在單一語法。完成「登入狀態 UI」後，讀者應該能在同一個專案裡看到明確進度。
+
+| 主線部分 | 這一天要補上的東西 | 完成後的可見結果 |
+| --- | --- | --- |
+| 登入狀態 UI | Navbar 顯示登入/登出 | 登入者看到我的履歷與登出 |
+
+當天接到主線專案的流程：
+
+1. Layout 用 auth/guest 判斷。
+2. 登出使用 POST form。
+3. 登出後 redirect 到公開頁或 login。
+
+### 當天做完後檢查
+
+- 登出 form 有 CSRF。
+- 沒有用 GET 刪 session。
+- 登入者名稱顯示正常。
 ### 範例範圍地圖
 
 | 部分 | 位置 | 負責的事情 |
@@ -1583,6 +2046,26 @@ CRUD 的 C 是所有資料流的起點，表單設計會影響 validation、資�
 - old input 保留資料。
 - 使用登入者建立關聯。
 
+
+### 主線專案銜接
+
+這一天要接回 resume-builder 主線，而不是只停在單一語法。完成「Create」後，讀者應該能在同一個專案裡看到明確進度。
+
+| 主線部分 | 這一天要補上的東西 | 完成後的可見結果 |
+| --- | --- | --- |
+| Create | 完成 create/store | 使用者可新增自己的履歷 |
+
+當天接到主線專案的流程：
+
+1. create 顯示表單。
+2. store 驗證 title/summary。
+3. 用 request user resumes create 儲存。
+
+### 當天做完後檢查
+
+- 缺 title 會回表單。
+- 資料屬於登入者。
+- 成功後回列表。
 ### 範例範圍地圖
 
 | 部分 | 位置 | 負責的事情 |
@@ -1661,6 +2144,26 @@ Hidden input 不安全，它只是畫面上看不到。
 - 空清單要有 empty state。
 - link 用 named route。
 
+
+### 主線專案銜接
+
+這一天要接回 resume-builder 主線，而不是只停在單一語法。完成「Index」後，讀者應該能在同一個專案裡看到明確進度。
+
+| 主線部分 | 這一天要補上的東西 | 完成後的可見結果 |
+| --- | --- | --- |
+| Index | 完成履歷列表 | 只顯示登入者自己的履歷 |
+
+當天接到主線專案的流程：
+
+1. index 從登入者 resumes 查。
+2. 加上 pagination。
+3. 用 empty state 處理無資料。
+
+### 當天做完後檢查
+
+- A 看不到 B 的履歷。
+- 大量資料不一次全撈。
+- 列表連結使用 named route。
 ### 範例範圍地圖
 
 | 部分 | 位置 | 負責的事情 |
@@ -1742,6 +2245,26 @@ public function index(Request $request): View
 - 找不到資料回 404。
 - 沒權限回 403。
 
+
+### 主線專案銜接
+
+這一天要接回 resume-builder 主線，而不是只停在單一語法。完成「Show + Policy」後，讀者應該能在同一個專案裡看到明確進度。
+
+| 主線部分 | 這一天要補上的東西 | 完成後的可見結果 |
+| --- | --- | --- |
+| Show + Policy | 完成單筆頁與 view 權限 | 不能查看別人的履歷 |
+
+當天接到主線專案的流程：
+
+1. 建立 ResumePolicy。
+2. show 前呼叫 authorize。
+3. Blade 顯示單筆資料。
+
+### 當天做完後檢查
+
+- 無權限回 403。
+- 不存在資料回 404。
+- show 頁沒有洩漏其他使用者資料。
 ### 範例範圍地圖
 
 | 部分 | 位置 | 負責的事情 |
@@ -1820,6 +2343,26 @@ public function view(User $user, Resume $resume): bool
 - form method 用 POST 加 `@method('PUT')`。
 - action 指向 update route。
 
+
+### 主線專案銜接
+
+這一天要接回 resume-builder 主線，而不是只停在單一語法。完成「Edit form」後，讀者應該能在同一個專案裡看到明確進度。
+
+| 主線部分 | 這一天要補上的東西 | 完成後的可見結果 |
+| --- | --- | --- |
+| Edit form | 建立 edit 頁與預填資料 | 表單顯示原履歷內容 |
+
+當天接到主線專案的流程：
+
+1. edit 前先 authorize。
+2. 表單 action 指向 update。
+3. 欄位使用 old value fallback model value。
+
+### 當天做完後檢查
+
+- PUT method spoofing 存在。
+- 驗證失敗後保留輸入。
+- 不會覆蓋成空白表單。
 ### 範例範圍地圖
 
 | 部分 | 位置 | 負責的事情 |
@@ -1892,6 +2435,26 @@ HTML form 只支援 GET/POST，Laravel 用 method spoofing 模擬 PUT/DELETE。
 - 更新後 redirect show。
 - 複雜專案要注意 optimistic locking。
 
+
+### 主線專案銜接
+
+這一天要接回 resume-builder 主線，而不是只停在單一語法。完成「Update」後，讀者應該能在同一個專案裡看到明確進度。
+
+| 主線部分 | 這一天要補上的東西 | 完成後的可見結果 |
+| --- | --- | --- |
+| Update | 完成 update action | 可修改履歷並回 show |
+
+當天接到主線專案的流程：
+
+1. update 前 authorize。
+2. validate 後只更新允許欄位。
+3. 成功後 redirect show。
+
+### 當天做完後檢查
+
+- 沒有 request all。
+- fillable 包含可更新欄位。
+- 更新別人資料會 403。
 ### 範例範圍地圖
 
 | 部分 | 位置 | 負責的事情 |
@@ -1971,6 +2534,26 @@ Update 的安全核心是 authorize 後 validate，再 update。
 - 刪除前 UI 應確認。
 - 真實產品常用 soft delete。
 
+
+### 主線專案銜接
+
+這一天要接回 resume-builder 主線，而不是只停在單一語法。完成「Delete」後，讀者應該能在同一個專案裡看到明確進度。
+
+| 主線部分 | 這一天要補上的東西 | 完成後的可見結果 |
+| --- | --- | --- |
+| Delete | 完成 destroy action | 可刪除自己的履歷 |
+
+當天接到主線專案的流程：
+
+1. 刪除按鈕用 POST form + DELETE method。
+2. destroy 前 authorize。
+3. 刪除後回列表。
+
+### 當天做完後檢查
+
+- 不是 GET 刪除。
+- 有確認提示或安全 UI。
+- 誤刪需求可改 soft delete。
 ### 範例範圍地圖
 
 | 部分 | 位置 | 負責的事情 |
@@ -2052,6 +2635,26 @@ public function destroy(Resume $resume): RedirectResponse
 - 測試輸出格式。
 - 注意 Markdown escaping。
 
+
+### 主線專案銜接
+
+這一天要接回 resume-builder 主線，而不是只停在單一語法。完成「Markdown 輸出」後，讀者應該能在同一個專案裡看到明確進度。
+
+| 主線部分 | 這一天要補上的東西 | 完成後的可見結果 |
+| --- | --- | --- |
+| Markdown 輸出 | 建立 ResumeMarkdownFormatter | 履歷可轉成 Markdown |
+
+當天接到主線專案的流程：
+
+1. 建立 formatter class。
+2. 把 title/summary 轉成 Markdown。
+3. 先在本機預覽輸出。
+
+### 當天做完後檢查
+
+- formatter 不呼叫 GitHub API。
+- Markdown 格式穩定。
+- 使用者輸入不破壞格式。
 ### 範例範圍地圖
 
 | 部分 | 位置 | 負責的事情 |
@@ -2131,6 +2734,26 @@ Token 權限太大會造成安全風險，權限太小會導致 API 失敗。
 - scope 只開需要的權限。
 - token 放 `.env` 或 secret manager。
 
+
+### 主線專案銜接
+
+這一天要接回 resume-builder 主線，而不是只停在單一語法。完成「GitHub Token」後，讀者應該能在同一個專案裡看到明確進度。
+
+| 主線部分 | 這一天要補上的東西 | 完成後的可見結果 |
+| --- | --- | --- |
+| GitHub Token | 設定最小權限 token | GitHub token 由 config 讀取 |
+
+當天接到主線專案的流程：
+
+1. 建 fine-grained token。
+2. 只開指定 repo Contents read/write。
+3. 寫入 .env，不進 git。
+
+### 當天做完後檢查
+
+- .env.example 只有 placeholder。
+- token 沒有出現在程式碼。
+- 401/403 能分辨原因。
 ### 範例範圍地圖
 
 | 部分 | 位置 | 負責的事情 |
@@ -2202,6 +2825,26 @@ GitHub 更新檔案不是只送新內容，還需要目前檔案的 SHA 來避�
 - `content` 要 Base64 encode。
 - 409 conflict 要重新讀最新 SHA。
 
+
+### 主線專案銜接
+
+這一天要接回 resume-builder 主線，而不是只停在單一語法。完成「GitHub PUT」後，讀者應該能在同一個專案裡看到明確進度。
+
+| 主線部分 | 這一天要補上的東西 | 完成後的可見結果 |
+| --- | --- | --- |
+| GitHub PUT | 完成 GitHubReadmeService | 可用 SHA 更新 README |
+
+當天接到主線專案的流程：
+
+1. GET README 取得 sha。
+2. formatter 產生 markdown。
+3. PUT Base64 content 與 sha。
+
+### 當天做完後檢查
+
+- 409 conflict 會重新讀 sha。
+- PUT 成功會建立 GitHub commit。
+- service 和 controller 分工清楚。
 ### 範例範圍地圖
 
 | 部分 | 位置 | 負責的事情 |
@@ -2284,6 +2927,26 @@ GitHub Contents API 的更新流程是先讀 SHA，再 PUT 新內容。
 - 外部 API：service。
 - 格式轉換：formatter。
 
+
+### 主線專案銜接
+
+這一天要接回 resume-builder 主線，而不是只停在單一語法。完成「重構」後，讀者應該能在同一個專案裡看到明確進度。
+
+| 主線部分 | 這一天要補上的東西 | 完成後的可見結果 |
+| --- | --- | --- |
+| 重構 | 把登入/權限/API/格式化歸位 | Controller 變薄，流程更好測 |
+
+當天接到主線專案的流程：
+
+1. auth 交給 middleware。
+2. ownership 交給 policy。
+3. GitHub API 交給 service。
+
+### 當天做完後檢查
+
+- 沒有到處手寫 auth check。
+- 單筆操作都有 policy。
+- 重複 validation 可抽 Form Request。
 ### 範例範圍地圖
 
 | 問題 | 放置位置 |
@@ -2354,6 +3017,26 @@ Route::middleware('auth')->group(function () {
 - 外部 API 要抽 service。
 - 測試是下一階段必修。
 
+
+### 主線專案銜接
+
+這一天要接回 resume-builder 主線，而不是只停在單一語法。完成「收尾」後，讀者應該能在同一個專案裡看到明確進度。
+
+| 主線部分 | 這一天要補上的東西 | 完成後的可見結果 |
+| --- | --- | --- |
+| 收尾 | 補測試、README、部署檢查 | 專案可被重新啟動與驗證 |
+
+當天接到主線專案的流程：
+
+1. 跑 migrate fresh 與 test。
+2. 補 README 啟動方式。
+3. 檢查 GitHub token 與權限。
+
+### 當天做完後檢查
+
+- php artisan test 通過或知道失敗點。
+- README 能讓別人啟動。
+- 主線功能手動走完一次。
 ### 範例範圍地圖
 
 | 下一步 | 練習方向 |
