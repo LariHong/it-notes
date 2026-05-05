@@ -82,6 +82,11 @@ HTTP request -> Order endpoint -> PlaceOrderService -> Payment gateway
 - 測試是設計回饋，不只是抓 bug。
 - 第一個目標是保護重要行為，不是追求 100% coverage。
 
+### 知識點補充
+
+- [Visual Studio 內如何使用](CSharp_Unit_Test_30天手把手教學_2026更新整理知識點補充.md#visual-studio-內如何使用)
+- [Day 1 手把手範例](CSharp_Unit_Test_30天手把手教學_2026更新整理知識點補充.md#day-1-手把手範例)
+
 ### 真實工作流程例子
 - 工作任務：主管要求你修改訂單折扣規則，但不能讓既有 VIP 折扣壞掉。
 - 你先判斷：先找折扣計算責任在哪一層，不直接改 Controller。
