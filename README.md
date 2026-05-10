@@ -14,6 +14,7 @@
 - [Vue3 手把手教學 2026更新整理](<Vue3_手把手教學_2026更新整理.md>)
 - [Vue3 30天自我學習指南 2026更新整理知識點補充](<Vue3_30天自我學習指南_2026更新整理/Vue3_30天自我學習指南_2026更新整理知識點補充.md>)
 - [作為 Angular 專家探索 Vue 3 和 Svelte 5 整理](<作為 Angular 專家探索 Vue 3 和 Svelte 5 整理.md>)
+- [使用 Claude Code HTML 不合理的有效性 整理](<使用_Claude_Code_HTML_不合理的有效性_整理.md>)
 - [寫給朋友的 PHP 從 0 到 100 實戰教程 2026更新整理](<寫給朋友的_PHP_從_0_到_100_實戰教程_2026更新整理.md>)
 - [淺談資料庫 ASP.NET CSharp 入門 2026更新整理](<淺談資料庫_ASP.NET_CSharp_入門_2026更新整理.md>)
 - [用 Docker 了嗎 30天 Docker基本教學 CSharp 2026更新整理](<用_Docker_了嗎_30天_Docker基本教學_CSharp_2026更新整理.md>)
