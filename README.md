@@ -10,6 +10,7 @@
 - [DotNetCore WebAPI Vue3 30天全端網站應用程式 2026更新整理](<DotNetCore_WebAPI_Vue3_30天全端網站應用程式_2026更新整理.md>)
 - [Docker 部署專案 30天學習整理](<Docker_部署專案_30天學習整理.md>)
 - [Docker部署專案 CSharp GitHubActions GHCR 30天實作補充](<Docker部署專案_CSharp_GitHubActions_GHCR_30天實作補充.md>)
+- [Kubernetes部署 CSharp多服務多容器 30天實作補充](<Kubernetes部署_CSharp多服務多容器_30天實作補充.md>)
 - [HTML Artifact 20個範例工作流整理](<HTML_Artifact_20個範例工作流整理.md>)
 - [Linux 基礎學習訓練教材 Rocky Linux 2026更新整理](<Linux_基礎學習訓練教材_Rocky_Linux_2026更新整理.md>)
 - [Node.js 從零開始 2022 iThome鐵人賽整理](<Node.js_從零開始_2022_iThome鐵人賽整理.md>)
